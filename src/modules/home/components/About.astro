@@ -1,0 +1,105 @@
+---
+const skills = [
+  'TypeScript',
+  'Python',
+  'React',
+  'Node.js',
+  'Next.js',
+  'FastAPI',
+  'PostgreSQL',
+  'LLMs',
+  'RAG',
+  'Prompt Engineering',
+  'Docker',
+  'AWS',
+];
+---
+
+<section id="about" class="section">
+  <div class="container">
+    <p class="section-label">// about</p>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a software engineer with 3+ years of experience building web applications and,
+          increasingly, AI-powered products. I started with full-stack web development —
+          React frontends, Node APIs, relational databases — and over the last couple of years
+          have gone deep on the LLM tooling layer: embeddings, retrieval pipelines, evals,
+          and the plumbing that makes AI features actually ship.
+        </p>
+        <p>
+          I'm drawn to roles where software craft and AI capability have to work together.
+          Good abstractions still matter. Latency still matters. User experience still matters —
+          maybe more so when the output is non-deterministic.
+        </p>
+        <p>
+          Outside of work I write about what I'm learning, contribute to open source,
+          and try to read more than I tweet.
+        </p>
+      </div>
+
+      <div class="about-skills">
+        <p class="skills-label">Tools & Technologies</p>
+        <ul class="skills-list">
+          {skills.map((skill) => (
+            <li class="skill-chip">{skill}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  .about-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .about-text p {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    font-size: var(--text-base);
+  }
+
+  .skills-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-4);
+  }
+
+  .skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .skill-chip {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+  }
+
+  @media (max-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+  }
+</style>

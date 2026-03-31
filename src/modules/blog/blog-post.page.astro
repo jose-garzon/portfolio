@@ -1,0 +1,30 @@
+---
+import { getEntry, render } from 'astro:content';
+import BlogPostLayout from './components/BlogPostLayout.astro';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const entry = await getEntry('blog', slug);
+
+if (!entry) {
+  return Astro.redirect('/blog');
+}
+
+const { Content } = await render(entry);
+
+// Rough word count for reading time
+const wordCount = (entry.body ?? '').trim().split(/\s+/).length;
+---
+
+<BlogPostLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  pubDate={entry.data.pubDate}
+  tags={entry.data.tags}
+  wordCount={wordCount}
+>
+  <Content />
+</BlogPostLayout>

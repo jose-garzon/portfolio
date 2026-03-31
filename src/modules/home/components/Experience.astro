@@ -1,0 +1,159 @@
+---
+import { experience } from '../data/experience';
+---
+
+<section id="experience" class="section">
+  <div class="container">
+    <p class="section-label">// experience</p>
+    <h2 class="section-title">Work History</h2>
+
+    <ol class="timeline">
+      {experience.map((job) => (
+        <li class="timeline-item">
+          <div class="timeline-dot" aria-hidden="true" />
+          <div class="timeline-content">
+            <div class="job-header">
+              <div>
+                <h3 class="job-role">{job.role}</h3>
+                <p class="job-company">{job.company}</p>
+              </div>
+              <span class="job-period">{job.period}</span>
+            </div>
+            <p class="job-description">{job.description}</p>
+            <ul class="job-bullets">
+              {job.bullets.map((bullet) => (
+                <li>{bullet}</li>
+              ))}
+            </ul>
+            <ul class="stack-chips">
+              {job.stack.map((tech) => (
+                <li class="stack-chip">{tech}</li>
+              ))}
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .timeline {
+    position: relative;
+    list-style: none;
+    padding-left: var(--space-6);
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--color-border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: var(--space-12);
+  }
+
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: calc(-1 * var(--space-6) + 1px);
+    top: 8px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    background: var(--color-bg);
+    transform: translateX(-50%);
+  }
+
+  .timeline-content {
+    padding-left: var(--space-4);
+  }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .job-role {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-1);
+  }
+
+  .job-company {
+    font-size: var(--text-base);
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  .job-period {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    padding-top: var(--space-1);
+  }
+
+  .job-description {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
+    line-height: 1.6;
+  }
+
+  .job-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+  }
+
+  .job-bullets li {
+    position: relative;
+    padding-left: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .job-bullets li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+  }
+
+  .stack-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .stack-chip {
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-accent-dim);
+    border: 1px solid rgba(126, 232, 162, 0.2);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+  }
+</style>

@@ -12,6 +12,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.1.2"
+    "@astrojs/mdx": "^5.0.3",
+    "@astrojs/react": "^5.0.2",
+    "@base-ui-components/react": "^1.0.0-rc.0",
+    "astro": "^6.1.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   }
 }
