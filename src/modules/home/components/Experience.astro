@@ -1,15 +1,16 @@
 ---
+import Badge from '../../../shared/components/Badge.astro';
 import { experience } from '../data/experience';
 ---
 
 <section id="experience" class="section">
   <div class="container">
-    <p class="section-label">// experience</p>
-    <h2 class="section-title">Work History</h2>
+    <p class="section-label reveal">// experience</p>
+    <h2 class="section-title reveal">Work History</h2>
 
     <ol class="timeline">
       {experience.map((job) => (
-        <li class="timeline-item">
+        <li class="timeline-item reveal">
           <div class="timeline-dot" aria-hidden="true" />
           <div class="timeline-content">
             <div class="job-header">
@@ -27,7 +28,7 @@ import { experience } from '../data/experience';
             </ul>
             <ul class="stack-chips">
               {job.stack.map((tech) => (
-                <li class="stack-chip">{tech}</li>
+                <li><Badge variant="accent">{tech}</Badge></li>
               ))}
             </ul>
           </div>
@@ -73,6 +74,12 @@ import { experience } from '../data/experience';
     border: 2px solid var(--color-accent);
     background: var(--color-bg);
     transform: translateX(-50%);
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .timeline-item:hover .timeline-dot {
+    background: var(--color-accent);
+    box-shadow: 0 0 12px rgba(126, 232, 162, 0.4);
   }
 
   .timeline-content {
@@ -130,6 +137,11 @@ import { experience } from '../data/experience';
     font-size: var(--text-sm);
     color: var(--color-text-muted);
     line-height: 1.6;
+    transition: color 0.15s ease;
+  }
+
+  .job-bullets li:hover {
+    color: var(--color-text);
   }
 
   .job-bullets li::before {
@@ -145,15 +157,5 @@ import { experience } from '../data/experience';
     flex-wrap: wrap;
     gap: var(--space-2);
     list-style: none;
-  }
-
-  .stack-chip {
-    padding: var(--space-1) var(--space-3);
-    background: var(--color-accent-dim);
-    border: 1px solid rgba(126, 232, 162, 0.2);
-    border-radius: 4px;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-accent);
   }
 </style>

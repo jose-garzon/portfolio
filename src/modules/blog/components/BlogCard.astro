@@ -1,5 +1,5 @@
 ---
-import TagChip from './TagChip.astro';
+import Badge from '../../../shared/components/Badge.astro';
 
 interface Props {
   slug: string;
@@ -26,7 +26,7 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     {tags.length > 0 && (
       <ul class="tag-list">
         {tags.map((tag) => (
-          <li><TagChip tag={tag} /></li>
+          <li><Badge pill>{tag}</Badge></li>
         ))}
       </ul>
     )}
@@ -41,11 +41,16 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     border: 1px solid var(--color-border);
     border-radius: 10px;
     background: var(--color-surface);
-    transition: border-color 0.2s ease;
+    transition:
+      border-color 0.25s var(--ease-out),
+      transform 0.25s var(--ease-out),
+      box-shadow 0.25s var(--ease-out);
   }
 
   .blog-card:hover {
     border-color: var(--color-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 32px rgba(126, 232, 162, 0.07);
   }
 
   .blog-date {

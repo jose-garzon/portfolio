@@ -91,13 +91,25 @@
     border: 1px solid var(--color-border);
     border-radius: 9999px;
     font-size: var(--text-sm);
+    font-weight: 500;
     color: var(--color-text-muted);
-    transition: color 0.15s ease, border-color 0.15s ease;
+    transition:
+      color 0.2s var(--ease-out),
+      border-color 0.2s var(--ease-out),
+      background 0.2s var(--ease-out),
+      transform 0.2s var(--ease-out),
+      box-shadow 0.2s var(--ease-out);
   }
 
   .link-pill:hover {
     color: var(--color-text);
     border-color: var(--color-text-muted);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .link-pill:active {
+    transform: translateY(0);
   }
 
   .link-pill--accent {
@@ -107,7 +119,7 @@
 
   .link-pill--accent:hover {
     background: var(--color-accent-dim);
-    color: var(--color-accent);
     border-color: var(--color-accent);
+    box-shadow: 0 4px 20px rgba(126, 232, 162, 0.15);
   }
 </style>

@@ -1,4 +1,6 @@
 ---
+import Badge from '../../../shared/components/Badge.astro';
+
 const skills = [
   'TypeScript',
   'Python',
@@ -17,9 +19,9 @@ const skills = [
 
 <section id="about" class="section">
   <div class="container">
-    <p class="section-label">// about</p>
+    <p class="section-label reveal">// about</p>
     <div class="about-grid">
-      <div class="about-text">
+      <div class="about-text reveal">
         <p>
           I'm a software engineer with 3+ years of experience building web applications and,
           increasingly, AI-powered products. I started with full-stack web development —
@@ -38,11 +40,11 @@ const skills = [
         </p>
       </div>
 
-      <div class="about-skills">
+      <div class="about-skills reveal">
         <p class="skills-label">Tools & Technologies</p>
-        <ul class="skills-list">
+        <ul class="skills-list reveal-stagger">
           {skills.map((skill) => (
-            <li class="skill-chip">{skill}</li>
+            <li><Badge>{skill}</Badge></li>
           ))}
         </ul>
       </div>
@@ -84,16 +86,6 @@ const skills = [
     flex-wrap: wrap;
     gap: var(--space-2);
     list-style: none;
-  }
-
-  .skill-chip {
-    padding: var(--space-1) var(--space-3);
-    border: 1px solid var(--color-border);
-    border-radius: 4px;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    background: var(--color-surface);
   }
 
   @media (max-width: 768px) {
