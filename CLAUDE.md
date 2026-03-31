@@ -22,7 +22,7 @@ This is an [Astro 6](https://astro.build) portfolio site (currently in its initi
 - `src/assets/` — Static assets imported directly in components (processed by Astro's asset pipeline).
 - `astro.config.mjs` — Astro configuration (integrations, adapters, etc. go here).
 
-Astro components use a frontmatter fence (`---`) at the top for server-side JS/TS, followed by HTML template with scoped `<style>` blocks. No UI framework (React, Vue, etc.) is installed yet.
+Astro components use a frontmatter fence (`---`) at the top for server-side JS/TS, followed by HTML template with scoped `<style>` blocks.
 
 Do not write comments for every change. 
 Do not use inline styles.

@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
 import { Menu } from '@base-ui-components/react/menu';
+import { useEffect, useState } from 'react';
+import styles from './Nav.module.css';
 
 const navLinks = [
   { label: 'Experience', href: '#experience' },
@@ -17,65 +18,17 @@ export default function Nav() {
   }, []);
 
   return (
-    <nav
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        height: 'var(--nav-height)',
-        borderBottom: `1px solid ${scrolled ? 'var(--color-border)' : 'transparent'}`,
-        backgroundColor: scrolled ? 'var(--color-bg)' : 'transparent',
-        transition: 'background-color 0.2s ease, border-color 0.2s ease',
-      }}
-    >
-      <div
-        className="container"
-        style={{
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <a
-          href="/"
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 'var(--text-sm)',
-            color: 'var(--color-accent)',
-            fontWeight: 500,
-          }}
-        >
+    <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
+      <div className={`container ${styles.inner}`}>
+        <a href="/" className={styles.logo}>
           jose_garzon
         </a>
 
         {/* Desktop links */}
-        <ul
-          style={{
-            display: 'flex',
-            gap: 'var(--space-8)',
-            listStyle: 'none',
-          }}
-          className="nav-desktop"
-        >
+        <ul className={styles.desktopLinks}>
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a
-                href={link.href}
-                style={{
-                  fontSize: 'var(--text-sm)',
-                  color: 'var(--color-text-muted)',
-                  transition: 'color 0.15s ease',
-                }}
-                onMouseEnter={(e) =>
-                  ((e.target as HTMLElement).style.color = 'var(--color-text)')
-                }
-                onMouseLeave={(e) =>
-                  ((e.target as HTMLElement).style.color = 'var(--color-text-muted)')
-                }
-              >
+              <a href={link.href} className={styles.desktopLink}>
                 {link.label}
               </a>
             </li>
@@ -83,76 +36,23 @@ export default function Nav() {
         </ul>
 
         {/* Mobile hamburger */}
-        <div className="nav-mobile">
+        <div className={styles.mobileMenu}>
           <Menu.Root>
-            <Menu.Trigger
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '5px',
-                padding: 'var(--space-2)',
-                color: 'var(--color-text)',
-              }}
-              aria-label="Open navigation menu"
-            >
-              <span
-                style={{
-                  display: 'block',
-                  width: '22px',
-                  height: '2px',
-                  backgroundColor: 'currentColor',
-                  borderRadius: '2px',
-                }}
-              />
-              <span
-                style={{
-                  display: 'block',
-                  width: '22px',
-                  height: '2px',
-                  backgroundColor: 'currentColor',
-                  borderRadius: '2px',
-                }}
-              />
-              <span
-                style={{
-                  display: 'block',
-                  width: '22px',
-                  height: '2px',
-                  backgroundColor: 'currentColor',
-                  borderRadius: '2px',
-                }}
-              />
+            <Menu.Trigger className={styles.trigger} aria-label="Open navigation menu">
+              <span className={styles.triggerLine} />
+              <span className={styles.triggerLine} />
+              <span className={styles.triggerLine} />
             </Menu.Trigger>
 
             <Menu.Portal>
-              <Menu.Positioner
-                side="bottom"
-                align="end"
-                style={{ zIndex: 200 }}
-              >
-                <Menu.Popup
-                  style={{
-                    background: 'var(--color-surface)',
-                    border: '1px solid var(--color-border)',
-                    borderRadius: '8px',
-                    padding: 'var(--space-2)',
-                    minWidth: '160px',
-                    marginTop: 'var(--space-2)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-                  }}
-                >
+              <Menu.Positioner side="bottom" align="end" className={styles.positioner}>
+                <Menu.Popup className={styles.popup}>
                   {navLinks.map((link) => (
                     <Menu.Item
                       key={link.href}
+                      // biome-ignore lint/a11y/useAnchorContent: Base UI render prop — Menu.Item children are injected into this anchor at runtime
                       render={<a href={link.href} />}
-                      style={{
-                        display: 'block',
-                        padding: 'var(--space-3) var(--space-4)',
-                        fontSize: 'var(--text-sm)',
-                        color: 'var(--color-text-muted)',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                      }}
+                      className={styles.menuItem}
                     >
                       {link.label}
                     </Menu.Item>
@@ -163,21 +63,6 @@ export default function Nav() {
           </Menu.Root>
         </div>
       </div>
-
-      <style>{`
-        .nav-desktop { display: flex; }
-        .nav-mobile { display: none; }
-
-        @media (max-width: 640px) {
-          .nav-desktop { display: none; }
-          .nav-mobile { display: block; }
-        }
-
-        [data-highlighted] {
-          background: var(--color-accent-dim);
-          color: var(--color-text) !important;
-        }
-      `}</style>
     </nav>
   );
 }
