@@ -1,6 +1,6 @@
 import { Menu } from '@base-ui/react/menu';
 import { useEffect, useState } from 'react';
-import styles from './Nav.module.css';
+import styles from './Header.module.css';
 
 const navLinks = [
   { label: 'Experience', href: '#experience' },
@@ -21,7 +21,7 @@ export default function Header() {
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
         <a href="/" className={styles.logo}>
-          jose_garzon
+          jose<span className={styles.logoAccent}>_</span>garzon
         </a>
 
         {/* Desktop links */}

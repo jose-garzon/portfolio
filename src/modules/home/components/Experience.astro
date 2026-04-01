@@ -5,32 +5,43 @@ import { experience } from '../data/experience';
 
 <section id="experience" class="section">
   <div class="container">
-    <p class="section-label reveal">// experience</p>
+    <p class="section-label reveal">experience</p>
     <h2 class="section-title reveal">Work History</h2>
 
     <ol class="timeline">
-      {experience.map((job) => (
+      {experience.map((job, index) => (
         <li class="timeline-item reveal">
-          <div class="timeline-dot" aria-hidden="true" />
+          <div class="timeline-indicator" aria-hidden="true">
+            <div class="timeline-dot"></div>
+            <div class="timeline-line"></div>
+          </div>
           <div class="timeline-content">
-            <div class="job-header">
-              <div>
-                <h3 class="job-role">{job.role}</h3>
-                <p class="job-company">{job.company}</p>
+            <div class="job-card">
+              <div class="job-header">
+                <div class="job-title-group">
+                  <h3 class="job-role">{job.role}</h3>
+                  <p class="job-company">{job.company}</p>
+                </div>
+                <span class="job-period">{job.period}</span>
               </div>
-              <span class="job-period">{job.period}</span>
+
+              <p class="job-description">{job.description}</p>
+
+              <ul class="job-bullets">
+                {job.bullets.map((bullet) => (
+                  <li>
+                    <span class="bullet-marker" aria-hidden="true">▸</span>
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+
+              <ul class="stack-chips">
+                {job.stack.map((tech) => (
+                  <li><Badge variant="accent">{tech}</Badge></li>
+                ))}
+              </ul>
             </div>
-            <p class="job-description">{job.description}</p>
-            <ul class="job-bullets">
-              {job.bullets.map((bullet) => (
-                <li>{bullet}</li>
-              ))}
-            </ul>
-            <ul class="stack-chips">
-              {job.stack.map((tech) => (
-                <li><Badge variant="accent">{tech}</Badge></li>
-              ))}
-            </ul>
           </div>
         </li>
       ))}
@@ -40,50 +51,82 @@ import { experience } from '../data/experience';
 
 <style>
   .timeline {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
     list-style: none;
-    padding-left: var(--space-6);
-  }
-
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 7px;
-    top: 8px;
-    bottom: 8px;
-    width: 1px;
-    background: var(--color-border);
+    position: relative;
   }
 
   .timeline-item {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--space-6);
     position: relative;
-    padding-bottom: var(--space-12);
   }
 
-  .timeline-item:last-child {
-    padding-bottom: 0;
+  .timeline-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: var(--space-5);
   }
 
   .timeline-dot {
-    position: absolute;
-    left: calc(-1 * var(--space-6) + 1px);
-    top: 8px;
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     border: 2px solid var(--color-accent);
     background: var(--color-bg);
-    transform: translateX(-50%);
-    transition: background 0.25s ease, box-shadow 0.25s ease;
+    flex-shrink: 0;
+    transition:
+      background var(--duration-normal) var(--ease-out),
+      box-shadow var(--duration-normal) var(--ease-out),
+      transform var(--duration-normal) var(--ease-spring);
+    z-index: 1;
   }
 
   .timeline-item:hover .timeline-dot {
     background: var(--color-accent);
-    box-shadow: 0 0 12px rgba(126, 232, 162, 0.4);
+    box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.15), 0 0 16px rgba(88, 166, 255, 0.3);
+    transform: scale(1.2);
+  }
+
+  .timeline-line {
+    width: 1px;
+    flex-grow: 1;
+    background: linear-gradient(to bottom, var(--color-border), transparent);
+    margin-top: var(--space-2);
+    min-height: var(--space-8);
+  }
+
+  .timeline-item:last-child .timeline-line {
+    display: none;
   }
 
   .timeline-content {
-    padding-left: var(--space-4);
+    padding-bottom: var(--space-10);
+  }
+
+  .timeline-item:last-child .timeline-content {
+    padding-bottom: 0;
+  }
+
+  .job-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6) var(--space-8);
+    transition:
+      border-color var(--duration-normal) var(--ease-out),
+      box-shadow var(--duration-normal) var(--ease-out),
+      background var(--duration-normal) var(--ease-out);
+  }
+
+  .timeline-item:hover .job-card {
+    border-color: rgba(88, 166, 255, 0.3);
+    box-shadow: 0 4px 24px rgba(88, 166, 255, 0.06), inset 0 0 0 1px rgba(88, 166, 255, 0.05);
+    background: var(--color-surface-raised);
   }
 
   .job-header {
@@ -91,7 +134,7 @@ import { experience } from '../data/experience';
     justify-content: space-between;
     align-items: flex-start;
     gap: var(--space-4);
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
     flex-wrap: wrap;
   }
 
@@ -100,56 +143,62 @@ import { experience } from '../data/experience';
     font-weight: 600;
     color: var(--color-text);
     margin-bottom: var(--space-1);
+    letter-spacing: -0.01em;
   }
 
   .job-company {
-    font-size: var(--text-base);
+    font-size: var(--text-sm);
     color: var(--color-accent);
     font-weight: 500;
+    font-family: var(--font-mono);
   }
 
   .job-period {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    color: var(--color-text-muted);
+    color: var(--color-text-subtle);
     white-space: nowrap;
-    padding-top: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-bg);
+    flex-shrink: 0;
   }
 
   .job-description {
     color: var(--color-text-muted);
     font-size: var(--text-sm);
-    margin-bottom: var(--space-4);
-    line-height: 1.6;
+    margin-bottom: var(--space-5);
+    line-height: 1.7;
   }
 
   .job-bullets {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-    margin-bottom: var(--space-5);
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
   }
 
   .job-bullets li {
-    position: relative;
-    padding-left: var(--space-5);
+    display: flex;
+    gap: var(--space-3);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
-    line-height: 1.6;
-    transition: color 0.15s ease;
+    line-height: 1.65;
+    align-items: baseline;
+    transition: color var(--duration-fast) var(--ease-out);
   }
 
   .job-bullets li:hover {
     color: var(--color-text);
   }
 
-  .job-bullets li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
+  .bullet-marker {
     color: var(--color-accent);
-    font-family: var(--font-mono);
+    font-size: 0.6em;
+    flex-shrink: 0;
+    translate: 0 0.1em;
   }
 
   .stack-chips {
@@ -157,5 +206,16 @@ import { experience } from '../data/experience';
     flex-wrap: wrap;
     gap: var(--space-2);
     list-style: none;
+  }
+
+  @media (max-width: 640px) {
+    .timeline-item {
+      grid-template-columns: 20px 1fr;
+      gap: var(--space-4);
+    }
+
+    .job-card {
+      padding: var(--space-5) var(--space-5);
+    }
   }
 </style>

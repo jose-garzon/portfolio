@@ -8,13 +8,16 @@
   border-bottom: 1px solid transparent;
   background-color: transparent;
   transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    backdrop-filter 0.3s ease;
 }
 
 .nav.scrolled {
   border-bottom-color: var(--color-border);
-  background-color: var(--color-bg);
+  background-color: rgba(8, 12, 16, 0.85);
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
 }
 
 .inner {
@@ -28,23 +31,38 @@
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+  letter-spacing: -0.01em;
+}
+
+.logo:hover {
+  color: var(--color-accent);
+}
+
+.logoAccent {
   color: var(--color-accent);
 }
 
 .desktopLinks {
   display: flex;
-  gap: var(--space-8);
+  gap: var(--space-1);
   list-style: none;
 }
 
 .desktopLink {
   font-size: var(--text-sm);
   color: var(--color-text-muted);
-  transition: color 0.15s ease;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
 }
 
 .desktopLink:hover {
   color: var(--color-text);
+  background: var(--color-surface);
 }
 
 .mobileMenu {
@@ -54,17 +72,32 @@
 .trigger {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
   padding: var(--space-2);
+  color: var(--color-text-muted);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.trigger:hover {
+  background: var(--color-surface);
   color: var(--color-text);
 }
 
 .triggerLine {
   display: block;
-  width: 22px;
-  height: 2px;
+  width: 18px;
+  height: 1.5px;
   background-color: currentColor;
   border-radius: 2px;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .positioner {
@@ -72,13 +105,15 @@
 }
 
 .popup {
-  background: var(--color-surface);
+  background: var(--color-surface-raised);
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: var(--space-2);
   min-width: 160px;
   margin-top: var(--space-2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .menuItem {
@@ -86,8 +121,11 @@
   padding: var(--space-3) var(--space-4);
   font-size: var(--text-sm);
   color: var(--color-text-muted);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
+  transition:
+    background 0.1s ease,
+    color 0.1s ease;
 }
 
 .menuItem[data-highlighted] {

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../shared/components/Header/Header';
 import Badge from '../../../shared/components/Badge.astro';
 
 interface Props {
@@ -21,33 +22,43 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 ---
 
 <Layout title={`${title} — José Garzón`} description={description}>
-  <div class="container post-container">
-    <nav class="post-nav">
-      <a href="/blog" class="back-link">← Back to writing</a>
-    </nav>
+  <Header client:load />
+  <main class="post-main">
+    <div class="container">
+      <nav class="post-nav">
+        <a href="/blog" class="back-link">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M12 7H2M6 2L1 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to writing
+        </a>
+      </nav>
 
-    <header class="post-header">
-      <time class="post-date" datetime={pubDate.toISOString()}>{formattedDate}</time>
-      <h1 class="post-title">{title}</h1>
-      <div class="post-meta">
-        <span class="reading-time">{readingTime} min read</span>
+      <header class="post-header">
+        <div class="post-meta-top">
+          <time class="post-date" datetime={pubDate.toISOString()}>{formattedDate}</time>
+          <span class="meta-sep" aria-hidden="true">·</span>
+          <span class="reading-time">{readingTime} min read</span>
+        </div>
+        <h1 class="post-title">{title}</h1>
+        <p class="post-description">{description}</p>
         {tags.length > 0 && (
           <ul class="tag-list">
             {tags.map((tag) => <li><Badge pill>{tag}</Badge></li>)}
           </ul>
         )}
-      </div>
-    </header>
+      </header>
 
-    <div class="prose">
-      <slot />
+      <div class="prose">
+        <slot />
+      </div>
     </div>
-  </div>
+  </main>
 </Layout>
 
 <style>
-  .post-container {
-    padding-top: var(--space-10);
+  .post-main {
+    padding-top: calc(var(--nav-height) + var(--space-10));
     padding-bottom: var(--space-section);
   }
 
@@ -56,50 +67,66 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
   }
 
   .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
     font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    transition: color 0.15s ease;
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    transition:
+      color var(--duration-fast) ease,
+      border-color var(--duration-fast) ease,
+      background var(--duration-fast) ease;
   }
 
   .back-link:hover {
-    color: var(--color-text);
+    color: var(--color-text-muted);
+    border-color: var(--color-text-subtle);
+    background: var(--color-surface);
   }
 
   .post-header {
+    max-width: var(--max-prose);
     margin-bottom: var(--space-12);
-    padding-bottom: var(--space-8);
+    padding-bottom: var(--space-10);
     border-bottom: 1px solid var(--color-border);
   }
 
-  .post-date {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-4);
-  }
-
-  .post-title {
-    font-size: var(--text-3xl);
-    font-weight: 700;
-    color: var(--color-text);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+  .post-meta-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
     margin-bottom: var(--space-5);
   }
 
-  .post-meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-    flex-wrap: wrap;
-  }
-
+  .post-date,
   .reading-time {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+  }
+
+  .meta-sep {
+    color: var(--color-border);
+  }
+
+  .post-title {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-5);
+  }
+
+  .post-description {
+    font-size: var(--text-lg);
     color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-5);
   }
 
   .tag-list {
@@ -110,12 +137,12 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
   }
 </style>
 
-<!-- Prose styles must be global: MDX slot content has no Astro scope attribute -->
 <style is:global>
   .prose {
     max-width: var(--max-prose);
-    line-height: 1.7;
-    color: var(--color-text);
+    line-height: 1.8;
+    color: var(--color-text-muted);
+    font-size: var(--text-base);
   }
 
   .prose h1,
@@ -124,58 +151,75 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
   .prose h4 {
     color: var(--color-text);
     font-weight: 700;
-    margin-top: var(--space-10);
-    margin-bottom: var(--space-4);
+    letter-spacing: -0.02em;
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-5);
+    line-height: 1.25;
   }
 
   .prose h1 { font-size: var(--text-3xl); }
   .prose h2 { font-size: var(--text-2xl); }
   .prose h3 { font-size: var(--text-xl); }
 
+  .prose h2 {
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
   .prose p {
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-6);
+    color: var(--color-text-muted);
+  }
+
+  .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
   }
 
   .prose a {
     color: var(--color-accent);
     text-decoration: underline;
+    text-decoration-color: rgba(88, 166, 255, 0.4);
     text-underline-offset: 3px;
-    transition: opacity 0.15s ease;
+    transition: text-decoration-color 0.15s ease;
   }
 
   .prose a:hover {
-    opacity: 0.75;
+    text-decoration-color: var(--color-accent);
   }
 
   .prose code {
     font-family: var(--font-mono);
-    font-size: var(--text-sm);
+    font-size: 0.875em;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    padding: 0.15em 0.4em;
-    border-radius: 4px;
+    color: var(--color-accent);
+    padding: 0.15em 0.45em;
+    border-radius: var(--radius-sm);
   }
 
   .prose pre {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
     overflow-x: auto;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-8);
+    position: relative;
   }
 
   .prose pre code {
     background: none;
     border: none;
     padding: 0;
+    color: var(--color-text);
     font-size: var(--text-sm);
   }
 
   .prose ul,
   .prose ol {
     padding-left: var(--space-6);
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-6);
   }
 
   .prose ul { list-style: disc; }
@@ -183,19 +227,51 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 
   .prose li {
     margin-bottom: var(--space-2);
+    color: var(--color-text-muted);
   }
 
   .prose blockquote {
-    border-left: 3px solid var(--color-accent);
-    padding-left: var(--space-5);
+    border-left: 2px solid var(--color-accent);
+    padding-left: var(--space-6);
     margin-left: 0;
+    margin-block: var(--space-8);
     color: var(--color-text-muted);
     font-style: italic;
+  }
+
+  .prose blockquote p {
+    margin-bottom: 0;
   }
 
   .prose hr {
     border: none;
     border-top: 1px solid var(--color-border);
+    margin-block: var(--space-10);
+  }
+
+  .prose img {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
     margin-block: var(--space-8);
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--space-8);
+    font-size: var(--text-sm);
+  }
+
+  .prose th,
+  .prose td {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  .prose th {
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-weight: 600;
   }
 </style>

@@ -19,34 +19,61 @@ const skills = [
 
 <section id="about" class="section">
   <div class="container">
-    <p class="section-label reveal">// about</p>
+    <p class="section-label reveal">about</p>
+
     <div class="about-grid">
-      <div class="about-text reveal">
-        <p>
-          I'm a software engineer with 3+ years of experience building web applications and,
-          increasingly, AI-powered products. I started with full-stack web development —
-          React frontends, Node APIs, relational databases — and over the last couple of years
-          have gone deep on the LLM tooling layer: embeddings, retrieval pipelines, evals,
-          and the plumbing that makes AI features actually ship.
-        </p>
-        <p>
-          I'm drawn to roles where software craft and AI capability have to work together.
-          Good abstractions still matter. Latency still matters. User experience still matters —
-          maybe more so when the output is non-deterministic.
-        </p>
-        <p>
-          Outside of work I write about what I'm learning, contribute to open source,
-          and try to read more than I tweet.
-        </p>
+      <div class="about-text">
+        <h2 class="about-heading reveal">
+          Crafting software that<br />
+          <em>actually ships.</em>
+        </h2>
+        <div class="about-paragraphs reveal">
+          <p>
+            I'm a software engineer with 3+ years of experience building web applications and,
+            increasingly, AI-powered products. I started with full-stack web development —
+            React frontends, Node APIs, relational databases — and over the last couple of years
+            have gone deep on the LLM tooling layer: embeddings, retrieval pipelines, evals,
+            and the plumbing that makes AI features actually ship.
+          </p>
+          <p>
+            I'm drawn to roles where software craft and AI capability have to work together.
+            Good abstractions still matter. Latency still matters. User experience still matters —
+            maybe more so when the output is non-deterministic.
+          </p>
+          <p>
+            Outside of work I write about what I'm learning, contribute to open source,
+            and try to read more than I tweet.
+          </p>
+        </div>
       </div>
 
-      <div class="about-skills reveal">
-        <p class="skills-label">Tools & Technologies</p>
-        <ul class="skills-list reveal-stagger">
-          {skills.map((skill) => (
-            <li><Badge>{skill}</Badge></li>
-          ))}
-        </ul>
+      <div class="about-sidebar">
+        <div class="skills-panel reveal">
+          <p class="panel-label">Tools &amp; Technologies</p>
+          <ul class="skills-list reveal-stagger">
+            {skills.map((skill) => (
+              <li><Badge>{skill}</Badge></li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="current-panel reveal">
+          <p class="panel-label">Currently</p>
+          <ul class="current-list">
+            <li>
+              <span class="current-icon">→</span>
+              Building at <strong>Acme AI</strong>
+            </li>
+            <li>
+              <span class="current-icon">→</span>
+              Exploring agentic LLM workflows
+            </li>
+            <li>
+              <span class="current-icon">→</span>
+              Open to senior IC roles
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -55,30 +82,63 @@ const skills = [
 <style>
   .about-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-12);
+    grid-template-columns: 1fr 380px;
+    gap: var(--space-16);
     align-items: start;
   }
 
-  .about-text {
+  .about-heading {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-8);
+  }
+
+  .about-heading em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--color-accent), #a5c8ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .about-paragraphs {
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
   }
 
-  .about-text p {
+  .about-paragraphs p {
     color: var(--color-text-muted);
-    line-height: 1.7;
+    line-height: 1.8;
     font-size: var(--text-base);
   }
 
-  .skills-label {
+  .about-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-8));
+  }
+
+  .panel-label {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    color: var(--color-text-muted);
+    color: var(--color-text-subtle);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     margin-bottom: var(--space-4);
+  }
+
+  .skills-panel,
+  .current-panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
   }
 
   .skills-list {
@@ -88,10 +148,49 @@ const skills = [
     list-style: none;
   }
 
-  @media (max-width: 768px) {
+  .current-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    list-style: none;
+  }
+
+  .current-list li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .current-list strong {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .current-icon {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 900px) {
     .about-grid {
       grid-template-columns: 1fr;
-      gap: var(--space-8);
+      gap: var(--space-10);
+    }
+
+    .about-sidebar {
+      position: static;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .about-sidebar {
+      grid-template-columns: 1fr;
     }
   }
 </style>
