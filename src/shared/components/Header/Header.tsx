@@ -8,7 +8,7 @@ const navLinks = [
   { label: 'Blog', href: '/blog' },
 ];
 
-export default function Nav() {
+export default function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
