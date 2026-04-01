@@ -1,4 +1,4 @@
-import { Menu } from '@base-ui-components/react/menu';
+import { Menu } from '@base-ui/react/menu';
 import { useEffect, useState } from 'react';
 import styles from './Nav.module.css';
 

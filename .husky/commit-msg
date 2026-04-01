@@ -1,0 +1,7 @@
+commit_msg=$(cat "$1")
+if ! echo "$commit_msg" | grep -qE "^(feature|fix|blog|chore): .+"; then
+  echo "Invalid commit message format."
+  echo "Expected: feature|fix|blog|chore: <message>"
+  echo "Got: $commit_msg"
+  exit 1
+fi
