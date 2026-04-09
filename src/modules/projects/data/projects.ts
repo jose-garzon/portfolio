@@ -1,3 +1,5 @@
+import data from './projects.json';
+
 export interface Project {
   name: string;
   description: string;
@@ -7,30 +9,4 @@ export interface Project {
   featured?: boolean;
 }
 
-export const projects: Project[] = [
-  {
-    name: 'RAG Toolkit',
-    description:
-      'A modular Python library for building retrieval-augmented generation pipelines. Supports multiple vector stores and LLM providers with a unified interface.',
-    stack: ['Python', 'LangChain', 'Qdrant', 'OpenAI', 'FastAPI'],
-    github: 'https://github.com/jose-garzon/rag-toolkit',
-    featured: true,
-  },
-  {
-    name: 'Prompt Bench',
-    description:
-      'Web app for testing and comparing LLM prompt variants side by side. Tracks cost, latency, and output quality across runs.',
-    stack: ['TypeScript', 'Next.js', 'Vercel AI SDK', 'SQLite'],
-    github: 'https://github.com/jose-garzon/prompt-bench',
-    live: 'https://promptbench.dev',
-    featured: true,
-  },
-  {
-    name: 'Portfolio Site',
-    description:
-      'This site — built with Astro 6, React islands, and zero runtime JS for static sections. Dark, technical aesthetic.',
-    stack: ['Astro', 'React', 'TypeScript', 'MDX'],
-    github: 'https://github.com/jose-garzon/portfolio',
-    featured: false,
-  },
-];
+export const projects: Project[] = data;
