@@ -81,13 +81,13 @@ const { project, index = 0 } = Astro.props;
   }
 
   .card:hover {
-    border-color: rgba(88, 166, 255, 0.35);
+    border-color: var(--color-accent-dim);
     transform: translateY(-5px);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(88, 166, 255, 0.08);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--color-accent-glow);
   }
 
   .card[data-featured="true"] {
-    background: linear-gradient(135deg, var(--color-surface) 0%, #13203a 100%);
+    background: linear-gradient(135deg, var(--color-surface) 0%, #0d1f12 100%);
   }
 
   .card-inner {
@@ -122,7 +122,7 @@ const { project, index = 0 } = Astro.props;
 
   .card:hover .card-icon {
     background: var(--color-accent-dim);
-    border-color: rgba(88, 166, 255, 0.3);
+    border-color: var(--color-accent-dim);
   }
 
   .card-links {
@@ -156,13 +156,13 @@ const { project, index = 0 } = Astro.props;
 
   .card-link--live {
     color: var(--color-accent);
-    border-color: rgba(88, 166, 255, 0.25);
-    background: rgba(88, 166, 255, 0.06);
+    border-color: var(--color-accent-dim);
+    background: var(--color-accent-glow);
   }
 
   .card-link--live:hover {
     background: var(--color-accent-dim);
-    border-color: rgba(88, 166, 255, 0.5);
+    border-color: var(--color-accent);
     color: var(--color-accent);
   }
 
@@ -193,7 +193,7 @@ const { project, index = 0 } = Astro.props;
     opacity: 0;
     background: radial-gradient(
       circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      rgba(88, 166, 255, 0.06),
+      var(--color-accent-glow),
       transparent 60%
     );
     transition: opacity var(--duration-normal) var(--ease-out);

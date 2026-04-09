@@ -44,7 +44,7 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 <style>
   .blog-card {
     display: block;
-    padding: var(--space-6) var(--space-7);
+    padding: var(--space-6) var(--space-8);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     background: var(--color-surface);
@@ -55,9 +55,9 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
   }
 
   .blog-card:hover {
-    border-color: rgba(88, 166, 255, 0.35);
+    border-color: var(--color-accent-dim);
     transform: translateY(-3px);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(88, 166, 255, 0.06);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--color-accent-glow);
   }
 
   .card-top {

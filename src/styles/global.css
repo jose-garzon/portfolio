@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 /* ===== Design Tokens ===== */
 :root {
@@ -10,16 +10,16 @@
   --color-border: #1e2d3d;
   --color-border-subtle: #162030;
   --color-text: #e6edf3;
-  --color-text-muted: #7d8590;
-  --color-text-subtle: #484f58;
-  --color-accent: #58a6ff;
+  --color-text-muted: #8b949e;
+  --color-text-subtle: #656d76;
+  --color-accent: #39d353;
   --color-accent-warm: #f78166;
-  --color-accent-green: #3fb950;
-  --color-accent-dim: rgba(88, 166, 255, 0.1);
-  --color-accent-glow: rgba(88, 166, 255, 0.06);
+  --color-accent-green: #39d353;
+  --color-accent-dim: rgba(57, 211, 83, 0.1);
+  --color-accent-glow: rgba(57, 211, 83, 0.06);
 
   /* Typography */
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-sans: "Space Grotesk", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
   --text-xs: clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
@@ -66,8 +66,8 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
-  --shadow-accent: 0 0 24px rgba(88, 166, 255, 0.12);
-  --shadow-accent-lg: 0 8px 32px rgba(88, 166, 255, 0.15);
+  --shadow-accent: 0 0 24px rgba(57, 211, 83, 0.12);
+  --shadow-accent-lg: 0 8px 32px rgba(57, 211, 83, 0.15);
 
   /* Radii */
   --radius-sm: 6px;

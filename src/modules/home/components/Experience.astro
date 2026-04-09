@@ -88,7 +88,7 @@ import { experience } from '../data/experience';
 
   .timeline-item:hover .timeline-dot {
     background: var(--color-accent);
-    box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.15), 0 0 16px rgba(88, 166, 255, 0.3);
+    box-shadow: 0 0 0 4px var(--color-accent-dim), var(--shadow-accent);
     transform: scale(1.2);
   }
 
@@ -124,8 +124,8 @@ import { experience } from '../data/experience';
   }
 
   .timeline-item:hover .job-card {
-    border-color: rgba(88, 166, 255, 0.3);
-    box-shadow: 0 4px 24px rgba(88, 166, 255, 0.06), inset 0 0 0 1px rgba(88, 166, 255, 0.05);
+    border-color: var(--color-accent-dim);
+    box-shadow: var(--shadow-accent), inset 0 0 0 1px var(--color-accent-glow);
     background: var(--color-surface-raised);
   }
 
@@ -156,12 +156,12 @@ import { experience } from '../data/experience';
   .job-period {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    color: var(--color-text-subtle);
+    color: var(--color-text-muted);
     white-space: nowrap;
     padding: var(--space-1) var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-full);
-    background: var(--color-bg);
+    background: var(--color-surface-raised);
     flex-shrink: 0;
   }
 
