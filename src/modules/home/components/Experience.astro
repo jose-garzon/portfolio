@@ -5,8 +5,8 @@ import { experience } from '../data/experience';
 
 <section id="experience" class="section">
   <div class="container">
-    <p class="section-label reveal">experience</p>
-    <h2 class="section-title reveal">Work History</h2>
+    <p class="section-label scanlines reveal">experience</p>
+    <h2 class="section-title scanlines reveal"><span data-text="Work History">Work History</span></h2>
 
     <ol class="timeline">
       {experience.map((job, index) => (
@@ -19,7 +19,7 @@ import { experience } from '../data/experience';
             <div class="job-card">
               <div class="job-header">
                 <div class="job-title-group">
-                  <h3 class="job-role">{job.role}</h3>
+                  <h3 class="job-role" data-text={job.role}>{job.role}</h3>
                   <p class="job-company">{job.company}</p>
                 </div>
                 <span class="job-period">{job.period}</span>

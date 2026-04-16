@@ -54,7 +54,7 @@ const { project, index = 0 } = Astro.props;
       </div>
     </div>
 
-    <h3 class="card-title">{project.name}</h3>
+    <h3 class="card-title" data-text={project.name}>{project.name}</h3>
     <p class="card-description">{project.description}</p>
 
     <ul class="card-stack">
@@ -83,11 +83,14 @@ const { project, index = 0 } = Astro.props;
   .card:hover {
     border-color: var(--color-accent-dim);
     transform: translateY(-5px);
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--color-accent-glow);
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.55),
+      0 0 0 1px var(--color-accent-glow),
+      0 0 24px rgba(255, 45, 85, 0.12);
   }
 
   .card[data-featured="true"] {
-    background: linear-gradient(135deg, var(--color-surface) 0%, #0d1f12 100%);
+    background: linear-gradient(135deg, var(--color-surface) 0%, #1a0a0e 100%);
   }
 
   .card-inner {

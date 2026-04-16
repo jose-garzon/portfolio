@@ -1,18 +1,18 @@
 ---
 ---
-https://linkedin.com/in/jose-garzon
+
 <section class="hero">
   <div class="hero-ambient" aria-hidden="true"></div>
   <div class="container">
     <div class="hero-inner">
-      <p class="hero-eyebrow">
+      <p class="hero-eyebrow scanlines">
         <span class="eyebrow-dot"></span>
         Available for new opportunities
       </p>
 
-      <h1 class="hero-name">
-        <span class="name-line">José</span>
-        <span class="name-line name-line--accent">Garzón</span>
+      <h1 class="hero-name scanlines">
+        <span class="name-line" data-text="José">José</span>
+        <span class="name-line name-line--accent" data-text="Garzón">Garzón</span>
       </h1>
 
       <p class="hero-role">Software Engineer — AI &amp; Product</p>
@@ -88,8 +88,8 @@ https://linkedin.com/in/jose-garzon
     height: min(700px, 80vh);
     background: radial-gradient(
       ellipse at center,
-      rgba(57, 211, 83, 0.07) 0%,
-      rgba(57, 211, 83, 0.03) 40%,
+      rgba(255, 45, 85, 0.07) 0%,
+      rgba(255, 45, 85, 0.03) 40%,
       transparent 70%
     );
     pointer-events: none;
@@ -116,9 +116,9 @@ https://linkedin.com/in/jose-garzon
     letter-spacing: 0.05em;
     margin-bottom: var(--space-8);
     padding: var(--space-2) var(--space-4);
-    border: 1px solid var(--color-accent-dim);
+    border: 1px solid rgba(57, 211, 83, 0.2);
     border-radius: var(--radius-full);
-    background: var(--color-accent-glow);
+    background: rgba(57, 211, 83, 0.05);
     animation: hero-in var(--ease-out) 0.1s both;
   }
 
@@ -157,12 +157,12 @@ https://linkedin.com/in/jose-garzon
 
   .name-line--accent {
     animation-delay: 0.22s;
-    background: linear-gradient(135deg, var(--color-accent) 0%, #7ee787 50%, var(--color-accent) 100%);
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-warm) 50%, var(--color-accent) 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: hero-in var(--ease-out) 0.22s both, shimmer 4s linear 1s infinite;
+    animation: hero-in var(--ease-out) 0.22s both, shimmer 5s linear 1s infinite;
   }
 
   @keyframes shimmer {
@@ -213,12 +213,18 @@ https://linkedin.com/in/jose-garzon
 
   .btn--primary {
     background: var(--color-accent);
-    color: #0d1117;
+    color: #ffffff;
+    box-shadow: 0 0 0 0 rgba(255, 45, 85, 0);
+    transition:
+      transform var(--duration-normal) var(--ease-spring),
+      box-shadow var(--duration-normal) var(--ease-out),
+      background var(--duration-normal) var(--ease-out);
   }
 
   .btn--primary:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-accent-lg);
+    box-shadow: var(--shadow-accent-lg), 0 0 40px rgba(255, 45, 85, 0.2);
+    background: var(--color-accent-warm);
   }
 
   .btn--primary:active {

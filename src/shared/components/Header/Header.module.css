@@ -15,9 +15,9 @@
 
 .nav.scrolled {
   border-bottom-color: var(--color-border);
-  background-color: rgba(8, 12, 16, 0.6);
-  backdrop-filter: blur(12px) saturate(1.4);
-  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
 }
 
 .inner {
@@ -130,7 +130,7 @@
 
 .menuItem[data-highlighted] {
   background: var(--color-accent-dim);
-  color: var(--color-text);
+  color: var(--color-accent-warm);
 }
 
 @media (max-width: 640px) {

@@ -1,25 +1,36 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 /* ===== Design Tokens ===== */
 :root {
   /* Colors */
-  --color-bg: #080c10;
-  --color-bg-alt: #0d1117;
-  --color-surface: #111820;
-  --color-surface-raised: #16202c;
-  --color-border: #1e2d3d;
-  --color-border-subtle: #162030;
+  --color-bg: #000000;
+  --color-bg-alt: #0a0a0a;
+  --color-surface: #121212;
+  --color-surface-raised: #1a1a1a;
+  --color-border: #2a1a1a;
+  --color-border-subtle: #1a1010;
   --color-text: #e6edf3;
-  --color-text-muted: #8b949e;
-  --color-text-subtle: #656d76;
-  --color-accent: #39d353;
-  --color-accent-warm: #f78166;
+  --color-text-muted: #a0a0a0;
+  --color-text-subtle: #707070;
+  --color-accent: #ff2d55;
+  --color-accent-warm: #ff4d6d;
   --color-accent-green: #39d353;
-  --color-accent-dim: rgba(57, 211, 83, 0.1);
-  --color-accent-glow: rgba(57, 211, 83, 0.06);
+  --color-accent-dim: rgba(255, 45, 85, 0.12);
+  --color-accent-glow: rgba(255, 45, 85, 0.06);
+  --color-glitch-cyan: #00fff9;
+  --color-glitch-magenta: #ff006e;
+  --color-hack-yellow: #ffbe0b;
+
+  /* Electric blue — secondary accent */
+  --color-blue: #2d7fff;
+  --color-blue-bright: #3d8fff;
+  --color-blue-dark: #1a5fbf;
+  --color-blue-dim: rgba(45, 127, 255, 0.1);
+  --color-blue-glow: rgba(45, 127, 255, 0.08);
 
   /* Typography */
   --font-sans: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  --font-display: "Orbitron", "Space Grotesk", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 
   --text-xs: clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
@@ -63,11 +74,16 @@
   --duration-slow: 400ms;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
-  --shadow-accent: 0 0 24px rgba(57, 211, 83, 0.12);
-  --shadow-accent-lg: 0 8px 32px rgba(57, 211, 83, 0.15);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.7);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.8);
+  --shadow-accent: 0 0 24px rgba(255, 45, 85, 0.2);
+  --shadow-accent-lg: 0 8px 32px rgba(255, 45, 85, 0.3);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 255, 249, 0.25);
+
+  /* Glitch timing */
+  --ease-glitch: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --duration-glitch: 60ms;
 
   /* Radius */
   --radius-sm: 6px;
@@ -156,12 +172,19 @@ button {
   opacity: 0.5;
 }
 
+h1,
+h2,
+h3,
+.section-title {
+  font-family: var(--font-display);
+}
+
 .section-title {
   font-size: var(--text-3xl);
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: var(--space-10);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   line-height: 1.15;
 }
 
@@ -176,6 +199,144 @@ button {
 ::selection {
   background: var(--color-accent-dim);
   color: var(--color-text);
+}
+
+/* ===== RGB split glitch — hover only, opt-in via data-text attribute ===== */
+@keyframes glitch-red {
+  0%,
+  100% {
+    clip-path: inset(0 0 100% 0);
+    transform: translate(-2px, 0);
+  }
+  20% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(-2px, 0);
+  }
+  40% {
+    clip-path: inset(60% 0 20% 0);
+    transform: translate(-2px, 0);
+  }
+  60% {
+    clip-path: inset(10% 0 80% 0);
+    transform: translate(-2px, 0);
+  }
+  80% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(-2px, 0);
+  }
+}
+
+@keyframes glitch-blue {
+  0%,
+  100% {
+    clip-path: inset(0 0 100% 0);
+    transform: translate(2px, 0);
+  }
+  20% {
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(2px, 0);
+  }
+  40% {
+    clip-path: inset(10% 0 75% 0);
+    transform: translate(2px, 0);
+  }
+  60% {
+    clip-path: inset(75% 0 15% 0);
+    transform: translate(2px, 0);
+  }
+  80% {
+    clip-path: inset(30% 0 50% 0);
+    transform: translate(2px, 0);
+  }
+}
+
+[data-text] {
+  position: relative;
+}
+
+.blog-title > span[data-text],
+.post-title > span[data-text],
+.section-title > span[data-text] {
+  display: inline-block;
+}
+
+[data-text]::before,
+[data-text]::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  clip-path: inset(0 0 100% 0);
+  opacity: 0;
+  transition: none;
+}
+
+[data-text]::before {
+  color: var(--color-accent);
+  -webkit-text-fill-color: var(--color-accent);
+  mix-blend-mode: screen;
+}
+
+[data-text]::after {
+  color: var(--color-blue-bright);
+  -webkit-text-fill-color: var(--color-blue-bright);
+  mix-blend-mode: screen;
+}
+
+[data-text]:hover::before,
+.hero-name:hover [data-text]::before,
+.about-heading:hover [data-text]::before,
+.section-title:hover [data-text]::before,
+.blog-title:hover [data-text]::before,
+.post-title:hover [data-text]::before {
+  opacity: 1;
+  animation: glitch-red 200ms steps(1) forwards;
+}
+
+[data-text]:hover::after,
+.hero-name:hover [data-text]::after,
+.about-heading:hover [data-text]::after,
+.section-title:hover [data-text]::after,
+.blog-title:hover [data-text]::after,
+.post-title:hover [data-text]::after {
+  opacity: 1;
+  animation: glitch-blue 200ms steps(1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-text]:hover::before,
+  [data-text]:hover::after,
+  .hero-name:hover [data-text]::before,
+  .hero-name:hover [data-text]::after,
+  .about-heading:hover [data-text]::before,
+  .about-heading:hover [data-text]::after,
+  .section-title:hover [data-text]::before,
+  .section-title:hover [data-text]::after,
+  .blog-title:hover [data-text]::before,
+  .blog-title:hover [data-text]::after,
+  .post-title:hover [data-text]::before,
+  .post-title:hover [data-text]::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ===== Scanlines utility — overlay only on opted-in elements ===== */
+.scanlines {
+  position: relative;
+}
+
+.scanlines::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 1px,
+    rgba(0, 0, 0, 0.4) 1px 2px
+  );
+  z-index: 3;
 }
 
 /* ===== Scroll reveal ===== */

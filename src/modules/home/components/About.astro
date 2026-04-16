@@ -19,13 +19,15 @@ const skills = [
 
 <section id="about" class="section">
   <div class="container">
-    <p class="section-label reveal">about</p>
+    <p class="section-label scanlines reveal">about</p>
 
     <div class="about-grid">
       <div class="about-text">
-        <h2 class="about-heading reveal">
-          Crafting software that<br />
-          <em>actually ships.</em>
+        <h2 class="about-heading scanlines reveal">
+          <span class="glitch-inner" data-text="Crafting software that actually ships.">
+            Crafting software that<br />
+            <em>actually ships.</em>
+          </span>
         </h2>
         <div class="about-paragraphs reveal">
           <p>
@@ -98,7 +100,7 @@ const skills = [
 
   .about-heading em {
     font-style: normal;
-    background: linear-gradient(135deg, var(--color-accent), #7ee787);
+    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-warm));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
