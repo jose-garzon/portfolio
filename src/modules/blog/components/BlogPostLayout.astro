@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import Header from '../../../shared/components/Header/Header';
 import Badge from '../../../shared/components/Badge.astro';
+import { fullName } from '../../../shared/data/personal';
 
 interface Props {
   title: string;
@@ -21,7 +22,7 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 });
 ---
 
-<Layout title={`${title} — José Garzón`} description={description}>
+<Layout title={`${title} — ${fullName}`} description={description}>
   <Header client:load />
   <main class="post-main">
     <div class="container">

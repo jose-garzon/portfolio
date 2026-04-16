@@ -1,6 +1,6 @@
 ---
 import Badge from '../../../shared/components/Badge.astro';
-import { experience } from '../data/experience';
+import { experience } from '../../../shared/data/experience';
 ---
 
 <section id="experience" class="section">
@@ -9,7 +9,7 @@ import { experience } from '../data/experience';
     <h2 class="section-title scanlines reveal"><span data-text="Work History">Work History</span></h2>
 
     <ol class="timeline">
-      {experience.map((job, index) => (
+      {experience.map((job) => (
         <li class="timeline-item reveal">
           <div class="timeline-indicator" aria-hidden="true">
             <div class="timeline-dot"></div>

@@ -1,0 +1,10 @@
+{
+  "eyebrow": "Available for new opportunities",
+  "tagline": "I build software at the intersection of AI and product. Focused on LLM tooling, developer experience, and shipping things that matter.",
+  "cta": { "label": "View my work", "href": "#projects" },
+  "stats": [
+    { "value": "3+", "label": "Years experience" },
+    { "value": "10+", "label": "Projects shipped" },
+    { "value": "AI", "label": "Primary focus" }
+  ]
+}

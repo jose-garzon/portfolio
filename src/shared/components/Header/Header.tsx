@@ -1,5 +1,6 @@
 import { Menu } from '@base-ui/react/menu';
 import { useEffect, useState } from 'react';
+import personal from '../../data/personal.json';
 import styles from './Header.module.css';
 
 const navLinks = [
@@ -21,7 +22,9 @@ export default function Header() {
     <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
       <div className={`container ${styles.inner}`}>
         <a href="/" className={styles.logo}>
-          jose<span className={styles.logoAccent}>_</span>garzon
+          {personal.name.first.toLowerCase()}
+          <span className={styles.logoAccent}>_</span>
+          {personal.name.last.toLowerCase()}
         </a>
 
         {/* Desktop links */}

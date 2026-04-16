@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../shared/components/Header/Header';
 import BlogCard from './components/BlogCard.astro';
+import { fullName } from '../../shared/data/personal';
 
 const allPosts = await getCollection('blog');
 const posts = allPosts
@@ -11,7 +12,7 @@ const posts = allPosts
 ---
 
 <Layout
-  title="Writing — José Garzón"
+  title={`Writing — ${fullName}`}
   description="Engineering notes on LLMs, TypeScript, Python, and building software."
 >
   <Header client:load />

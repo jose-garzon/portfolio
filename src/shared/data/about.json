@@ -1,0 +1,27 @@
+{
+  "heading": "Crafting software that actually ships.",
+  "paragraphs": [
+    "I'm a software engineer with 3+ years of experience building web applications and, increasingly, AI-powered products. I started with full-stack web development — React frontends, Node APIs, relational databases — and over the last couple of years have gone deep on the LLM tooling layer: embeddings, retrieval pipelines, evals, and the plumbing that makes AI features actually ship.",
+    "I'm drawn to roles where software craft and AI capability have to work together. Good abstractions still matter. Latency still matters. User experience still matters — maybe more so when the output is non-deterministic.",
+    "Outside of work I write about what I'm learning, contribute to open source, and try to read more than I tweet."
+  ],
+  "skills": [
+    "TypeScript",
+    "Python",
+    "React",
+    "Node.js",
+    "Next.js",
+    "FastAPI",
+    "PostgreSQL",
+    "LLMs",
+    "RAG",
+    "Prompt Engineering",
+    "Docker",
+    "AWS"
+  ],
+  "currently": [
+    { "text": "Building at", "highlight": "Acme AI" },
+    { "text": "Exploring agentic LLM workflows" },
+    { "text": "Open to senior IC roles" }
+  ]
+}

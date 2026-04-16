@@ -1,20 +1,6 @@
 ---
 import Badge from '../../../shared/components/Badge.astro';
-
-const skills = [
-  'TypeScript',
-  'Python',
-  'React',
-  'Node.js',
-  'Next.js',
-  'FastAPI',
-  'PostgreSQL',
-  'LLMs',
-  'RAG',
-  'Prompt Engineering',
-  'Docker',
-  'AWS',
-];
+import { about } from '../../../shared/data/about';
 ---
 
 <section id="about" class="section">
@@ -24,28 +10,15 @@ const skills = [
     <div class="about-grid">
       <div class="about-text">
         <h2 class="about-heading scanlines reveal">
-          <span class="glitch-inner" data-text="Crafting software that actually ships.">
+          <span class="glitch-inner" data-text={about.heading}>
             Crafting software that<br />
             <em>actually ships.</em>
           </span>
         </h2>
         <div class="about-paragraphs reveal">
-          <p>
-            I'm a software engineer with 3+ years of experience building web applications and,
-            increasingly, AI-powered products. I started with full-stack web development —
-            React frontends, Node APIs, relational databases — and over the last couple of years
-            have gone deep on the LLM tooling layer: embeddings, retrieval pipelines, evals,
-            and the plumbing that makes AI features actually ship.
-          </p>
-          <p>
-            I'm drawn to roles where software craft and AI capability have to work together.
-            Good abstractions still matter. Latency still matters. User experience still matters —
-            maybe more so when the output is non-deterministic.
-          </p>
-          <p>
-            Outside of work I write about what I'm learning, contribute to open source,
-            and try to read more than I tweet.
-          </p>
+          {about.paragraphs.map((p) => (
+            <p>{p}</p>
+          ))}
         </div>
       </div>
 
@@ -53,7 +26,7 @@ const skills = [
         <div class="skills-panel reveal">
           <p class="panel-label">Tools &amp; Technologies</p>
           <ul class="skills-list reveal-stagger">
-            {skills.map((skill) => (
+            {about.skills.map((skill) => (
               <li><Badge>{skill}</Badge></li>
             ))}
           </ul>
@@ -62,18 +35,12 @@ const skills = [
         <div class="current-panel reveal">
           <p class="panel-label">Currently</p>
           <ul class="current-list">
-            <li>
-              <span class="current-icon">→</span>
-              Building at <strong>Acme AI</strong>
-            </li>
-            <li>
-              <span class="current-icon">→</span>
-              Exploring agentic LLM workflows
-            </li>
-            <li>
-              <span class="current-icon">→</span>
-              Open to senior IC roles
-            </li>
+            {about.currently.map((item) => (
+              <li>
+                <span class="current-icon">→</span>
+                {item.text}{item.highlight && <> <strong>{item.highlight}</strong></>}
+              </li>
+            ))}
           </ul>
         </div>
       </div>
