@@ -1,27 +1,25 @@
 {
-  "heading": "Crafting software that actually ships.",
+  "heading": "Production frontend, chasing harder problems.",
   "paragraphs": [
-    "I'm a software engineer with 3+ years of experience building web applications and, increasingly, AI-powered products. I started with full-stack web development — React frontends, Node APIs, relational databases — and over the last couple of years have gone deep on the LLM tooling layer: embeddings, retrieval pipelines, evals, and the plumbing that makes AI features actually ship.",
-    "I'm drawn to roles where software craft and AI capability have to work together. Good abstractions still matter. Latency still matters. User experience still matters — maybe more so when the output is non-deterministic.",
-    "Outside of work I write about what I'm learning, contribute to open source, and try to read more than I tweet."
+    "Five years shipping production frontends for companies like Disney and Aeroméxico. I got good at it — microfrontends, design systems, team leadership, measurable performance wins. Now I'm going after the harder stuff: Python, math, real computer science, systems-level architecture. The kind of work I came into this industry wanting to solve. The long-term goal is to build software where code meets geometry — generative design tools, simulation, the stuff I've admired from the outside.",
+    "I'm drawn to teams where craft, performance, and hard problems have to coexist. Good abstractions still matter. Latency still matters. So does shipping — especially when the problem space is messy.",
+    "Outside of work I'm building Medixio, writing about the jump from architecture to software, and relearning math from the ground up."
   ],
   "skills": [
     "TypeScript",
+    "Node",
     "Python",
     "React",
-    "Node.js",
-    "Next.js",
-    "FastAPI",
-    "PostgreSQL",
-    "LLMs",
-    "RAG",
-    "Prompt Engineering",
-    "Docker",
-    "AWS"
+    "Frontend Architecture",
+    "Systems Design",
+    "Testing",
+    "AI Workflows",
+    "NumPy",
+    "Pandas"
   ],
   "currently": [
-    { "text": "Building at", "highlight": "Acme AI" },
-    { "text": "Exploring agentic LLM workflows" },
-    { "text": "Open to senior IC roles" }
+    { "text": "Software Engineer at", "highlight": "Globant (Aeroméxico)" },
+    { "text": "Building Medixio — AI agent for chronic care" },
+    { "text": "Learning Python, math, systems" }
   ]
 }

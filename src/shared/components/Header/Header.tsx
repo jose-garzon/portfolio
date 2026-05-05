@@ -4,8 +4,8 @@ import personal from '../../data/personal.json';
 import styles from './Header.module.css';
 
 const navLinks = [
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
+  { label: 'Experience', href: '/#experience' },
+  { label: 'Projects', href: '/#projects' },
   { label: 'Blog', href: '/blog' },
 ];
 

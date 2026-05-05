@@ -1,26 +1,58 @@
 [
   {
-    "company": "Acme AI",
+    "company": "Globant — Aeroméxico",
     "role": "Software Engineer",
-    "period": "2023 – Present",
-    "description": "Building LLM-powered features and internal tooling for a Series A AI startup.",
-    "stack": ["TypeScript", "React", "Node.js", "Python", "OpenAI API"],
+    "period": "May 2025 – Present",
+    "description": "Rebuilding the Aeroméxico web platform flow by flow, replacing a legacy monolith with a microfrontend architecture built to let multiple teams ship independently.",
+    "stack": [
+      "TypeScript",
+      "Node",
+      "Express",
+      "Backend for frontend",
+      "React",
+      "Module Federation",
+      "Design Systems"
+    ],
     "bullets": [
-      "Led development of a RAG pipeline that reduced support ticket resolution time by 40%.",
-      "Designed and shipped a prompt management dashboard used by the entire product team.",
-      "Improved CI pipeline speed by 35% by parallelizing test suites."
+      "Designed the microfrontend architecture, Module Federation + single page applications, so teams could deploy their slice without waiting on a central release.",
+      "Built a Backend for Frontend to give the frontend a clean entry point into Aeroméxico's scattered internal microservices.",
+      "Created and maintained the core npm library: Design System, shared state, and cross-MFE logic every team depended on.",
+      "Introduced AI workflows to automate conventions and review patterns, cutting the overhead of keeping a multi-team codebase aligned."
     ]
   },
   {
-    "company": "Freelance / Consulting",
-    "role": "Full-Stack Developer",
-    "period": "2021 – 2023",
-    "description": "Delivered web applications and APIs for clients across fintech and e-commerce.",
-    "stack": ["Next.js", "TypeScript", "PostgreSQL", "Stripe", "AWS"],
+    "company": "Globant — Disney",
+    "role": "Senior Frontend Developer",
+    "period": "Dec 2022 – May 2025",
+    "description": "Built an internal tool used by Disney financial planners to schedule releases across FX, Nat Geo, and other Disney-owned networks from an economic perspective.",
+    "stack": ["TypeScript", "React", "GraphQL", "Unit testing", "Design Systems"],
     "bullets": [
-      "Built an order management system handling 10k+ daily transactions.",
-      "Integrated Stripe billing with subscription tiers and usage-based pricing.",
-      "Authored technical specs and led client onboarding sessions."
+      "Cut planner research and coordination time in half by consolidating data across Disney companies.",
+      "Maintained the shared design system and component library used across multiple projects.",
+      "On a 3-person team, drove architecture decisions, negotiated API contracts with backend, and owned workload distribution."
+    ]
+  },
+  {
+    "company": "Globant — Growie",
+    "role": "Frontend Developer",
+    "period": "Jul 2021 – Dec 2022",
+    "description": "Built the admin platform for Growie, a blockchain-based real estate investment product, and set up the CMS powering its marketing content.",
+    "stack": ["TypeScript", "React", "Material UI", "Strapi", "Unit testing", "Cypress"],
+    "bullets": [
+      "Shipped the admin site that powered Growie's real estate investment operations.",
+      "Set up a Strapi CMS so the marketing team could update content without opening a ticket."
+    ]
+  },
+  {
+    "company": "Serempre",
+    "role": "Frontend Developer",
+    "period": "Feb 2021 – Jul 2021",
+    "description": "Built the frontend for Menu Digital, a QR-code digital menu and online ordering platform for restaurants.",
+    "stack": ["Javascript", "React", "Redux", "Webpack", "Styled Components", "Tailwind"],
+    "bullets": [
+      "Implemented the promotions and ordering flows end-to-end in React.",
+      "Delivered a 70% frontend performance improvement measured in Lighthouse (FCP, LCP, TBT).",
+      "Shipped v1 with a small team under a tight timeline."
     ]
   }
 ]
