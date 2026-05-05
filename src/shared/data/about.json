@@ -1,21 +1,22 @@
 {
-  "heading": "Production frontend, chasing harder problems.",
+  "heading": "Backend engineer in the making. Now going deeper.",
   "paragraphs": [
-    "Five years shipping production frontends for companies like Disney and Aeroméxico. I got good at it — microfrontends, design systems, team leadership, measurable performance wins. Now I'm going after the harder stuff: Python, math, real computer science, systems-level architecture. The kind of work I came into this industry wanting to solve. The long-term goal is to build software where code meets geometry — generative design tools, simulation, the stuff I've admired from the outside.",
-    "I'm drawn to teams where craft, performance, and hard problems have to coexist. Good abstractions still matter. Latency still matters. So does shipping — especially when the problem space is messy.",
-    "Outside of work I'm building Medixio, writing about the jump from architecture to software, and relearning math from the ground up."
+    "Five years building production systems for Disney and Aeroméxico — not just UI, but the architecture underneath it. Microfrontend platforms, Backend for Frontend services, microservices integration, API design. I know how the frontend consumes backend systems, which means I know exactly what makes a backend painful to work with. Now I'm moving to the other side: Python, FastAPI, PostgreSQL, Docker, systems-level architecture. The kind of hard problems that don't have a clear answers — the kind of work I came into this industry wanting to solve.",
+    "I'm drawn to teams where craft and hard problems coexist. Good abstractions, low latency, contracts that hold — the things that make or break a system quietly. I want to build backend that's fast, reliable, and doesn't become someone else's problem six months later.",
+    "Outside of work I'm building Medixio, an AI agent for chronic care, and relearning math from the ground up."
   ],
   "skills": [
     "TypeScript",
-    "Node",
     "Python",
-    "React",
-    "Frontend Architecture",
+    "Node",
+    "FastAPI",
+    "Express",
+    "PostgreSQL",
+    "Docker",
+    "GraphQL",
     "Systems Design",
     "Testing",
-    "AI Workflows",
-    "NumPy",
-    "Pandas"
+    "AI Workflows"
   ],
   "currently": [
     { "text": "Software Engineer at", "highlight": "Globant (Aeroméxico)" },

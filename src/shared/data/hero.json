@@ -1,10 +1,10 @@
 {
-  "eyebrow": "Available for new opportunities",
-  "tagline": "Five years shipping production frontends at Disney and Aeroméxico. Now chasing the harder problems — systems, math, and where code meets geometry.",
+  "eyebrow": "Open to new opportunities",
+  "tagline": "Five years of production systems at Disney and Aeroméxico. Now going deeper — backend, systems design, the layer where the hard problems actually live.",
   "cta": { "label": "View my work", "href": "#projects" },
   "stats": [
     { "value": "5+", "label": "Years experience" },
-    { "value": "10+", "label": "Projects shipped" },
-    { "value": "Systems", "label": "Next focus" }
+    { "value": "6+", "label": "Projects shipped" },
+    { "value": "Systems design", "label": "Next focus" }
   ]
 }

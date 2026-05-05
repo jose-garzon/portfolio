@@ -11,8 +11,8 @@ import { about } from '../../../shared/data/about';
       <div class="about-text">
         <h2 class="about-heading scanlines reveal">
           <span class="glitch-inner" data-text={about.heading}>
-            Crafting software that<br />
-            <em>actually ships.</em>
+            {about.heading.split('. ')[0]}.<br />
+            <em>{about.heading.split('. ')[1]}</em>
           </span>
         </h2>
         <div class="about-paragraphs reveal">

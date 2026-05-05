@@ -11,6 +11,7 @@
       "Backend for frontend",
       "React",
       "Module Federation",
+      "Microfrontends",
       "Design Systems"
     ],
     "bullets": [
@@ -25,11 +26,11 @@
     "role": "Senior Frontend Developer",
     "period": "Dec 2022 – May 2025",
     "description": "Built an internal tool used by Disney financial planners to schedule releases across FX, Nat Geo, and other Disney-owned networks from an economic perspective.",
-    "stack": ["TypeScript", "React", "GraphQL", "Unit testing", "Design Systems"],
+    "stack": ["TypeScript", "React", "GraphQL", "Unit testing", "Microfrontends", "Design Systems"],
     "bullets": [
       "Cut planner research and coordination time in half by consolidating data across Disney companies.",
       "Maintained the shared design system and component library used across multiple projects.",
-      "On a 3-person team, drove architecture decisions, negotiated API contracts with backend, and owned workload distribution."
+      "Drove architecture decisions, negotiated API contracts with backend, and owned workload distribution."
     ]
   },
   {
