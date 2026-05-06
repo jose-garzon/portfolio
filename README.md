@@ -1,46 +1,49 @@
 # jose-garzon.dev
 
-Personal portfolio site for **Jose Garzon** — Software Engineer focused on AI & Product.
+Personal portfolio and learning journal. Built to document the transition from five years of production frontend work at Disney and Aeroméxico toward backend engineering and systems design.
 
-Built with [Astro](https://astro.build), React, and a hacker-inspired green terminal aesthetic.
+## What this is
 
-## Tech Stack
+- **Portfolio** — work history, projects, and the stack I'm moving into (Python, FastAPI, PostgreSQL, Docker)
+- **Blog** — where I write down what I'm learning: backend concepts, systems design, math, things I get wrong and then fix
 
-- **Astro 6** — static site generation with file-based routing
+The blog is the honest part. Not polished tutorials — a record of someone learning in public, written as I go.
+
+## Stack
+
+- [Astro 6](https://astro.build) — static site, file-based routing
 - **React 19** — interactive components
+- **TypeScript**
+- **CSS Modules** — scoped styles, no utility framework
 - **MDX** — blog posts
 - **Biome** — linting & formatting
 - **Vitest** — testing
-- **Husky + lint-staged** — pre-commit checks
 
-## Getting Started
-
-> Requires Node >= 22.12.0
+## Dev
 
 ```bash
 bun install
 bun dev        # http://localhost:4321
+bun build      # output: dist/
+bun preview    # preview production build
+bun test       # run tests
+bun check      # lint + format
 ```
 
-## Commands
+## Structure
 
-| Command        | Action                          |
-| :------------- | :------------------------------ |
-| `bun dev`      | Start dev server                |
-| `bun build`    | Production build to `./dist/`   |
-| `bun preview`  | Preview production build        |
-| `bun test`     | Run tests                       |
-| `bun check`    | Lint + format with Biome        |
-
-## Project Structure
-
-```
+```bash
 src/
-  pages/          # File-based routing
-  modules/        # Feature modules (home, blog, projects)
-  shared/         # Reusable components, data, and utilities
-  layouts/        # Page shells
+  pages/          # file-based routes
+  layouts/        # shared page shells
+  modules/        # page-specific sections (home, blog)
+  shared/
+    components/   # reusable components
+    data/         # content as JSON (hero, about, experience, projects)
+    hooks/        # shared React hooks
 ```
+
+Content lives in `src/shared/data/` as JSON — no CMS, no database.
 
 ## License
 
