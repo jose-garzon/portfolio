@@ -193,7 +193,7 @@ const latestPost = allPosts
     border: 1px solid rgba(57, 211, 83, 0.2);
     border-radius: var(--radius-full);
     background: rgba(57, 211, 83, 0.05);
-    animation: hero-in var(--ease-out) 0.1s both;
+    animation: hero-in 0.7s var(--ease-out) 0.1s both;
   }
 
   .eyebrow-dot {
@@ -228,7 +228,7 @@ const latestPost = allPosts
 
   .name-line {
     display: block;
-    animation: hero-in var(--ease-out) both;
+    animation: hero-in 0.7s var(--ease-out) both;
   }
 
   .name-line:first-child {
@@ -249,7 +249,7 @@ const latestPost = allPosts
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation:
-      hero-in var(--ease-out) 0.22s both,
+      hero-in 0.7s var(--ease-out) 0.22s both,
       shimmer 5s linear 1s infinite;
   }
 
@@ -268,7 +268,7 @@ const latestPost = allPosts
     color: var(--color-text-muted);
     letter-spacing: 0.01em;
     margin-bottom: var(--space-6);
-    animation: hero-in var(--ease-out) 0.3s both;
+    animation: hero-in 0.7s var(--ease-out) 0.3s both;
   }
 
   .hero-tagline {
@@ -277,7 +277,7 @@ const latestPost = allPosts
     max-width: 52ch;
     line-height: 1.7;
     margin-bottom: var(--space-10);
-    animation: hero-in var(--ease-out) 0.38s both;
+    animation: hero-in 0.7s var(--ease-out) 0.38s both;
   }
 
   .hero-actions {
@@ -286,7 +286,7 @@ const latestPost = allPosts
     gap: var(--space-5);
     flex-wrap: wrap;
     margin-bottom: var(--space-16);
-    animation: hero-in var(--ease-out) 0.46s both;
+    animation: hero-in 0.7s var(--ease-out) 0.46s both;
   }
 
   .hero-links {
@@ -322,7 +322,7 @@ const latestPost = allPosts
     display: flex;
     align-items: center;
     gap: var(--space-6);
-    animation: hero-in var(--ease-out) 0.54s both;
+    animation: hero-in 0.7s var(--ease-out) 0.54s both;
   }
 
   .stat {
@@ -357,7 +357,7 @@ const latestPost = allPosts
   @keyframes hero-in {
     from {
       opacity: 0;
-      transform: translateY(16px);
+      transform: translateY(-20px);
     }
     to {
       opacity: 1;
@@ -389,7 +389,7 @@ const latestPost = allPosts
       4px 0 12px var(--color-blue-dim);
     text-decoration: none;
     max-width: 100%;
-    animation: hero-in var(--ease-out) 0.62s both;
+    animation: hero-in 0.7s var(--ease-out) 0.62s both;
     transition:
       border-color var(--duration-normal) var(--ease-out),
       background var(--duration-normal) var(--ease-out),
