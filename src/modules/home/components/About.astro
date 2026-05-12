@@ -1,6 +1,8 @@
 ---
-import Badge from '../../../shared/components/Badge.astro';
-import { about } from '../../../shared/data/about';
+import Badge from "../../../shared/components/Badge.astro";
+import { about } from "../../../shared/data/about";
+
+const [first, second] = about.heading.split(".");
 ---
 
 <section id="about" class="section">
@@ -10,15 +12,13 @@ import { about } from '../../../shared/data/about';
     <div class="about-grid">
       <div class="about-text">
         <h2 class="about-heading scanlines reveal">
-          <span class="glitch-inner" data-text={about.heading}>
-            {about.heading.split('. ')[0]}.<br />
-            <em>{about.heading.split('. ')[1]}</em>
+          <span class="glitch-inner" data-text={first}>
+            {first}.<br />
+            <em class="glitch-inner" data-text={second}>{second}</em>
           </span>
         </h2>
         <div class="about-paragraphs reveal">
-          {about.paragraphs.map((p) => (
-            <p>{p}</p>
-          ))}
+          {about.paragraphs.map((p) => <p>{p}</p>)}
         </div>
       </div>
 
@@ -26,21 +26,30 @@ import { about } from '../../../shared/data/about';
         <div class="skills-panel reveal">
           <p class="panel-label">Tools &amp; Technologies</p>
           <ul class="skills-list reveal-stagger">
-            {about.skills.map((skill) => (
-              <li><Badge>{skill}</Badge></li>
-            ))}
+            {
+              about.skills.map((skill) => (
+                <li>
+                  <Badge>{skill}</Badge>
+                </li>
+              ))
+            }
           </ul>
         </div>
 
         <div class="current-panel reveal">
           <p class="panel-label">Currently</p>
           <ul class="current-list">
-            {about.currently.map((item) => (
-              <li>
-                <span class="current-icon">→</span>
-                {item.text}{item.highlight && <> <strong>{item.highlight}</strong></>}
-              </li>
-            ))}
+            {
+              about.currently.map((item) => (
+                <li>
+                  <span class="current-icon">→</span>
+                  <span>
+                    {item.text}
+                    {item.highlight && <strong> {item.highlight}</strong>}
+                  </span>
+                </li>
+              ))
+            }
           </ul>
         </div>
       </div>
@@ -67,7 +76,11 @@ import { about } from '../../../shared/data/about';
 
   .about-heading em {
     font-style: normal;
-    background: linear-gradient(135deg, var(--color-accent), var(--color-accent-warm));
+    background: linear-gradient(
+      135deg,
+      var(--color-accent),
+      var(--color-accent-warm)
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

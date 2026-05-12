@@ -16,32 +16,38 @@ import { experience } from '../../../shared/data/experience';
             <div class="timeline-line"></div>
           </div>
           <div class="timeline-content">
-            <div class="job-card">
-              <div class="job-header">
-                <div class="job-title-group">
-                  <h3 class="job-role" data-text={job.role}>{job.role}</h3>
-                  <p class="job-company">{job.company}</p>
+            <article class="job-card">
+              <div class="job-body">
+                <div class="job-main">
+                  <header class="job-header">
+                    <div class="job-title-group">
+                      <h3 class="job-role">{job.role}</h3>
+                      <p class="job-company">{job.company}</p>
+                    </div>
+                    <span class="job-period">{job.period}</span>
+                  </header>
+
+                  <p class="job-description">{job.description}</p>
+
+                  <ul class="job-bullets">
+                    {job.bullets.map((bullet) => (
+                      <li>
+                        <span class="bullet-marker" aria-hidden="true">▸</span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <span class="job-period">{job.period}</span>
+
+                <aside class="job-stack" aria-label="Technologies used">
+                  <ul class="stack-chips">
+                    {job.stack.map((tech) => (
+                      <li><Badge variant="accent">{tech}</Badge></li>
+                    ))}
+                  </ul>
+                </aside>
               </div>
-
-              <p class="job-description">{job.description}</p>
-
-              <ul class="job-bullets">
-                {job.bullets.map((bullet) => (
-                  <li>
-                    <span class="bullet-marker" aria-hidden="true">▸</span>
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-
-              <ul class="stack-chips">
-                {job.stack.map((tech) => (
-                  <li><Badge variant="accent">{tech}</Badge></li>
-                ))}
-              </ul>
-            </div>
+            </article>
           </div>
         </li>
       ))}
@@ -116,7 +122,7 @@ import { experience } from '../../../shared/data/experience';
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: var(--space-6) var(--space-8);
+    overflow: hidden;
     transition:
       border-color var(--duration-normal) var(--ease-out),
       box-shadow var(--duration-normal) var(--ease-out),
@@ -129,6 +135,17 @@ import { experience } from '../../../shared/data/experience';
     background: var(--color-surface-raised);
   }
 
+  .job-body {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    min-height: 0;
+  }
+
+  .job-main {
+    padding: var(--space-6) var(--space-8);
+    min-width: 0;
+  }
+
   .job-header {
     display: flex;
     justify-content: space-between;
@@ -139,11 +156,12 @@ import { experience } from '../../../shared/data/experience';
   }
 
   .job-role {
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
     font-weight: 600;
     color: var(--color-text);
     margin-bottom: var(--space-1);
     letter-spacing: -0.01em;
+    font-family: var(--font-sans);
   }
 
   .job-company {
@@ -163,6 +181,7 @@ import { experience } from '../../../shared/data/experience';
     border-radius: var(--radius-full);
     background: var(--color-surface-raised);
     flex-shrink: 0;
+    align-self: flex-start;
   }
 
   .job-description {
@@ -170,6 +189,7 @@ import { experience } from '../../../shared/data/experience';
     font-size: var(--text-sm);
     margin-bottom: var(--space-5);
     line-height: 1.7;
+    max-width: 60ch;
   }
 
   .job-bullets {
@@ -177,7 +197,6 @@ import { experience } from '../../../shared/data/experience';
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
-    margin-bottom: var(--space-6);
   }
 
   .job-bullets li {
@@ -185,7 +204,7 @@ import { experience } from '../../../shared/data/experience';
     gap: var(--space-3);
     font-size: var(--text-sm);
     color: var(--color-text-muted);
-    line-height: 1.65;
+    line-height: 1.6;
     align-items: baseline;
     transition: color var(--duration-fast) var(--ease-out);
   }
@@ -198,7 +217,19 @@ import { experience } from '../../../shared/data/experience';
     color: var(--color-accent);
     font-size: 0.6em;
     flex-shrink: 0;
-    translate: 0 0.1em;
+    translate: 0 0.15em;
+  }
+
+  .job-stack {
+    border-inline-start: 1px solid var(--color-border);
+    padding: var(--space-6);
+    display: flex;
+    align-items: flex-start;
+    transition: border-color var(--duration-normal) var(--ease-out);
+  }
+
+  .timeline-item:hover .job-stack {
+    border-color: var(--color-accent-dim);
   }
 
   .stack-chips {
@@ -206,6 +237,23 @@ import { experience } from '../../../shared/data/experience';
     flex-wrap: wrap;
     gap: var(--space-2);
     list-style: none;
+    align-content: flex-start;
+  }
+
+  @media (max-width: 768px) {
+    .job-body {
+      grid-template-columns: 1fr;
+    }
+
+    .job-stack {
+      border-inline-start: none;
+      border-block-start: 1px solid var(--color-border);
+      padding: var(--space-5) var(--space-6);
+    }
+
+    .timeline-item:hover .job-stack {
+      border-color: var(--color-accent-dim);
+    }
   }
 
   @media (max-width: 640px) {
@@ -214,8 +262,26 @@ import { experience } from '../../../shared/data/experience';
       gap: var(--space-4);
     }
 
-    .job-card {
-      padding: var(--space-5) var(--space-5);
+    .job-main {
+      padding: var(--space-5);
+    }
+
+    .job-stack {
+      padding: var(--space-4) var(--space-5);
+    }
+
+    .job-description {
+      max-width: none;
     }
   }
 </style>
+
+<script>
+  if (window.matchMedia('(max-width: 768px)').matches) {
+    document.querySelectorAll<HTMLElement>('.job-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        card.closest('.timeline-item')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+  }
+</script>

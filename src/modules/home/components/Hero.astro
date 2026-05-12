@@ -146,9 +146,9 @@ const latestPost = allPosts
 <style>
   .hero {
     position: relative;
-    min-height: 100svh;
+    min-height: 100dvh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     padding-top: var(--nav-height);
     overflow: hidden;
   }
@@ -173,10 +173,14 @@ const latestPost = allPosts
   .container {
     position: relative;
     z-index: 1;
+    flex: 1;
+    display: flex;
+    align-items: center;
   }
 
   .hero-inner {
-    padding-block: var(--space-16);
+    width: 100%;
+    padding-block: var(--space-10);
     max-width: 720px;
   }
 
@@ -276,7 +280,7 @@ const latestPost = allPosts
     color: var(--color-text-muted);
     max-width: 52ch;
     line-height: 1.7;
-    margin-bottom: var(--space-10);
+    margin-bottom: clamp(var(--space-6), 4vw, var(--space-10));
     animation: hero-in 0.7s var(--ease-out) 0.38s both;
   }
 
@@ -285,7 +289,7 @@ const latestPost = allPosts
     align-items: center;
     gap: var(--space-5);
     flex-wrap: wrap;
-    margin-bottom: var(--space-16);
+    margin-bottom: clamp(var(--space-8), 5vw, var(--space-16));
     animation: hero-in 0.7s var(--ease-out) 0.46s both;
   }
 
@@ -365,16 +369,6 @@ const latestPost = allPosts
     }
   }
 
-  @media (max-width: 640px) {
-    .hero-name {
-      font-size: clamp(3rem, 14vw, 4rem);
-    }
-
-    .hero-stats {
-      gap: var(--space-4);
-    }
-  }
-
   .latest-post {
     position: relative;
     display: inline-flex;
@@ -435,6 +429,24 @@ const latestPost = allPosts
 
   .latest-post:hover .latest-post-arrow {
     transform: translateX(3px);
+  }
+
+  @media (max-width: 640px) {
+    .hero-inner {
+      padding-block: var(--space-6);
+    }
+
+    .hero-name {
+      font-size: clamp(3rem, 14vw, 4rem);
+    }
+
+    .hero-stats {
+      gap: var(--space-4);
+    }
+
+    .latest-post {
+      margin-top: var(--space-6);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
