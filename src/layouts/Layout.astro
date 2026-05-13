@@ -1,6 +1,9 @@
 ---
 import "../styles/global.css";
 
+import Analytics from '@vercel/analytics/astro'
+import SpeedInsights from "@vercel/speed-insights/astro"
+
 interface Props {
   title: string;
   description?: string;
@@ -26,6 +29,8 @@ const { title, description = "Software engineer focused on AI products" } =
       href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <Analytics />
+    <SpeedInsights />
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true"></div>
