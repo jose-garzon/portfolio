@@ -1,0 +1,320 @@
+---
+interface Props {
+  size?: string;
+}
+
+const { size = 'clamp(220px, 32vw, 360px)' } = Astro.props;
+
+// Custom angular JG monogram.
+// viewBox 0 0 220 240.
+//
+// J letterform (x ~30-100):
+//   top cap:  M50,30 L100,30
+//   descender + hook: M80,30 L80,195 L35,195 L35,160
+//
+// G letterform (x ~115-200):
+//   path: M195,90 L195,30 L120,30 L120,200 L195,200 L195,135 L155,135
+//   (outer shape + tongue + opening between y=90 and y=135 on right side)
+const jCap = 'M50 30 L100 30';
+const jStem = 'M80 30 L80 195 L35 195 L35 160';
+const gPath = 'M195 90 L195 30 L120 30 L120 200 L195 200 L195 135 L155 135';
+const ticks = ['M40 218 L60 218', 'M155 218 L195 218'];
+---
+
+<div class="monogram" style={`--mono-size: ${size};`}>
+  <svg
+    class="mono-svg mono-svg--cyan"
+    viewBox="0 0 220 240"
+    fill="none"
+    aria-hidden="true"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <path
+      d={jCap}
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    <path
+      d={jStem}
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    <path
+      d={gPath}
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    {ticks.map((d) => (
+      <path
+        d={d}
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="square"
+      />
+    ))}
+  </svg>
+
+  <svg
+    class="mono-svg mono-svg--magenta"
+    viewBox="0 0 220 240"
+    fill="none"
+    aria-hidden="true"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <path
+      d={jCap}
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    <path
+      d={jStem}
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    <path
+      d={gPath}
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    {ticks.map((d) => (
+      <path
+        d={d}
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="square"
+      />
+    ))}
+  </svg>
+
+  <svg
+    class="mono-svg mono-svg--main"
+    viewBox="0 0 220 240"
+    fill="none"
+    role="img"
+    aria-label="Jose Garzón monogram, J G"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <path
+      d={jCap}
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    <path
+      d={jStem}
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    <path
+      d={gPath}
+      stroke="currentColor"
+      stroke-width="5"
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+    {ticks.map((d) => (
+      <path
+        d={d}
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="square"
+      />
+    ))}
+  </svg>
+
+  <span class="mono-corner mono-corner--tl" aria-hidden="true">
+    <span class="mono-corner-h"></span>
+    <span class="mono-corner-v"></span>
+  </span>
+  <span class="mono-corner mono-corner--tr" aria-hidden="true">
+    <span class="mono-corner-h"></span>
+    <span class="mono-corner-v"></span>
+  </span>
+  <span class="mono-corner mono-corner--bl" aria-hidden="true">
+    <span class="mono-corner-h"></span>
+    <span class="mono-corner-v"></span>
+  </span>
+  <span class="mono-corner mono-corner--br" aria-hidden="true">
+    <span class="mono-corner-h"></span>
+    <span class="mono-corner-v"></span>
+  </span>
+</div>
+
+<style>
+  .monogram {
+    position: relative;
+    width: var(--mono-size);
+    aspect-ratio: 220 / 240;
+    margin-inline: auto;
+  }
+
+  .mono-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .mono-svg--main {
+    color: var(--color-accent);
+    z-index: 3;
+  }
+
+  .mono-svg--cyan {
+    color: var(--color-blue-bright);
+    mix-blend-mode: screen;
+    z-index: 2;
+    transform: translate(-3px, 0);
+    opacity: 0.55;
+    animation: mono-glitch-cyan 6s steps(1) infinite;
+  }
+
+  .mono-svg--magenta {
+    color: var(--color-accent-warm);
+    mix-blend-mode: screen;
+    z-index: 1;
+    transform: translate(3px, 0);
+    opacity: 0.4;
+    animation: mono-glitch-magenta 6s steps(1) infinite;
+  }
+
+  @keyframes mono-glitch-cyan {
+    0%,
+    92%,
+    96%,
+    100% {
+      transform: translate(-3px, 0);
+      opacity: 0.55;
+    }
+    93% {
+      transform: translate(-7px, -1px);
+      opacity: 0.85;
+    }
+    94% {
+      transform: translate(-2px, 1px);
+      opacity: 0.4;
+    }
+    95% {
+      transform: translate(-5px, 0);
+      opacity: 0.7;
+    }
+  }
+
+  @keyframes mono-glitch-magenta {
+    0%,
+    88%,
+    92%,
+    100% {
+      transform: translate(3px, 0);
+      opacity: 0.4;
+    }
+    89% {
+      transform: translate(6px, 1px);
+      opacity: 0.75;
+    }
+    90% {
+      transform: translate(2px, -1px);
+      opacity: 0.3;
+    }
+    91% {
+      transform: translate(5px, 0);
+      opacity: 0.6;
+    }
+  }
+
+  .mono-corner {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    color: var(--color-accent);
+    z-index: 4;
+  }
+
+  .mono-corner-h,
+  .mono-corner-v {
+    position: absolute;
+    background: currentColor;
+  }
+
+  .mono-corner-h {
+    width: 100%;
+    height: 1.5px;
+  }
+
+  .mono-corner-v {
+    width: 1.5px;
+    height: 100%;
+  }
+
+  .mono-corner--tl {
+    left: -28px;
+  }
+  .mono-corner--tl .mono-corner-h {
+    top: 0;
+    left: 0;
+  }
+  .mono-corner--tl .mono-corner-v {
+    top: 0;
+    left: 0;
+  }
+
+  .mono-corner--tr {
+    right: -28px;
+  }
+  .mono-corner--tr .mono-corner-h {
+    top: 0;
+    right: 0;
+  }
+  .mono-corner--tr .mono-corner-v {
+    top: 0;
+    right: 0;
+  }
+
+  .mono-corner--bl {
+    bottom: 0;
+    left: -28px;
+  }
+  .mono-corner--bl .mono-corner-h {
+    bottom: 0;
+    left: 0;
+  }
+  .mono-corner--bl .mono-corner-v {
+    bottom: 0;
+    left: 0;
+  }
+
+  .mono-corner--br {
+    bottom: 0;
+    right: -28px;
+  }
+  .mono-corner--br .mono-corner-h {
+    bottom: 0;
+    right: 0;
+  }
+  .mono-corner--br .mono-corner-v {
+    bottom: 0;
+    right: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mono-svg--cyan,
+    .mono-svg--magenta {
+      animation: none;
+    }
+  }
+</style>

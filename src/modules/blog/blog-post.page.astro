@@ -1,5 +1,5 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import BlogPostLayout from './components/BlogPostLayout.astro';
 
 interface Props {
@@ -15,8 +15,39 @@ if (!entry) {
 
 const { Content } = await render(entry);
 
-// Rough word count for reading time
 const wordCount = (entry.body ?? '').trim().split(/\s+/).length;
+
+const allPosts = await getCollection('blog');
+const livePosts = allPosts
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const currentIndex = livePosts.findIndex((p) => p.id === entry.id);
+const nextPost = currentIndex > 0 ? livePosts[currentIndex - 1] : undefined;
+const prevPost =
+  currentIndex !== -1 && currentIndex < livePosts.length - 1
+    ? livePosts[currentIndex + 1]
+    : undefined;
+
+const tagSet = new Set(entry.data.tags);
+const scored = livePosts
+  .filter((p) => p.id !== entry.id)
+  .map((p) => ({
+    post: p,
+    overlap: p.data.tags.filter((t) => tagSet.has(t)).length,
+  }))
+  .filter((s) => s.overlap > 0)
+  .sort((a, b) => b.overlap - a.overlap || b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime())
+  .slice(0, 2)
+  .map((s) => s.post);
+
+const relatedPosts = scored.map((p) => ({
+  slug: p.id,
+  title: p.data.title,
+  description: p.data.description,
+  pubDate: p.data.pubDate,
+  tags: p.data.tags,
+}));
 ---
 
 <BlogPostLayout
@@ -25,6 +56,9 @@ const wordCount = (entry.body ?? '').trim().split(/\s+/).length;
   pubDate={entry.data.pubDate}
   tags={entry.data.tags}
   wordCount={wordCount}
+  prevPost={prevPost ? { slug: prevPost.id, title: prevPost.data.title } : undefined}
+  nextPost={nextPost ? { slug: nextPost.id, title: nextPost.data.title } : undefined}
+  relatedPosts={relatedPosts}
 >
   <Content />
 </BlogPostLayout>

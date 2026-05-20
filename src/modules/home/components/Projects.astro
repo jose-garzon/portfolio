@@ -1,0 +1,160 @@
+---
+import { projects } from '../../../shared/data/projects';
+import ProjectCard from '../../projects/components/ProjectCard.astro';
+
+const featured = projects.filter((p) => p.featured);
+const rest = projects.filter((p) => !p.featured);
+const inline = [...featured, ...rest].slice(0, 4);
+---
+
+<section id="projects" class="projects" aria-labelledby="projects-heading">
+  <div class="container">
+    <header class="projects-monument">
+      <p class="projects-kicker">
+        <span class="projects-kicker-prefix" aria-hidden="true">{`//`}</span>
+        02 projects
+      </p>
+      <h2 id="projects-heading" class="projects-monument-title scanlines">
+        <span data-text="Things I've built">Things I've built</span>
+      </h2>
+      <div class="projects-monument-meta">
+        <p class="projects-monument-subtext">
+          Each one shipped, not demoed. Case studies cover the problem, the approach,
+          what broke, what I would do differently.
+        </p>
+        <a href="/projects" class="projects-all">
+          <span>all projects</span>
+          <span class="projects-all-meta">/ {projects.length.toString().padStart(2, '0')}</span>
+          <span class="projects-all-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="projects-grid reveal-stagger">
+      {inline.map((project, i) => (
+        <ProjectCard project={project} index={i} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .projects {
+    position: relative;
+    padding-block: clamp(var(--space-12), 10vw, var(--space-section));
+    border-top: 1px solid var(--color-border);
+  }
+
+  .projects::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 1px;
+    background: var(--color-accent);
+    box-shadow: 0 0 8px var(--color-accent);
+  }
+
+  .projects-monument {
+    margin-bottom: var(--space-12);
+  }
+
+  .projects-kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: var(--space-5);
+  }
+
+  .projects-kicker-prefix {
+    color: var(--color-accent);
+  }
+
+  .projects-monument-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 0 0 var(--space-8) 0;
+  }
+
+  .projects-monument-meta {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: var(--space-8);
+  }
+
+  .projects-monument-subtext {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .projects-all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-accent-dim);
+    border-radius: var(--radius-full);
+    background: var(--color-accent-glow);
+    text-decoration: none;
+    transition:
+      background var(--duration-normal) var(--ease-out),
+      border-color var(--duration-normal) var(--ease-out);
+  }
+
+  .projects-all:hover {
+    background: var(--color-accent-dim);
+    border-color: var(--color-accent);
+  }
+
+  .projects-all-meta {
+    color: var(--color-text-subtle);
+  }
+
+  .projects-all-arrow {
+    transition: transform var(--duration-normal) var(--ease-spring);
+  }
+
+  .projects-all:hover .projects-all-arrow {
+    transform: translateX(3px);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-5);
+  }
+
+  @media (max-width: 768px) {
+    .projects-monument-meta {
+      grid-template-columns: 1fr;
+    }
+
+    .projects-all {
+      justify-self: start;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

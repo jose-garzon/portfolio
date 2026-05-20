@@ -1,0 +1,356 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 8);
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+const readingTime = (post: (typeof posts)[number]) => {
+  const wordCount = (post.body ?? '').trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(wordCount / 200));
+};
+---
+
+<section id="writing" class="writing" aria-labelledby="writing-heading">
+  <div class="container">
+    <header class="writing-monument">
+      <p class="writing-kicker">
+        <span class="writing-kicker-prefix" aria-hidden="true">//</span>
+        01 writing
+      </p>
+      <h2 id="writing-heading" class="writing-monument-title scanlines">
+        <span data-text="Notes on the work">Notes on the work</span>
+      </h2>
+      <div class="writing-monument-meta">
+        <p class="writing-monument-subtext">
+          The proof of work. Engineering notes on LLMs, backend, systems, and what I'm
+          figuring out. Honest records, not polished tutorials.
+        </p>
+        <ul class="writing-monument-stats" aria-label="At a glance">
+          <li>
+            <span class="stat-num">{posts.length}</span>
+            <span class="stat-label">posts</span>
+          </li>
+          <li>
+            <a href="/blog" class="stat-all">
+              all writing
+              <span class="stat-all-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    {
+      posts.length === 0 ? (
+        <p class="writing-empty">No posts yet.</p>
+      ) : (
+        <ol class="feed">
+          {posts.map((post, i) => (
+            <li class="feed-row" data-tags={post.data.tags.join(',')}>
+              <a href={`/blog/${post.id}`} class="feed-link">
+                <span class="feed-index" aria-hidden="true">
+                  {String(posts.length - i).padStart(2, '0')}
+                </span>
+                <div class="feed-meta">
+                  <time
+                    class="feed-date"
+                    datetime={post.data.pubDate.toISOString()}
+                  >
+                    {formatDate(post.data.pubDate)}
+                  </time>
+                  <span class="feed-reading-time">
+                    {readingTime(post)} min read
+                  </span>
+                </div>
+                <h3 class="feed-title">{post.data.title}</h3>
+                <p class="feed-excerpt">{post.data.description}</p>
+                {post.data.tags.length > 0 && (
+                  <ul class="feed-tags">
+                    {post.data.tags.map((tag) => (
+                      <li>#{tag}</li>
+                    ))}
+                  </ul>
+                )}
+                <span class="feed-arrow" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .writing {
+    position: relative;
+    padding-block: clamp(var(--space-12), 10vw, var(--space-section));
+    border-top: 1px solid var(--color-border);
+  }
+
+  .writing::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 1px;
+    background: var(--color-accent);
+    box-shadow: 0 0 8px var(--color-accent);
+  }
+
+  .writing-monument {
+    margin-bottom: var(--space-12);
+  }
+
+  .writing-kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: var(--space-5);
+  }
+
+  .writing-kicker-prefix {
+    color: var(--color-accent);
+  }
+
+  .writing-monument-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 0 0 var(--space-8) 0;
+  }
+
+  .writing-monument-meta {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: var(--space-8);
+  }
+
+  .writing-monument-subtext {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .writing-monument-stats {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-5);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .writing-monument-stats li {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: 0.06em;
+  }
+
+  .stat-num {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+    margin-right: 0.3em;
+  }
+
+  .stat-all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    transition: color 150ms ease;
+  }
+
+  .stat-all:hover {
+    color: var(--color-accent);
+  }
+
+  .stat-all-arrow {
+    transition: transform 250ms var(--ease-spring);
+  }
+
+  .stat-all:hover .stat-all-arrow {
+    transform: translateX(3px);
+  }
+
+  .feed {
+    list-style: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .feed-row {
+    position: relative;
+    border-bottom: 1px solid var(--color-border);
+    transition: background var(--duration-normal) var(--ease-out);
+  }
+
+  .feed-row:hover {
+    background: var(--color-surface);
+  }
+
+  .feed-link {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+      'idx meta arrow'
+      'idx title arrow'
+      'idx excerpt arrow'
+      'idx tags arrow';
+    column-gap: var(--space-8);
+    row-gap: var(--space-3);
+    padding: var(--space-8) 0;
+    color: inherit;
+    align-items: baseline;
+  }
+
+  .feed-index {
+    grid-area: idx;
+    align-self: start;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: 0.06em;
+    min-width: 2.5ch;
+    padding-top: 0.4em;
+  }
+
+  .feed-meta {
+    grid-area: meta;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .feed-date,
+  .feed-reading-time {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+  }
+
+  .feed-reading-time::before {
+    content: '·';
+    color: var(--color-border);
+    margin-right: var(--space-2);
+  }
+
+  .feed-title {
+    grid-area: title;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin: 0;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .feed-link:hover .feed-title {
+    color: var(--color-accent);
+  }
+
+  .feed-excerpt {
+    grid-area: excerpt;
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 70ch;
+    margin: 0;
+  }
+
+  .feed-tags {
+    grid-area: tags;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    list-style: none;
+    margin: var(--space-1) 0 0 0;
+    padding: 0;
+  }
+
+  .feed-tags li {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    letter-spacing: 0.04em;
+  }
+
+  .feed-arrow {
+    grid-area: arrow;
+    align-self: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xl);
+    color: var(--color-text-subtle);
+    transition: transform 250ms var(--ease-spring), color 150ms ease;
+  }
+
+  .feed-link:hover .feed-arrow {
+    transform: translateX(6px);
+    color: var(--color-accent);
+  }
+
+  .writing-empty {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    padding-block: var(--space-8);
+  }
+
+  @media (max-width: 768px) {
+    .writing-monument-meta {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .writing-monument-stats {
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .feed-link {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto auto;
+      grid-template-areas:
+        'meta'
+        'title'
+        'excerpt'
+        'tags'
+        'arrow';
+      column-gap: 0;
+      row-gap: var(--space-3);
+      padding: var(--space-6) 0;
+    }
+
+    .feed-index {
+      display: none;
+    }
+
+    .feed-arrow {
+      align-self: start;
+    }
+  }
+</style>

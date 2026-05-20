@@ -1,0 +1,251 @@
+---
+import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const livePosts = allPosts.filter((p) => !p.data.draft);
+const latestPost = livePosts.sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+)[0];
+
+const allProjects = await getCollection('projects');
+const shippingCount = allProjects.filter((p) => p.data.status === 'shipping').length;
+const inProgressCount = allProjects.filter((p) => p.data.status === 'in-progress').length;
+
+const nowEntry = await getEntry('now', 'index');
+const nowUpdatedDays = nowEntry
+  ? Math.floor((Date.now() - nowEntry.data.updated.getTime()) / (1000 * 60 * 60 * 24))
+  : null;
+
+const nowFreshness =
+  nowUpdatedDays === null
+    ? 'pending'
+    : nowUpdatedDays <= 7
+      ? 'this week'
+      : nowUpdatedDays <= 30
+        ? `${nowUpdatedDays}d ago`
+        : 'stale';
+
+const doors = [
+  {
+    href: '/now',
+    index: '01',
+    label: 'now',
+    title: 'What I\'m doing now',
+    teaser: `Currently shipping. Currently reading. Currently learning. Updated ${nowFreshness}.`,
+    meta: 'live',
+  },
+  {
+    href: '/blog',
+    index: '02',
+    label: 'writing',
+    title: 'Notes on the work',
+    teaser: latestPost
+      ? `Latest: ${latestPost.data.title}. ${livePosts.length} post${livePosts.length === 1 ? '' : 's'} total.`
+      : 'Engineering notes on backend, systems, LLMs. Learning in public.',
+    meta: `${livePosts.length} post${livePosts.length === 1 ? '' : 's'}`,
+  },
+  {
+    href: '/#projects',
+    index: '03',
+    label: 'projects',
+    title: 'Things I\'ve built',
+    teaser: `${shippingCount} shipping, ${inProgressCount} in progress. Case studies with the problem, the approach, what broke.`,
+    meta: `${allProjects.length} total`,
+  },
+];
+---
+
+<section class="signal-strip" aria-label="Where to go next">
+  <div class="container">
+    <p class="strip-kicker">
+      <span class="strip-kicker-prefix" aria-hidden="true">//</span>
+      three doors
+    </p>
+    <ul class="doors">
+      {
+        doors.map((door) => (
+          <li class="door">
+            <a href={door.href} class="door-link">
+              <span class="door-index" aria-hidden="true">{door.index}</span>
+              <span class="door-label">{door.label}</span>
+              <h3 class="door-title">{door.title}</h3>
+              <p class="door-teaser">{door.teaser}</p>
+              <span class="door-meta">
+                <span class="door-meta-dot" aria-hidden="true"></span>
+                {door.meta}
+              </span>
+              <span class="door-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .signal-strip {
+    padding-block: clamp(var(--space-12), 8vw, var(--space-16));
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    background:
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(255, 45, 85, 0.015) 50%,
+        transparent 100%
+      );
+  }
+
+  .strip-kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: var(--space-8);
+  }
+
+  .strip-kicker-prefix {
+    color: var(--color-accent);
+  }
+
+  .doors {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    list-style: none;
+  }
+
+  .door {
+    position: relative;
+  }
+
+  .door-link {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto auto;
+    column-gap: var(--space-3);
+    row-gap: var(--space-3);
+    align-items: baseline;
+    padding: var(--space-6) var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: inherit;
+    transition:
+      border-color var(--duration-normal) var(--ease-out),
+      background var(--duration-normal) var(--ease-out),
+      transform var(--duration-normal) var(--ease-spring);
+    height: 100%;
+  }
+
+  .door-link:hover {
+    border-color: var(--color-accent-dim);
+    background: var(--color-surface-raised);
+    transform: translateY(-3px);
+  }
+
+  .door-link:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  .door-index {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    letter-spacing: 0.06em;
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .door-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .door-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    grid-row: 2;
+    grid-column: 1 / -1;
+    margin: var(--space-2) 0 0 0;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .door-link:hover .door-title {
+    color: var(--color-accent);
+  }
+
+  .door-teaser {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    grid-row: 3;
+    grid-column: 1 / -1;
+  }
+
+  .door-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    margin-top: var(--space-4);
+    grid-row: 4;
+    grid-column: 1 / -1;
+    align-self: end;
+  }
+
+  .door-meta-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-accent-green);
+    box-shadow: 0 0 4px var(--color-accent-green);
+  }
+
+  .door-arrow {
+    position: absolute;
+    top: var(--space-5);
+    right: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--color-text-subtle);
+    transition:
+      transform var(--duration-normal) var(--ease-spring),
+      color var(--duration-fast) ease;
+  }
+
+  .door-link:hover .door-arrow {
+    transform: translateX(3px);
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 900px) {
+    .doors {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+
+    .door-link {
+      grid-template-rows: auto auto auto auto;
+    }
+  }
+</style>

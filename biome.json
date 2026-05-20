@@ -8,7 +8,7 @@
   },
 
   "files": {
-    "includes": ["**", "!!**/dist", "!!**/.astro", "!!**/*.astro", "!!**/.claude"]
+    "includes": ["**", "!!**/dist", "!!**/.astro", "!!**/*.astro", "!!**/.agents", "!!**/.claude"]
   },
 
   "formatter": {

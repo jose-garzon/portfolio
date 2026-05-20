@@ -18,31 +18,32 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
 });
 ---
 
-<a href={`/blog/${slug}`} class="blog-card">
-  <article>
-    <div class="card-top">
-      <time class="blog-date" datetime={pubDate.toISOString()}>{formattedDate}</time>
-      {tags.length > 0 && (
-        <ul class="tag-list">
-          {tags.map((tag) => (
-            <li><Badge pill>{tag}</Badge></li>
-          ))}
-        </ul>
-      )}
-    </div>
-    <h2 class="blog-title" data-text={title}>{title}</h2>
-    <p class="blog-description">{description}</p>
-    <span class="read-more">
-      Read article
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-        <path d="M1 6h10M6 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </span>
-  </article>
-</a>
+<article class="blog-card">
+  <div class="card-top">
+    <time class="blog-date" datetime={pubDate.toISOString()}>{formattedDate}</time>
+    {tags.length > 0 && (
+      <ul class="tag-list">
+        {tags.map((tag) => (
+          <li><Badge pill>{tag}</Badge></li>
+        ))}
+      </ul>
+    )}
+  </div>
+  <h2 class="blog-title">
+    <a href={`/blog/${slug}`} class="blog-title-link"><span data-text={title}>{title}</span></a>
+  </h2>
+  <p class="blog-description">{description}</p>
+  <span class="read-more" aria-hidden="true">
+    Read article
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+      <path d="M1 6h10M6 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </span>
+</article>
 
 <style>
   .blog-card {
+    position: relative;
     display: block;
     padding: var(--space-6) var(--space-8);
     border: 1px solid var(--color-border);
@@ -54,13 +55,36 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
       box-shadow var(--duration-normal) var(--ease-out);
   }
 
-  .blog-card:hover {
+  .blog-card:has(.blog-title-link:hover),
+  .blog-card:has(.blog-title-link:focus-visible) {
     border-color: var(--color-accent-dim);
     transform: translateY(-3px);
     box-shadow:
       0 16px 48px rgba(0, 0, 0, 0.5),
       0 0 0 1px var(--color-accent-glow),
       0 0 20px rgba(255, 45, 85, 0.1);
+  }
+
+  .blog-title-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .blog-title-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  .blog-title-link:focus-visible {
+    outline: none;
+  }
+
+  .blog-title-link:focus-visible::after {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
 
   .card-top {
@@ -95,8 +119,21 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     transition: color var(--duration-fast) ease;
   }
 
-  .blog-card:hover .blog-title {
+  .blog-title-link:hover,
+  .blog-card:has(.blog-title-link:focus-visible) .blog-title {
     color: var(--color-accent);
+  }
+
+  .card-top,
+  .blog-description,
+  .read-more {
+    position: relative;
+    z-index: 1;
+  }
+
+  .tag-list li {
+    position: relative;
+    z-index: 2;
   }
 
   .blog-description {
@@ -116,7 +153,8 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     transition: gap var(--duration-normal) var(--ease-spring);
   }
 
-  .blog-card:hover .read-more {
+  .blog-card:has(.blog-title-link:hover) .read-more,
+  .blog-card:has(.blog-title-link:focus-visible) .read-more {
     gap: var(--space-3);
   }
 </style>

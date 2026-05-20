@@ -1,49 +1,122 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import Header from '../../shared/components/Header/Header';
-import BlogCard from './components/BlogCard.astro';
 import { fullName } from '../../shared/data/personal';
 
 const allPosts = await getCollection('blog');
 const posts = allPosts
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const tagSet = new Set<string>();
+for (const post of posts) {
+  for (const tag of post.data.tags) tagSet.add(tag);
+}
+const allTags = Array.from(tagSet).sort();
+
+const formatDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+const readingTime = (post: (typeof posts)[number]) => {
+  const wordCount = (post.body ?? '').trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(wordCount / 200));
+};
 ---
 
 <Layout
   title={`Writing — ${fullName}`}
-  description="Engineering notes on LLMs, TypeScript, Python, and building software."
+  description="Engineering notes on LLMs, TypeScript, Python, backend, systems. Learning in public."
 >
-  <Header client:load />
   <main class="blog-main">
     <div class="container">
       <header class="blog-header">
         <p class="section-label scanlines">writing</p>
-        <h1 class="blog-title scanlines"><span data-text="Writing">Writing</span></h1>
+        <h1 class="blog-title scanlines">
+          <span data-text="Notes on the work">Notes on the work</span>
+        </h1>
         <p class="blog-subtext">
-          Engineering notes on LLMs, TypeScript, Python, and what I'm figuring out.
-          Learning in public.
+          Engineering notes on LLMs, backend, systems, and what I'm figuring out. Honest
+          records, not polished tutorials.
         </p>
+        <div class="blog-meta-row">
+          <span class="blog-count">
+            <span class="blog-count-value">{posts.length}</span>
+            <span class="blog-count-label">
+              post{posts.length === 1 ? '' : 's'} so far
+            </span>
+          </span>
+        </div>
       </header>
 
-      {posts.length === 0 ? (
-        <p class="empty">No posts yet — check back soon.</p>
-      ) : (
-        <ul class="posts-list reveal-stagger">
-          {posts.map((post) => (
-            <li>
-              <BlogCard
-                slug={post.id}
-                title={post.data.title}
-                description={post.data.description}
-                pubDate={post.data.pubDate}
-                tags={post.data.tags}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+      <div class="blog-body">
+        <div class="blog-feed-col">
+          {allTags.length > 0 && (
+            <div class="tag-bar" role="group" aria-label="Filter by tag">
+              <span class="tag-bar-label">filter</span>
+              <ul class="tag-chips">
+                <li>
+                  <button type="button" class="tag-chip is-active" data-tag-filter="all">
+                    all
+                  </button>
+                </li>
+                {allTags.map((tag) => (
+                  <li>
+                    <button type="button" class="tag-chip" data-tag-filter={tag}>
+                      #{tag}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {posts.length === 0 ? (
+            <p class="empty">No posts yet. Check back soon.</p>
+          ) : (
+            <ol class="feed">
+              {posts.map((post, i) => (
+                <li
+                  class="feed-row"
+                  data-tags={post.data.tags.join(',')}
+                >
+                  <a href={`/blog/${post.id}`} class="feed-link">
+                    <span class="feed-index" aria-hidden="true">
+                      {String(posts.length - i).padStart(2, '0')}
+                    </span>
+                    <div class="feed-meta">
+                      <time
+                        class="feed-date"
+                        datetime={post.data.pubDate.toISOString()}
+                      >
+                        {formatDate(post.data.pubDate)}
+                      </time>
+                      <span class="feed-reading-time">
+                        {readingTime(post)} min read
+                      </span>
+                    </div>
+                    <h2 class="feed-title">{post.data.title}</h2>
+                    <p class="feed-excerpt">{post.data.description}</p>
+                    {post.data.tags.length > 0 && (
+                      <ul class="feed-tags">
+                        {post.data.tags.map((tag) => (
+                          <li>#{tag}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          )}
+          <p class="empty no-matches" hidden>
+            No posts match this filter.
+            <button type="button" class="clear-filter" data-clear-filter>
+              clear filter
+            </button>
+          </p>
+        </div>
+
+      </div>
     </div>
   </main>
 </Layout>
@@ -55,8 +128,8 @@ const posts = allPosts
   }
 
   .blog-header {
+    max-width: 720px;
     margin-bottom: var(--space-12);
-    max-width: 600px;
   }
 
   .blog-title {
@@ -72,18 +145,263 @@ const posts = allPosts
     font-size: var(--text-lg);
     color: var(--color-text-muted);
     line-height: 1.7;
+    margin-bottom: var(--space-6);
   }
 
-  .posts-list {
+  .blog-meta-row {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    flex-wrap: wrap;
+  }
+
+  .blog-count {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+  }
+
+  .blog-count-value {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+  }
+
+  .blog-body {
+    display: block;
+  }
+
+  .tag-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .tag-bar-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .tag-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .tag-chip {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) ease,
+      border-color var(--duration-fast) ease,
+      background var(--duration-fast) ease;
+  }
+
+  .tag-chip:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-subtle);
+  }
+
+  .tag-chip:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .tag-chip.is-active {
+    color: var(--color-accent);
+    border-color: var(--color-accent-dim);
+    background: var(--color-accent-glow);
+  }
+
+  .feed {
+    list-style: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .feed-row {
+    border-bottom: 1px solid var(--color-border);
+    transition: background var(--duration-normal) var(--ease-out);
+  }
+
+  .feed-row:hover {
+    background: var(--color-surface);
+  }
+
+  .feed-row[hidden] {
+    display: none;
+  }
+
+  .feed-link {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'idx meta'
+      'idx title'
+      'idx excerpt'
+      'idx tags';
+    column-gap: var(--space-8);
+    row-gap: var(--space-3);
+    padding: var(--space-8) 0;
+    color: inherit;
+    align-items: baseline;
+  }
+
+  .feed-index {
+    grid-area: idx;
+    align-self: start;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: 0.06em;
+    min-width: 2.5ch;
+    padding-top: 0.4em;
+  }
+
+  .feed-meta {
+    grid-area: meta;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .feed-date,
+  .feed-reading-time {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+  }
+
+  .feed-reading-time::before {
+    content: '· ';
+    color: var(--color-border);
+    margin-right: var(--space-1);
+  }
+
+  .feed-title {
+    grid-area: title;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .feed-link:hover .feed-title {
+    color: var(--color-accent);
+  }
+
+  .feed-excerpt {
+    grid-area: excerpt;
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 70ch;
+  }
+
+  .feed-tags {
+    grid-area: tags;
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--space-4);
     list-style: none;
+    margin-top: var(--space-1);
+  }
+
+  .feed-tags li {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    letter-spacing: 0.04em;
   }
 
   .empty {
     color: var(--color-text-muted);
     font-family: var(--font-mono);
     font-size: var(--text-sm);
+    padding-block: var(--space-8);
+  }
+
+  .clear-filter {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    background: transparent;
+    border: 1px solid var(--color-accent-dim);
+    padding: var(--space-1) var(--space-3);
+    margin-left: var(--space-3);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: background var(--duration-fast) ease;
+  }
+
+  .clear-filter:hover {
+    background: var(--color-accent-dim);
+  }
+
+  @media (max-width: 640px) {
+    .feed-link {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'meta'
+        'title'
+        'excerpt'
+        'tags';
+      column-gap: 0;
+      row-gap: var(--space-3);
+      padding: var(--space-6) 0;
+    }
+
+    .feed-index {
+      display: none;
+    }
   }
 </style>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('[data-tag-filter]');
+  const rows = document.querySelectorAll<HTMLLIElement>('.feed-row');
+  const noMatches = document.querySelector<HTMLParagraphElement>('.no-matches');
+  const clearBtn = document.querySelector<HTMLButtonElement>('[data-clear-filter]');
+
+  const applyFilter = (filter: string) => {
+    let visibleCount = 0;
+    rows.forEach((row) => {
+      const tags = (row.dataset.tags ?? '').split(',').filter(Boolean);
+      const match = filter === 'all' || tags.includes(filter);
+      row.hidden = !match;
+      if (match) visibleCount += 1;
+    });
+    if (noMatches) noMatches.hidden = visibleCount > 0;
+    chips.forEach((chip) => {
+      chip.classList.toggle('is-active', chip.dataset.tagFilter === filter);
+    });
+  };
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const tag = chip.dataset.tagFilter;
+      if (tag) applyFilter(tag);
+    });
+  });
+
+  clearBtn?.addEventListener('click', () => applyFilter('all'));
+</script>

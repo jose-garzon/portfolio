@@ -1,0 +1,173 @@
+---
+import { getEntry, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { fullName } from '../shared/data/personal';
+
+const entry = await getEntry('now', 'index');
+
+if (!entry) {
+  return Astro.redirect('/');
+}
+
+const { Content } = await render(entry);
+---
+
+<Layout
+  title={`Now — ${fullName}`}
+  description="What I'm shipping, reading, learning. Current state."
+>
+  <main class="now-main">
+    <div class="container">
+      <nav class="now-nav">
+        <a href="/" class="back-link">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path
+              d="M12 7H2M6 2L1 7l5 5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+          Home
+        </a>
+      </nav>
+
+      <header class="now-header">
+        <p class="section-label scanlines">// now</p>
+        <h1 class="now-title scanlines"><span data-text="What I'm doing now">What I'm doing now</span></h1>
+      </header>
+
+      <article class="prose">
+        <Content />
+      </article>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .now-main {
+    padding-top: calc(var(--nav-height) + var(--space-10));
+    padding-bottom: var(--space-section);
+  }
+
+  .now-nav {
+    margin-bottom: var(--space-10);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    transition:
+      color var(--duration-fast) ease,
+      border-color var(--duration-fast) ease,
+      background var(--duration-fast) ease;
+  }
+
+  .back-link:hover {
+    color: var(--color-text-muted);
+    border-color: var(--color-text-subtle);
+    background: var(--color-surface);
+  }
+
+  .now-header {
+    max-width: var(--max-prose);
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-10);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .now-title {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-5);
+  }
+
+</style>
+
+<style is:global>
+  .now-main .prose {
+    max-width: var(--max-prose);
+    line-height: 1.9;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .now-main .prose h2 {
+    font-family: var(--font-display);
+    color: var(--color-text);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-5);
+  }
+
+  .now-main .prose h2::before {
+    content: '// ';
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.75em;
+    letter-spacing: 0.04em;
+  }
+
+  .now-main .prose h3 {
+    font-family: var(--font-display);
+    color: var(--color-text);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+  }
+
+  .now-main .prose p {
+    margin-bottom: var(--space-5);
+  }
+
+  .now-main .prose ul,
+  .now-main .prose ol {
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+
+  .now-main .prose ul { list-style: disc; }
+  .now-main .prose ol { list-style: decimal; }
+
+  .now-main .prose li {
+    margin-bottom: var(--space-4);
+  }
+
+  .now-main .prose li::marker {
+    color: var(--color-accent);
+  }
+
+  .now-main .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .now-main .prose em {
+    font-style: italic;
+    color: var(--color-text);
+  }
+
+  .now-main .prose a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent-dim);
+    text-underline-offset: 3px;
+  }
+
+  .now-main .prose a:hover {
+    text-decoration-color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,243 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { projects } from '../../shared/data/projects';
+import { fullName } from '../../shared/data/personal';
+import Badge from '../../shared/components/Badge.astro';
+
+const featured = projects.filter((p) => p.featured);
+const rest = projects.filter((p) => !p.featured);
+const ordered = [...featured, ...rest];
+---
+
+<Layout
+  title={`Projects — ${fullName}`}
+  description="Things I've built. Each one with a case study: problem, approach, what broke, what I'd do differently."
+>
+  <main class="projects-main">
+    <div class="container">
+      <header class="projects-header">
+        <p class="kicker">
+          <span class="kicker-prefix" aria-hidden="true">//</span>
+          02 projects
+        </p>
+        <h1 class="projects-title scanlines">
+          <span data-text="Things I've built">Things I've built</span>
+        </h1>
+        <p class="projects-subtext">
+          Each project is a case study: the problem, the approach, what broke, what I'd
+          do differently. Not screenshots and stack lists, the actual work.
+        </p>
+        <p class="projects-count">
+          <span class="count-value">{projects.length}</span>
+          <span class="count-label">total · {featured.length} featured</span>
+        </p>
+      </header>
+
+      <ol class="project-feed">
+        {ordered.map((project, i) => {
+          const href = project.slug ? `/projects/${project.slug}` : project.github;
+          const external = !project.slug;
+          return (
+            <li class="project-row" data-featured={project.featured}>
+              <a
+                href={href}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener' : undefined}
+                class="project-link"
+              >
+                <span class="project-index" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div class="project-meta">
+                  {project.featured && (
+                    <span class="project-flag">featured</span>
+                  )}
+                  <span class="project-route">
+                    {project.slug ? `case study →` : `github ↗`}
+                  </span>
+                </div>
+                <h2 class="project-row-title">{project.name}</h2>
+                <p class="project-row-desc">{project.description}</p>
+                <ul class="project-row-stack">
+                  {project.stack.map((tech) => (
+                    <li><Badge variant="accent">{tech}</Badge></li>
+                  ))}
+                </ul>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .projects-main {
+    padding-top: calc(var(--nav-height) + var(--space-12));
+    padding-bottom: var(--space-section);
+  }
+
+  .projects-header {
+    max-width: 720px;
+    margin-bottom: var(--space-12);
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: var(--space-4);
+  }
+
+  .kicker-prefix {
+    color: var(--color-accent);
+  }
+
+  .projects-title {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: var(--space-4);
+  }
+
+  .projects-subtext {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-6);
+  }
+
+  .projects-count {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+  }
+
+  .count-value {
+    color: var(--color-accent);
+    font-size: var(--text-sm);
+  }
+
+  .project-feed {
+    list-style: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-row {
+    border-bottom: 1px solid var(--color-border);
+    transition: background var(--duration-normal) var(--ease-out);
+  }
+
+  .project-row:hover {
+    background: var(--color-surface);
+  }
+
+  .project-link {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'idx meta'
+      'idx title'
+      'idx desc'
+      'idx stack';
+    column-gap: var(--space-8);
+    row-gap: var(--space-3);
+    padding: var(--space-8) 0;
+    color: inherit;
+    align-items: baseline;
+  }
+
+  .project-index {
+    grid-area: idx;
+    align-self: start;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: 0.06em;
+    min-width: 2.5ch;
+    padding-top: 0.4em;
+  }
+
+  .project-meta {
+    grid-area: meta;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+  }
+
+  .project-flag {
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .project-route {
+    color: var(--color-text-subtle);
+  }
+
+  .project-row-title {
+    grid-area: title;
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .project-link:hover .project-row-title {
+    color: var(--color-accent);
+  }
+
+  .project-row-desc {
+    grid-area: desc;
+    font-size: var(--text-base);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 70ch;
+  }
+
+  .project-row-stack {
+    grid-area: stack;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin-top: var(--space-2);
+  }
+
+  @media (max-width: 640px) {
+    .project-link {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'meta'
+        'title'
+        'desc'
+        'stack';
+      column-gap: 0;
+      row-gap: var(--space-3);
+      padding: var(--space-6) 0;
+    }
+
+    .project-index {
+      display: none;
+    }
+  }
+</style>

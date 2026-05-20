@@ -1,8 +1,20 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Header from '../../../shared/components/Header/Header';
 import Badge from '../../../shared/components/Badge.astro';
 import { fullName } from '../../../shared/data/personal';
+
+interface RelatedPost {
+  slug: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags: string[];
+}
+
+interface AdjacentPost {
+  slug: string;
+  title: string;
+}
 
 interface Props {
   title: string;
@@ -10,9 +22,21 @@ interface Props {
   pubDate: Date;
   tags: string[];
   wordCount: number;
+  prevPost?: AdjacentPost;
+  nextPost?: AdjacentPost;
+  relatedPosts?: RelatedPost[];
 }
 
-const { title, description, pubDate, tags, wordCount } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  tags,
+  wordCount,
+  prevPost,
+  nextPost,
+  relatedPosts = [],
+} = Astro.props;
 
 const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 const formattedDate = pubDate.toLocaleDateString('en-US', {
@@ -20,10 +44,14 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
 });
+const formatShortDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 ---
 
-<Layout title={`${title} — ${fullName}`} description={description}>
-  <Header client:load />
+<Layout
+  title={`${title} — ${fullName}`}
+  description={description}
+>
   <main class="post-main">
     <div class="container">
       <nav class="post-nav">
@@ -53,6 +81,55 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
       <div class="prose">
         <slot />
       </div>
+
+      <footer class="post-footer">
+        {(prevPost || nextPost) && (
+          <nav class="post-pager" aria-label="Adjacent posts">
+            {prevPost ? (
+              <a href={`/blog/${prevPost.slug}`} class="pager-link pager-link--prev">
+                <span class="pager-direction">← previous post</span>
+                <span class="pager-title">{prevPost.title}</span>
+              </a>
+            ) : (
+              <span></span>
+            )}
+            {nextPost ? (
+              <a href={`/blog/${nextPost.slug}`} class="pager-link pager-link--next">
+                <span class="pager-direction">next post →</span>
+                <span class="pager-title">{nextPost.title}</span>
+              </a>
+            ) : (
+              <span></span>
+            )}
+          </nav>
+        )}
+
+        {relatedPosts.length > 0 && (
+          <section class="related" aria-labelledby="related-heading">
+            <p id="related-heading" class="related-kicker">
+              <span class="related-kicker-prefix" aria-hidden="true">//</span>
+              related
+            </p>
+            <ul class="related-list">
+              {relatedPosts.map((rel) => (
+                <li>
+                  <a href={`/blog/${rel.slug}`} class="related-link">
+                    <time class="related-date" datetime={rel.pubDate.toISOString()}>
+                      {formatShortDate(rel.pubDate)}
+                    </time>
+                    <span class="related-title">{rel.title}</span>
+                    <span class="related-excerpt">{rel.description}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <div class="post-tail">
+          <a href="/blog" class="tail-link">← back to writing</a>
+        </div>
+      </footer>
     </div>
   </main>
 </Layout>
@@ -135,6 +212,177 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
     flex-wrap: wrap;
     gap: var(--space-2);
     list-style: none;
+  }
+
+  .post-footer {
+    max-width: var(--max-prose);
+    margin-top: var(--space-section);
+    padding-top: var(--space-10);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .post-pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+    margin-bottom: var(--space-12);
+  }
+
+  .pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    transition:
+      border-color var(--duration-normal) var(--ease-out),
+      background var(--duration-normal) var(--ease-out);
+  }
+
+  .pager-link:hover {
+    border-color: var(--color-accent-dim);
+    background: var(--color-surface-raised);
+  }
+
+  .pager-link--next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .pager-direction {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: 0.04em;
+  }
+
+  .pager-title {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+  }
+
+  .related {
+    margin-bottom: var(--space-12);
+  }
+
+  .related-kicker {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: var(--space-5);
+  }
+
+  .related-kicker-prefix {
+    color: var(--color-accent);
+  }
+
+  .related-list {
+    list-style: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-list li {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .related-link {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'date title'
+      'date excerpt';
+    column-gap: var(--space-5);
+    row-gap: var(--space-1);
+    padding: var(--space-4) 0;
+    color: inherit;
+    transition: background var(--duration-fast) ease;
+  }
+
+  .related-link:hover {
+    background: var(--color-surface);
+  }
+
+  .related-date {
+    grid-area: date;
+    align-self: start;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    padding-top: 0.2em;
+    min-width: 8ch;
+  }
+
+  .related-title {
+    grid-area: title;
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .related-link:hover .related-title {
+    color: var(--color-accent);
+  }
+
+  .related-excerpt {
+    grid-area: excerpt;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .post-tail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .tail-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .tail-link:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .post-pager {
+      grid-template-columns: 1fr;
+    }
+
+    .pager-link--next {
+      text-align: left;
+      align-items: flex-start;
+    }
+
+    .related-link {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'date'
+        'title'
+        'excerpt';
+    }
   }
 </style>
 

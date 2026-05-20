@@ -1,12 +1,13 @@
 import { Dialog } from '@base-ui/react/dialog';
 import { useEffect, useState } from 'react';
-import personal from '../../data/personal.json';
 import styles from './Header.module.css';
 
 const navLinks = [
-  { label: 'Experience', href: '/#experience' },
-  { label: 'Projects', href: '/#projects' },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Writing', href: '/blog' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Experience', href: '/experience' },
+  { label: 'Now', href: '/now' },
+  { label: 'Contact', href: 'mailto:jose.garzon.work@gmail.com' },
 ];
 
 type UIFlag = 'scrolled' | 'menu-open';
@@ -25,22 +26,53 @@ function useUIFlags() {
 
 export default function Header() {
   const { has, set } = useUIFlags();
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => set('scrolled', window.scrollY > 20);
+    let pending = false;
+    const onScroll = () => {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(() => {
+        const scroll = window.scrollY;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const ratio = max > 0 ? Math.min(1, Math.max(0, scroll / max)) : 0;
+        setProgress(ratio);
+        set('scrolled', scroll > 20);
+        pending = false;
+      });
+    };
+    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   }, [set]);
 
   return (
     <Dialog.Root open={has('menu-open')} onOpenChange={(open) => set('menu-open', open)}>
-      <nav className={`${styles.nav} ${has('scrolled') ? styles.scrolled : ''}`}>
+      <nav
+        className={`${styles.nav} ${has('scrolled') ? styles.scrolled : ''}`}
+        aria-label="Primary"
+      >
+        <span
+          className={styles.progress}
+          style={{ width: `${progress * 100}%`, opacity: progress > 0.002 ? 1 : 0 }}
+          aria-hidden="true"
+        />
         <div className={`container ${styles.inner}`}>
-          <a href="/" className={styles.logo}>
-            {personal.name.first.toLowerCase()}
-            <span className={styles.logoAccent}>_</span>
-            {personal.name.last.toLowerCase()}
-          </a>
+          <div className={styles.identity}>
+            <a href="/" className={styles.logo}>
+              <span className={styles.logoName}>jose-garzon</span>
+              <span className={styles.logoSlash}>{'//'}</span>
+            </a>
+            <span className={styles.status}>
+              <span className={styles.statusDot} aria-hidden="true" />
+              <span className={styles.statusLabel}>open to new opportunities</span>
+            </span>
+          </div>
 
           <ul className={styles.desktopLinks}>
             {navLinks.map((link) => (

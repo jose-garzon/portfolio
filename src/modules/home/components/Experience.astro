@@ -276,12 +276,3 @@ import { experience } from '../../../shared/data/experience';
   }
 </style>
 
-<script>
-  if (window.matchMedia('(max-width: 768px)').matches) {
-    document.querySelectorAll<HTMLElement>('.job-card').forEach((card) => {
-      card.addEventListener('click', () => {
-        card.closest('.timeline-item')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      });
-    });
-  }
-</script>

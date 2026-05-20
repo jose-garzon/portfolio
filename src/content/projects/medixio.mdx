@@ -1,0 +1,47 @@
+---
+name: Medixio
+role: Solo engineer / Founder
+period: "2025, ongoing"
+status: in-progress
+summary: An AI agent that keeps patients with chronic conditions on top of their care. Appointments, medications, follow-ups; tool-using LLM agent over a real medical workflow, not a chat-window demo.
+stack:
+  - Python
+  - FastAPI
+  - PostgreSQL
+  - LLM Agents
+  - Docker
+github: https://github.com/jose-garzon
+blogSlug: hello-world
+featured: true
+order: 1
+---
+
+## Problem
+
+[placeholder — describe the actual problem you're solving for patients with chronic conditions. Who specifically? What breaks today? What's the moment of failure that motivated this — a missed follow-up, a forgotten medication, a scheduling fall-through?]
+
+Chronic care patients touch 4 to 8 specialists across a year. Each one schedules independently. Medications change. Side-effects need reporting back. The coordination cost lands on the patient at the moment they have least capacity to absorb it.
+
+## Approach
+
+[placeholder — sketch the architecture in two paragraphs. Agent loop, tools, persistence, escalation path. Where does the LLM stop and deterministic code take over?]
+
+The agent is a long-running conversation tied to a patient record. Tools wrap real clinical actions: schedule a follow-up, log a side-effect, reach a human nurse, surface a missed dose. The LLM proposes; a deterministic layer executes. State persists between sessions so a patient can resume mid-thought a week later.
+
+## Architecture
+
+[diagram pending: agent loop, tool surface, deterministic execution layer, persistence, human-escalation path]
+
+## Tradeoffs
+
+- **Agent autonomy vs safety.** [placeholder — what did you let the agent decide vs gate behind deterministic code?]
+- **Latency vs reasoning depth.** [placeholder — when did fast win over smart?]
+- **Persistence model.** [placeholder — long-running thread state, eviction strategy, what gets summarized vs verbatim.]
+
+## What I'd do differently
+
+[placeholder — write this honestly. Pick 2 to 3 calls you'd unmake. Reading "what I'd do differently" on a project is the highest-trust signal an engineer can ship.]
+
+## Links
+
+- Related writing: see *Hello, world* for the broader transition into systems-and-backend work this project sits inside.

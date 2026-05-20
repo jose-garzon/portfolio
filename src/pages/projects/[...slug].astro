@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from 'astro:content';
+import CaseStudyLayout from '../../modules/projects/components/CaseStudyLayout.astro';
+
+export async function getStaticPaths() {
+  const all = await getCollection('projects');
+  const sorted = all.sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+
+  return sorted.map((entry, i) => {
+    const prev = sorted[i - 1];
+    const next = sorted[i + 1];
+    return {
+      params: { slug: entry.id },
+      props: {
+        entry,
+        prevProject: prev ? { slug: prev.id, name: prev.data.name } : undefined,
+        nextProject: next ? { slug: next.id, name: next.data.name } : undefined,
+      },
+    };
+  });
+}
+
+const { entry, prevProject, nextProject } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<CaseStudyLayout
+  name={entry.data.name}
+  role={entry.data.role}
+  period={entry.data.period}
+  status={entry.data.status}
+  summary={entry.data.summary}
+  stack={entry.data.stack}
+  github={entry.data.github}
+  live={entry.data.live}
+  blogSlug={entry.data.blogSlug}
+  prevProject={prevProject}
+  nextProject={nextProject}
+>
+  <Content />
+</CaseStudyLayout>

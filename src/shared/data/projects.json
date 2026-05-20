@@ -4,13 +4,15 @@
     "description": "AI agent that helps patients with chronic conditions track medical appointments, follow-ups, and medication schedules. Agent orchestration and LLM tooling built as a deployed product, not a notebook demo.",
     "stack": ["Python", "LLM Agents", "FastAPI", "PostgreSQL"],
     "github": "https://github.com/jose-garzon",
-    "featured": true
+    "featured": true,
+    "slug": "medixio"
   },
   {
     "name": "Portfolio Site",
-    "description": "This site — built with Astro 6, React islands, and zero runtime JS for static sections. Green hacker aesthetic, written in the open.",
+    "description": "This site. Astro 6, React islands, zero-JS static sections. Hacker-coded design system, written in the open.",
     "stack": ["Astro", "React", "TypeScript", "MDX"],
     "github": "https://github.com/jose-garzon/portfolio",
-    "featured": false
+    "featured": false,
+    "slug": "portfolio"
   }
 ]

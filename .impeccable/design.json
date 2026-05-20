@@ -1,0 +1,404 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-18T00:00:00Z",
+  "title": "Design System: jose-garzon.dev",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Operator Black",
+        "canonical": "oklch(0 0.005 25)",
+        "tonalRamp": [
+          "oklch(0 0 0)",
+          "oklch(8% 0.005 25)",
+          "oklch(15% 0.005 25)",
+          "oklch(22% 0.005 25)",
+          "oklch(35% 0.005 25)",
+          "oklch(55% 0.005 25)",
+          "oklch(75% 0.005 25)",
+          "oklch(92% 0.005 25)"
+        ]
+      },
+      "bg-alt": {
+        "role": "neutral",
+        "displayName": "Bg Alt",
+        "canonical": "oklch(7% 0.005 25)",
+        "tonalRamp": []
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "canonical": "oklch(15% 0.005 25)",
+        "tonalRamp": []
+      },
+      "surface-raised": {
+        "role": "neutral",
+        "displayName": "Surface Raised",
+        "canonical": "oklch(19% 0.005 25)",
+        "tonalRamp": []
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border Crimson",
+        "canonical": "oklch(22% 0.04 25)",
+        "tonalRamp": []
+      },
+      "border-subtle": {
+        "role": "neutral",
+        "displayName": "Border Subtle",
+        "canonical": "oklch(17% 0.03 25)",
+        "tonalRamp": []
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Text",
+        "canonical": "oklch(95% 0.01 230)",
+        "tonalRamp": []
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Text Muted",
+        "canonical": "oklch(80% 0.005 25)",
+        "tonalRamp": []
+      },
+      "text-subtle": {
+        "role": "neutral",
+        "displayName": "Text Subtle",
+        "canonical": "oklch(62% 0.005 25)",
+        "tonalRamp": []
+      },
+      "crimson": {
+        "role": "primary",
+        "displayName": "Operator Crimson",
+        "canonical": "oklch(64% 0.24 14)",
+        "tonalRamp": [
+          "oklch(20% 0.10 14)",
+          "oklch(32% 0.16 14)",
+          "oklch(44% 0.22 14)",
+          "oklch(56% 0.24 14)",
+          "oklch(64% 0.24 14)",
+          "oklch(74% 0.20 14)",
+          "oklch(84% 0.14 14)",
+          "oklch(94% 0.06 14)"
+        ]
+      },
+      "crimson-warm": {
+        "role": "primary",
+        "displayName": "Crimson Warm",
+        "canonical": "oklch(70% 0.21 18)",
+        "tonalRamp": []
+      },
+      "signal-green": {
+        "role": "secondary",
+        "displayName": "Signal Green",
+        "canonical": "oklch(75% 0.20 145)",
+        "tonalRamp": []
+      },
+      "electric-blue": {
+        "role": "secondary",
+        "displayName": "Electric Blue",
+        "canonical": "oklch(63% 0.20 255)",
+        "tonalRamp": []
+      },
+      "electric-blue-bright": {
+        "role": "secondary",
+        "displayName": "Electric Blue Bright",
+        "canonical": "oklch(70% 0.20 255)",
+        "tonalRamp": []
+      },
+      "glitch-cyan": {
+        "role": "tertiary",
+        "displayName": "Glitch Cyan",
+        "canonical": "oklch(90% 0.18 195)",
+        "tonalRamp": []
+      },
+      "glitch-magenta": {
+        "role": "tertiary",
+        "displayName": "Glitch Magenta",
+        "canonical": "oklch(60% 0.27 0)",
+        "tonalRamp": []
+      },
+      "hack-yellow": {
+        "role": "tertiary",
+        "displayName": "Hack Yellow",
+        "canonical": "oklch(82% 0.18 80)",
+        "tonalRamp": []
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display (Orbitron)",
+        "purpose": "Hero name only. Single largest type on the site, used on '/' index."
+      },
+      "headline": {
+        "displayName": "Headline (Orbitron)",
+        "purpose": "Inner-page top titles (blog index, blog post). One per page."
+      },
+      "title": {
+        "displayName": "Title (Orbitron)",
+        "purpose": "Section titles. Always preceded by a mono section-label."
+      },
+      "body": {
+        "displayName": "Body (Space Grotesk)",
+        "purpose": "Default text everywhere outside long-form prose."
+      },
+      "body-large": {
+        "displayName": "Body Large (Space Grotesk)",
+        "purpose": "Hero tagline, blog subtext, about paragraphs, post descriptions. When prose needs presence."
+      },
+      "label": {
+        "displayName": "Label (JetBrains Mono)",
+        "purpose": "All telemetry: section labels, dates, tags, copyright, logo separator. Never for prose."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-sm",
+        "value": "0 1px 3px rgba(0, 0, 0, 0.6)",
+        "purpose": "Reserved for popovers; minimal current use."
+      },
+      {
+        "name": "shadow-md",
+        "value": "0 4px 16px rgba(0, 0, 0, 0.7)",
+        "purpose": "Card hover drop shadow."
+      },
+      {
+        "name": "shadow-lg",
+        "value": "0 12px 40px rgba(0, 0, 0, 0.8)",
+        "purpose": "Dialog backdrop accent."
+      },
+      {
+        "name": "shadow-accent",
+        "value": "0 0 24px rgba(255, 45, 85, 0.2)",
+        "purpose": "Crimson ambient glow on timeline-item hover."
+      },
+      {
+        "name": "shadow-accent-lg",
+        "value": "0 8px 32px rgba(255, 45, 85, 0.3)",
+        "purpose": "Bolder crimson glow under primary button on hover."
+      },
+      {
+        "name": "shadow-glow-cyan",
+        "value": "0 0 20px rgba(0, 255, 249, 0.25)",
+        "purpose": "Reserved for cyan glitch artifacts; not currently used."
+      },
+      {
+        "name": "shadow-asymmetric-hero",
+        "value": "-8px 0 24px rgba(255, 45, 85, 0.12), 8px 0 24px rgba(45, 127, 255, 0.10)",
+        "purpose": "Signature asymmetric glow on hero 'latest post' card (crimson left, electric blue right)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Default deceleration curve for state transitions, hover lifts, reveals."
+      },
+      {
+        "name": "ease-out-quart",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Migration target replacing the banned --ease-spring elastic curve. Apply to card hover lift, badge hover, icon-link hover."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Symmetric in/out for reversible transitions."
+      },
+      {
+        "name": "ease-glitch",
+        "value": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+        "purpose": "Glitch RGB-split animation timing function. Paired with steps(1) for digital chunkiness."
+      },
+      {
+        "name": "duration-fast",
+        "value": "120ms",
+        "purpose": "Micro-interactions (color shifts, bullet hover)."
+      },
+      {
+        "name": "duration-normal",
+        "value": "250ms",
+        "purpose": "Default state-change duration (cards, buttons, icon-links)."
+      },
+      {
+        "name": "duration-slow",
+        "value": "400ms",
+        "purpose": "Long lifts, large surface transitions."
+      },
+      {
+        "name": "duration-glitch",
+        "value": "200ms",
+        "purpose": "RGB-split animation total length. Short enough to feel like a hiccup, not an effect."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "900px" },
+      { "name": "xl", "value": "1100px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Crimson pill. Single primary CTA per surface.",
+      "html": "<button class=\"ds-btn-primary\">View my work <svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 7h10M7 2l5 5-5 5\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; color: #ffffff; background: #ff2d55; border: none; border-radius: 9999px; cursor: pointer; transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1), background 250ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: #ff4d6d; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255, 45, 85, 0.3); } .ds-btn-primary:hover svg { transform: translateX(3px); } .ds-btn-primary svg { transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-primary:active { transform: translateY(0) scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid #ff2d55; outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Bordered pill on raised surface. Companion to primary.",
+      "html": "<button class=\"ds-btn-secondary\">Read more</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; color: #eef2f7; background: #1a1a1a; border: 1px solid #2a1a1a; border-radius: 9999px; cursor: pointer; transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1), border-color 250ms cubic-bezier(0.16, 1, 0.3, 1), background 250ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-secondary:hover { transform: translateY(-2px); border-color: #c0c0c0; background: #121212; } .ds-btn-secondary:active { transform: translateY(0) scale(0.98); } .ds-btn-secondary:focus-visible { outline: 2px solid #ff2d55; outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Borderless tertiary action. Quiet by default.",
+      "html": "<button class=\"ds-btn-ghost\">Dismiss</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; color: #c0c0c0; background: transparent; border: none; border-radius: 9999px; cursor: pointer; transition: color 250ms cubic-bezier(0.16, 1, 0.3, 1), background 250ms cubic-bezier(0.16, 1, 0.3, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-ghost:hover { color: #eef2f7; background: #121212; transform: translateY(-1px); } .ds-btn-ghost:focus-visible { outline: 2px solid #ff2d55; outline-offset: 3px; }"
+    },
+    {
+      "name": "Accent Badge",
+      "kind": "chip",
+      "refersTo": "badge-accent",
+      "description": "Crimson-tinted mono chip. Used for project stack and blog tags.",
+      "html": "<span class=\"ds-badge-accent\">TypeScript</span>",
+      "css": ".ds-badge-accent { display: inline-block; padding: 0.2em 0.75rem; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 400; color: #ff2d55; background: rgba(255, 45, 85, 0.06); border: 1px solid rgba(255, 45, 85, 0.12); border-radius: 6px; letter-spacing: 0; transition: color 250ms cubic-bezier(0.16, 1, 0.3, 1), border-color 250ms cubic-bezier(0.16, 1, 0.3, 1), background 250ms cubic-bezier(0.16, 1, 0.3, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-badge-accent:hover { background: rgba(255, 45, 85, 0.12); border-color: #ff2d55; transform: translateY(-1px); }"
+    },
+    {
+      "name": "Muted Badge",
+      "kind": "chip",
+      "refersTo": "badge-muted",
+      "description": "Quiet mono chip for skills and tools.",
+      "html": "<span class=\"ds-badge-muted\">Python</span>",
+      "css": ".ds-badge-muted { display: inline-block; padding: 0.2em 0.75rem; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 400; color: #c0c0c0; background: #1a1a1a; border: 1px solid #2a1a1a; border-radius: 6px; transition: color 250ms cubic-bezier(0.16, 1, 0.3, 1), border-color 250ms cubic-bezier(0.16, 1, 0.3, 1), background 250ms cubic-bezier(0.16, 1, 0.3, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-badge-muted:hover { color: #ff2d55; border-color: rgba(255, 45, 85, 0.12); background: rgba(255, 45, 85, 0.12); transform: translateY(-1px); }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "card-project",
+      "description": "Project showcase card with hover lift and mouse-tracking radial glow.",
+      "html": "<article class=\"ds-card-project\"><div class=\"ds-card-project__top\"><div class=\"ds-card-project__icon\" aria-hidden=\"true\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z\"/></svg></div></div><h3 class=\"ds-card-project__title\">Medixio</h3><p class=\"ds-card-project__desc\">AI agent for chronic care. FastAPI backend, conversational frontend.</p><ul class=\"ds-card-project__stack\"><li><span class=\"ds-badge-accent-inline\">Python</span></li><li><span class=\"ds-badge-accent-inline\">FastAPI</span></li></ul></article>",
+      "css": ".ds-card-project { position: relative; background: #121212; border: 1px solid #2a1a1a; border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; transition: border-color 250ms cubic-bezier(0.16, 1, 0.3, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-project:hover { border-color: rgba(255, 45, 85, 0.12); transform: translateY(-5px); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 45, 85, 0.06), 0 0 24px rgba(255, 45, 85, 0.12); } .ds-card-project__top { display: flex; justify-content: space-between; align-items: center; } .ds-card-project__icon { width: 40px; height: 40px; border-radius: 10px; border: 1px solid #2a1a1a; background: #000000; display: flex; align-items: center; justify-content: center; color: #ff2d55; transition: background 250ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-project:hover .ds-card-project__icon { background: rgba(255, 45, 85, 0.12); } .ds-card-project__title { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; color: #eef2f7; letter-spacing: -0.01em; margin: 0; } .ds-card-project__desc { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 0.875rem; color: #c0c0c0; line-height: 1.7; margin: 0; flex-grow: 1; } .ds-card-project__stack { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0; } .ds-badge-accent-inline { display: inline-block; padding: 0.2em 0.75rem; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #ff2d55; background: rgba(255, 45, 85, 0.06); border: 1px solid rgba(255, 45, 85, 0.12); border-radius: 6px; }"
+    },
+    {
+      "name": "Section Label",
+      "kind": "custom",
+      "refersTo": "section-label",
+      "description": "Signature mono label that precedes every section title. Crimson, uppercase via letter-spacing, with trailing gradient rule.",
+      "html": "<p class=\"ds-section-label\">projects</p>",
+      "css": ".ds-section-label { display: flex; align-items: center; gap: 0.75rem; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #ff2d55; text-transform: uppercase; letter-spacing: 0.12em; margin: 0 0 1rem 0; } .ds-section-label::after { content: ''; display: block; height: 1px; width: clamp(2rem, 5vw, 4rem); background: linear-gradient(to right, #ff2d55, transparent); opacity: 0.5; }"
+    },
+    {
+      "name": "Timeline Item",
+      "kind": "custom",
+      "refersTo": "timeline-item",
+      "description": "Work-history pattern: crimson-bordered dot + gradient line + role card. Hover fills the dot and lifts the card.",
+      "html": "<li class=\"ds-timeline-item\"><div class=\"ds-timeline-item__indicator\" aria-hidden=\"true\"><div class=\"ds-timeline-item__dot\"></div><div class=\"ds-timeline-item__line\"></div></div><article class=\"ds-timeline-item__card\"><header class=\"ds-timeline-item__header\"><div><h3 class=\"ds-timeline-item__role\">Software Engineer</h3><p class=\"ds-timeline-item__company\">Globant (Aeroméxico)</p></div><span class=\"ds-timeline-item__period\">2024 — Present</span></header><p class=\"ds-timeline-item__desc\">Backend systems for production airline operations.</p></article></li>",
+      "css": ".ds-timeline-item { display: grid; grid-template-columns: 28px 1fr; gap: 1.5rem; list-style: none; padding-bottom: 2.5rem; } .ds-timeline-item__indicator { display: flex; flex-direction: column; align-items: center; padding-top: 1.25rem; } .ds-timeline-item__dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid #ff2d55; background: #000000; transition: background 250ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-timeline-item:hover .ds-timeline-item__dot { background: #ff2d55; box-shadow: 0 0 0 4px rgba(255, 45, 85, 0.12), 0 0 24px rgba(255, 45, 85, 0.2); transform: scale(1.2); } .ds-timeline-item__line { width: 1px; flex-grow: 1; background: linear-gradient(to bottom, #2a1a1a, transparent); margin-top: 0.5rem; min-height: 2rem; } .ds-timeline-item__card { background: #121212; border: 1px solid #2a1a1a; border-radius: 16px; padding: 1.5rem 2rem; transition: border-color 250ms cubic-bezier(0.16, 1, 0.3, 1), background 250ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-timeline-item:hover .ds-timeline-item__card { border-color: rgba(255, 45, 85, 0.12); background: #1a1a1a; } .ds-timeline-item__header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; } .ds-timeline-item__role { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 1.125rem; font-weight: 600; color: #eef2f7; margin: 0 0 0.25rem 0; letter-spacing: -0.01em; } .ds-timeline-item__company { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: #ff2d55; font-weight: 500; margin: 0; } .ds-timeline-item__period { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #c0c0c0; padding: 0.25rem 0.75rem; border: 1px solid #2a1a1a; border-radius: 9999px; background: #1a1a1a; flex-shrink: 0; } .ds-timeline-item__desc { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 1rem; color: #c0c0c0; line-height: 1.7; margin: 0; }"
+    },
+    {
+      "name": "Icon Link",
+      "kind": "button",
+      "refersTo": "icon-link",
+      "description": "Square icon button for social links. Target size should be 44px (currently 38px; see DESIGN.md Do's).",
+      "html": "<a href=\"#\" class=\"ds-icon-link\" aria-label=\"GitHub profile\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z\"/></svg></a>",
+      "css": ".ds-icon-link { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 6px; color: #c0c0c0; border: 1px solid #2a1a1a; background: transparent; text-decoration: none; transition: color 250ms cubic-bezier(0.16, 1, 0.3, 1), border-color 250ms cubic-bezier(0.16, 1, 0.3, 1), background 250ms cubic-bezier(0.16, 1, 0.3, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-icon-link:hover { color: #eef2f7; border-color: #c0c0c0; background: #121212; transform: translateY(-2px); } .ds-icon-link:focus-visible { outline: 2px solid #ff2d55; outline-offset: 3px; }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Fixed top header. Transparent at top, gains backdrop blur + border once scrolled.",
+      "html": "<nav class=\"ds-nav ds-nav--scrolled\" aria-label=\"Primary\"><div class=\"ds-nav__inner\"><a href=\"/\" class=\"ds-nav__logo\">jose<span class=\"ds-nav__logo-accent\">_</span>garzon</a><ul class=\"ds-nav__links\"><li><a class=\"ds-nav__link\" href=\"/#experience\">Experience</a></li><li><a class=\"ds-nav__link\" href=\"/#projects\">Projects</a></li><li><a class=\"ds-nav__link\" href=\"/blog\">Blog</a></li></ul></div></nav>",
+      "css": ".ds-nav { position: relative; height: 64px; border-bottom: 1px solid transparent; background: transparent; transition: background 300ms ease, border-color 300ms ease, backdrop-filter 300ms ease; } .ds-nav--scrolled { border-bottom-color: #2a1a1a; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(12px) saturate(1.2); -webkit-backdrop-filter: blur(12px) saturate(1.2); } .ds-nav__inner { height: 100%; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; } .ds-nav__logo { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; font-weight: 500; color: #c0c0c0; letter-spacing: -0.01em; text-decoration: none; transition: color 200ms ease; } .ds-nav__logo:hover { color: #ff2d55; } .ds-nav__logo-accent { color: #ff2d55; } .ds-nav__links { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; } .ds-nav__link { font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 0.875rem; color: #c0c0c0; padding: 0.5rem 0.75rem; border-radius: 6px; text-decoration: none; transition: color 150ms ease, background 150ms ease; } .ds-nav__link:hover { color: #eef2f7; background: #121212; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Operator",
+    "overview": "Hacker register without cosplay. The interface reads like a terminal someone showed you for thirty seconds before closing it — crimson accents used sparingly, a near-black canvas with warm undertone, mono labels marking instruments, glitch as a fingerprint rather than a theme. The visual vocabulary is borrowed from operations-room HUDs and decommissioned hardware: scanlines, telemetry markers, RGB-split fringe, woven-canvas background texture. Restraint is the load-bearing choice. The crimson does not shout because it does not need to.\n\nThis system rejects every flavor of category default. Not generic SaaS-portfolio, not Awwwards motion reel, not designer-editorial, not crypto / neon-on-black hacker cliché. The fingerprint sits one level upstream of the cliché — hacker-coded, not hacker-cosplay.\n\nDensity is medium-low: confident negative space anchors every section. Typographic energy comes from Orbitron's angular display weight against Space Grotesk's calm body and JetBrains Mono's instrumental labels. Crimson appears only at the points where attention is earned.",
+    "keyCharacteristics": [
+      "Near-black canvas with oxide-tinted neutrals, crimson accent ≤10% of any screen",
+      "Three-font system: Orbitron display, Space Grotesk body, JetBrains Mono instruments",
+      "Scanlines and CRT noise as ambient atmosphere, not decoration",
+      "RGB-split glitch is opt-in (data-text attribute), hover-triggered, reduced-motion respected",
+      "Telemetry-style markers (mono labels, → indicators, scroll progress bar) signal the page is running, not just rendered",
+      "Flat-by-default surfaces with tonal layering for depth",
+      "Motion is restrained: state transitions, no choreography"
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "Crimson is the only accent that touches body content. Blue, green, and yellow are role-locked: blue is the latest-post shadow + glitch, green is status, yellow is reserved. Mixing two accents in the same component is forbidden.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tinted Neutral Rule",
+        "body": "Neutrals should carry a faint crimson temperature (chroma ~0.005 toward hue 25), not be pure black or pure cool-gray. Current tokens are pure neutral hex; the migration target is OKLCH with brand-hue chroma.",
+        "section": "colors"
+      },
+      {
+        "name": "The Crimson Ceiling Rule",
+        "body": "Crimson covers ≤10% of any rendered viewport. If a screen requires more crimson, the screen is wrong — reduce by removing, not by re-toning.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three-Font Rule",
+        "body": "Orbitron for identity, Space Grotesk for content, JetBrains Mono for telemetry. A fourth font is prohibited. Inter is explicitly banned.",
+        "section": "typography"
+      },
+      {
+        "name": "The Mono-as-Instrument Rule",
+        "body": "Mono is never used for prose. Mono labels mark sections, dates, tags, telemetry — anything the system measures or names.",
+        "section": "typography"
+      },
+      {
+        "name": "The Section-Label Pair Rule",
+        "body": "Every Title is preceded by a mono section-label. The pair is a fingerprint of the system; do not use a Title without one, or a section-label without a Title.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-at-Rest Rule",
+        "body": "Cards, panels, badges, and surfaces sit flat. Depth only appears when the user reaches toward an element — hover, focus, active.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Asymmetric Glow Rule",
+        "body": "The hero 'latest post' card carries crimson + electric-blue shadow as its signature. Symmetric glow on both sides flattens the effect; preserve the left-crimson / right-blue split.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do lead every section with a mono section-label paired with an Orbitron Title.",
+      "Do keep crimson on ≤10% of any rendered viewport.",
+      "Do lift surfaces tonally (bg → surface → surface-raised) instead of casting ambient shadow.",
+      "Do use JetBrains Mono only for telemetry: labels, dates, tags, copyright, the logo separator.",
+      "Do preserve the asymmetric crimson + electric-blue glow on the hero 'latest post' card.",
+      "Do make every effect opt-in. Glitch via data-text, scanlines via .scanlines class.",
+      "Do honor prefers-reduced-motion: reduce everywhere motion exists.",
+      "Do target 44×44px minimum for touch targets.",
+      "Do migrate neutrals from pure hex to OKLCH with brand-hue chroma.",
+      "Do use ease-out exponential curves (ease-out-quart, quint, expo) for motion."
+    ],
+    "donts": [
+      "Don't use gradient text (background-clip: text + linear-gradient) anywhere.",
+      "Don't use elastic / overshoot easing. The current --ease-spring token is forbidden.",
+      "Don't ship the hero-metric template (big number + small label + supporting stats + divider).",
+      "Don't add a fourth font. Three is the system. Inter is explicitly banned.",
+      "Don't use side-stripe borders greater than 1px as a colored accent on cards or callouts.",
+      "Don't nest cards.",
+      "Don't introduce identical card grids (icon + heading + text repeated endlessly).",
+      "Don't rely on backdrop-filter blur for decoration.",
+      "Don't use neon green, Matrix rain, skull motifs, or any crypto-hacker cliché.",
+      "Don't use Inter, serif display, cream backgrounds, or pastel-on-white patterns.",
+      "Don't use em dashes.",
+      "Don't animate layout properties (width, height, top, left, margin). Animate transform and opacity only.",
+      "Don't introduce hard-coded color literals in component CSS. Use tokens."
+    ]
+  }
+}

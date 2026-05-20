@@ -1,0 +1,50 @@
+---
+name: Portfolio Site
+role: Solo engineer
+period: "2026"
+status: shipping
+summary: This site. Astro 6, React islands for the few interactive surfaces, zero-runtime JS everywhere else. Designed as a Quiet Operator — hacker register without cosplay, crimson on near-black, three-font system, glitch only on hover.
+stack:
+  - Astro
+  - React
+  - TypeScript
+  - MDX
+  - Biome
+  - Vercel
+github: https://github.com/jose-garzon/portfolio
+live: https://jose-garzon.dev
+featured: false
+order: 2
+---
+
+## Problem
+
+[placeholder — why does this site exist as engineered, not as a Notion page? What were the constraints that made building it worthwhile rather than picking a template?]
+
+Generic portfolio templates carry the wrong signal for a transition candidate. The site is the proof; if a hiring lead can guess from the surface that I shipped this, they don't need to read the experience section to know it.
+
+## Approach
+
+Static-by-default Astro 6, React only where state and dialogs justify hydration (nav). Content collections for blog, projects, now-page. Token-driven CSS at the global layer; scoped per-component styles for everything else. No utility framework; restraint over surface area.
+
+Three-font system (Orbitron / Space Grotesk / JetBrains Mono) carries the register without leaning on imagery. Hover-only glitch via `data-text` attribute pseudo-elements. Reduced-motion respected at every motion surface.
+
+## Architecture
+
+[diagram pending: routes, content collections, component boundaries, hydration islands]
+
+## Tradeoffs
+
+- **CSS Modules vs utility framework.** Scoped CSS keeps the file-per-component story coherent; cost is no shared utility classes for spacing rhythm. Tokens cover the gap.
+- **MDX vs plain Markdown.** MDX adds a bundler dependency for content collections that mostly don't need it. Kept for inline component embeds in long posts.
+- **Hydration boundaries.** Mobile nav is the only `client:load` island. Everything else server-renders.
+
+## What I'd do differently
+
+- Tokens should have been OKLCH from day one. Migrating in-flight has friction the doctrine forbids and the cost is now on the migration.
+- Per-page `<style>` blocks scaled to about ten components before paying for itself. Earlier extraction into `src/styles/components/` would have shortened iteration.
+
+## Links
+
+- Open source: [github.com/jose-garzon/portfolio](https://github.com/jose-garzon/portfolio)
+- Live: [jose-garzon.dev](https://jose-garzon.dev)

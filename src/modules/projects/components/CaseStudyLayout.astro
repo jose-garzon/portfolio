@@ -1,0 +1,451 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Badge from '../../../shared/components/Badge.astro';
+import { fullName } from '../../../shared/data/personal';
+
+interface Props {
+  name: string;
+  role: string;
+  period: string;
+  status: 'shipping' | 'in-progress' | 'archived';
+  summary: string;
+  stack: string[];
+  github?: string;
+  live?: string;
+  blogSlug?: string;
+  prevProject?: { slug: string; name: string };
+  nextProject?: { slug: string; name: string };
+}
+
+const {
+  name,
+  role,
+  period,
+  status,
+  summary,
+  stack,
+  github,
+  live,
+  blogSlug,
+  prevProject,
+  nextProject,
+} = Astro.props;
+
+const statusLabel = {
+  shipping: 'shipping',
+  'in-progress': 'in progress',
+  archived: 'archived',
+}[status];
+---
+
+<Layout
+  title={`${name} — ${fullName}`}
+  description={summary}
+>
+  <main class="case-main">
+    <div class="container">
+      <nav class="case-nav">
+        <a href="/#projects" class="back-link">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path
+              d="M12 7H2M6 2L1 7l5 5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+          Back to projects
+        </a>
+      </nav>
+
+      <header class="case-header">
+        <p class="section-label scanlines">case study</p>
+        <h1 class="case-title scanlines"><span data-text={name}>{name}</span></h1>
+        <p class="case-summary">{summary}</p>
+
+        <dl class="meta-grid">
+          <div class="meta-cell">
+            <dt>Role</dt>
+            <dd>{role}</dd>
+          </div>
+          <div class="meta-cell">
+            <dt>Period</dt>
+            <dd>{period}</dd>
+          </div>
+          <div class="meta-cell">
+            <dt>Status</dt>
+            <dd>
+              <span class={`status status--${status}`}>
+                <span class="status-dot" aria-hidden="true"></span>
+                {statusLabel}
+              </span>
+            </dd>
+          </div>
+          <div class="meta-cell meta-cell--wide">
+            <dt>Stack</dt>
+            <dd>
+              <ul class="stack-chips">
+                {stack.map((tech) => (
+                  <li><Badge variant="accent">{tech}</Badge></li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+        </dl>
+
+        {(github || live || blogSlug) && (
+          <ul class="case-links">
+            {github && (
+              <li>
+                <a href={github} target="_blank" rel="noopener" class="case-link">
+                  → source on github
+                </a>
+              </li>
+            )}
+            {live && (
+              <li>
+                <a href={live} target="_blank" rel="noopener" class="case-link">
+                  → live
+                </a>
+              </li>
+            )}
+            {blogSlug && (
+              <li>
+                <a href={`/blog/${blogSlug}`} class="case-link">
+                  → related writing
+                </a>
+              </li>
+            )}
+          </ul>
+        )}
+      </header>
+
+      <article class="prose">
+        <slot />
+      </article>
+
+      <footer class="case-footer">
+        {(prevProject || nextProject) && (
+          <div class="case-pager">
+            {prevProject ? (
+              <a href={`/projects/${prevProject.slug}`} class="pager-link pager-link--prev">
+                <span class="pager-direction">← previous case study</span>
+                <span class="pager-name">{prevProject.name}</span>
+              </a>
+            ) : (
+              <span></span>
+            )}
+            {nextProject ? (
+              <a href={`/projects/${nextProject.slug}`} class="pager-link pager-link--next">
+                <span class="pager-direction">next case study →</span>
+                <span class="pager-name">{nextProject.name}</span>
+              </a>
+            ) : (
+              <span></span>
+            )}
+          </div>
+        )}
+      </footer>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .case-main {
+    padding-top: calc(var(--nav-height) + var(--space-10));
+    padding-bottom: var(--space-section);
+  }
+
+  .case-nav {
+    margin-bottom: var(--space-10);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    transition:
+      color var(--duration-fast) ease,
+      border-color var(--duration-fast) ease,
+      background var(--duration-fast) ease;
+  }
+
+  .back-link:hover {
+    color: var(--color-text-muted);
+    border-color: var(--color-text-subtle);
+    background: var(--color-surface);
+  }
+
+  .case-header {
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-10);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .case-title {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-5);
+  }
+
+  .case-summary {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    max-width: 65ch;
+    margin-bottom: var(--space-10);
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, auto) 1fr;
+    gap: var(--space-5) var(--space-10);
+    align-items: start;
+    margin: 0 0 var(--space-8) 0;
+  }
+
+  .meta-cell--wide {
+    grid-column: 1 / -1;
+  }
+
+  .meta-cell dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-2);
+  }
+
+  .meta-cell dd {
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    border: 1px solid;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .status--shipping {
+    color: var(--color-accent-green);
+    border-color: rgba(57, 211, 83, 0.3);
+    background: rgba(57, 211, 83, 0.06);
+  }
+
+  .status--shipping .status-dot {
+    background: var(--color-accent-green);
+    box-shadow: 0 0 6px var(--color-accent-green);
+  }
+
+  .status--in-progress {
+    color: var(--color-hack-yellow);
+    border-color: rgba(255, 190, 11, 0.3);
+    background: rgba(255, 190, 11, 0.06);
+  }
+
+  .status--in-progress .status-dot {
+    background: var(--color-hack-yellow);
+    box-shadow: 0 0 6px var(--color-hack-yellow);
+  }
+
+  .status--archived {
+    color: var(--color-text-subtle);
+    border-color: var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .status--archived .status-dot {
+    background: var(--color-text-subtle);
+  }
+
+  .stack-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+  }
+
+  .case-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    list-style: none;
+  }
+
+  .case-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .case-link:hover {
+    color: var(--color-accent-warm);
+  }
+
+  .case-footer {
+    margin-top: var(--space-16);
+    padding-top: var(--space-10);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .case-pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+
+  .pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5) var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    transition:
+      border-color var(--duration-normal) var(--ease-out),
+      background var(--duration-normal) var(--ease-out);
+  }
+
+  .pager-link:hover {
+    border-color: var(--color-accent-dim);
+    background: var(--color-surface-raised);
+  }
+
+  .pager-link--next {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .pager-direction {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    letter-spacing: 0.04em;
+  }
+
+  .pager-name {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    .meta-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5) var(--space-6);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .meta-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .case-pager {
+      grid-template-columns: 1fr;
+    }
+
+    .pager-link--next {
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+</style>
+
+<style is:global>
+  .case-main .prose {
+    max-width: var(--max-prose);
+    line-height: 1.9;
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .case-main .prose h2 {
+    font-family: var(--font-display);
+    color: var(--color-text);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .case-main .prose h3 {
+    font-family: var(--font-display);
+    color: var(--color-text);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    margin-top: var(--space-10);
+    margin-bottom: var(--space-4);
+  }
+
+  .case-main .prose p {
+    margin-bottom: var(--space-6);
+  }
+
+  .case-main .prose ul,
+  .case-main .prose ol {
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+
+  .case-main .prose ul { list-style: disc; }
+  .case-main .prose ol { list-style: decimal; }
+
+  .case-main .prose li {
+    margin-bottom: var(--space-3);
+  }
+
+  .case-main .prose strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .case-main .prose a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: var(--color-accent-dim);
+    text-underline-offset: 3px;
+  }
+
+  .case-main .prose a:hover {
+    text-decoration-color: var(--color-accent);
+  }
+
+  .case-main .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-accent);
+    padding: 0.15em 0.45em;
+    border-radius: var(--radius-sm);
+  }
+</style>

@@ -1,0 +1,229 @@
+---
+import { about } from '../../../shared/data/about';
+import { personal } from '../../../shared/data/personal';
+
+const [headline] = about.heading.split('.');
+---
+
+<section id="about" class="section about-compact-section">
+  <div class="container">
+    <p class="section-label scanlines reveal">about</p>
+
+    <div class="about-compact-grid">
+      <div class="about-compact-text">
+        <h2 class="about-compact-heading scanlines reveal">
+          <span data-text={headline}>{headline}.</span>
+        </h2>
+        {about.paragraphs.map((paragraph) => (
+          <p class="about-compact-paragraph reveal">
+            {paragraph}
+          </p>
+        ))}
+
+        <ul class="about-compact-skills reveal" aria-label="Tech stack">
+          {about.skills.map((skill) => (
+            <li class="about-compact-skill">{skill}</li>
+          ))}
+        </ul>
+      </div>
+
+      <aside class="about-compact-side reveal">
+        <dl class="about-compact-facts">
+          <div class="fact">
+            <dt>Role</dt>
+            <dd>{personal.title}</dd>
+          </div>
+          <div class="fact">
+            <dt>Currently</dt>
+            <dd>
+              <ul class="fact-list">
+                {about.currently.map((line) => (
+                  <li>
+                    {line.text}
+                    {line.highlight && <strong>{` ${line.highlight}`}</strong>}
+                  </li>
+                ))}
+              </ul>
+            </dd>
+          </div>
+          <div class="fact">
+            <dt>Reach</dt>
+            <dd>
+              <a href={personal.links.email} class="fact-link">email</a>
+              <span class="fact-sep" aria-hidden="true">·</span>
+              <a href={personal.links.github} target="_blank" rel="noopener" class="fact-link">github</a>
+              <span class="fact-sep" aria-hidden="true">·</span>
+              <a href={personal.links.linkedin} target="_blank" rel="noopener" class="fact-link">linkedin</a>
+            </dd>
+          </div>
+        </dl>
+        <a href="/now" class="about-now-link">
+          <span>more in /now</span>
+          <span class="about-now-arrow" aria-hidden="true">→</span>
+        </a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-compact-section {
+    padding-block: clamp(var(--space-16), 10vw, var(--space-section));
+  }
+
+  .about-compact-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  .about-compact-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-6);
+  }
+
+  .about-compact-paragraph {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.8;
+    max-width: 62ch;
+    margin: 0 0 var(--space-5) 0;
+  }
+
+  .about-compact-paragraph:last-of-type {
+    margin-bottom: var(--space-8);
+  }
+
+  .about-compact-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .about-compact-skill {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    letter-spacing: 0.02em;
+    transition:
+      color var(--duration-fast) ease,
+      border-color var(--duration-fast) ease,
+      background var(--duration-fast) ease;
+  }
+
+  .about-compact-skill:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent-dim);
+    background: var(--color-accent-glow);
+  }
+
+  .fact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .about-compact-side {
+    border-left: 1px solid var(--color-border);
+    padding-left: var(--space-8);
+  }
+
+  .about-compact-facts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    margin: 0 0 var(--space-6) 0;
+  }
+
+  .fact dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-2);
+  }
+
+  .fact dd {
+    font-size: var(--text-sm);
+    color: var(--color-text);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .fact dd strong {
+    color: var(--color-accent);
+    font-weight: 500;
+  }
+
+  .fact-link {
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1px;
+    transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+  }
+
+  .fact-link:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .fact-sep {
+    color: var(--color-text-subtle);
+    margin-inline: var(--space-1);
+  }
+
+  .about-now-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-border);
+    width: 100%;
+    transition: color var(--duration-fast) ease;
+  }
+
+  .about-now-link:hover {
+    color: var(--color-accent-warm);
+  }
+
+  .about-now-arrow {
+    transition: transform var(--duration-normal) var(--ease-spring);
+  }
+
+  .about-now-link:hover .about-now-arrow {
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 900px) {
+    .about-compact-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+
+    .about-compact-side {
+      border-left: none;
+      border-top: 1px solid var(--color-border);
+      padding-left: 0;
+      padding-top: var(--space-8);
+    }
+  }
+</style>
