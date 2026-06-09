@@ -9,10 +9,6 @@ const latestPost = allPosts
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())[0];
 
-const latestReadingTime = latestPost
-  ? Math.max(1, Math.ceil((latestPost.body ?? '').trim().split(/\s+/).length / 200))
-  : null;
-
 const latestFormattedDate = latestPost
   ? latestPost.data.pubDate.toLocaleDateString('en-US', {
       month: 'short',
@@ -74,8 +70,6 @@ const latestFormattedDate = latestPost
           <span class="hero-latest-title">{latestPost.data.title}</span>
           <span class="hero-latest-meta">
             <span class="hero-latest-date">{latestFormattedDate}</span>
-            <span class="hero-latest-sep" aria-hidden="true">·</span>
-            <span class="hero-latest-time">{latestReadingTime} min read</span>
           </span>
           <span class="hero-latest-arrow" aria-hidden="true">→</span>
         </a>
@@ -340,10 +334,6 @@ const latestFormattedDate = latestPost
     color: var(--color-text-subtle);
     letter-spacing: 0.04em;
     flex-wrap: wrap;
-  }
-
-  .hero-latest-sep {
-    color: var(--color-border);
   }
 
   .hero-latest-title {

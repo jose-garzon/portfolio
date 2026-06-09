@@ -15,8 +15,6 @@ if (!entry) {
 
 const { Content } = await render(entry);
 
-const wordCount = (entry.body ?? '').trim().split(/\s+/).length;
-
 const allPosts = await getCollection('blog');
 const livePosts = allPosts
   .filter((p) => !p.data.draft)
@@ -55,7 +53,6 @@ const relatedPosts = scored.map((p) => ({
   description={entry.data.description}
   pubDate={entry.data.pubDate}
   tags={entry.data.tags}
-  wordCount={wordCount}
   prevPost={prevPost ? { slug: prevPost.id, title: prevPost.data.title } : undefined}
   nextPost={nextPost ? { slug: nextPost.id, title: nextPost.data.title } : undefined}
   relatedPosts={relatedPosts}

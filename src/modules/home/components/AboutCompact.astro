@@ -1,8 +1,6 @@
 ---
 import { about } from '../../../shared/data/about';
 import { personal } from '../../../shared/data/personal';
-
-const [headline] = about.heading.split('.');
 ---
 
 <section id="about" class="section about-compact-section">
@@ -12,7 +10,7 @@ const [headline] = about.heading.split('.');
     <div class="about-compact-grid">
       <div class="about-compact-text">
         <h2 class="about-compact-heading scanlines reveal">
-          <span data-text={headline}>{headline}.</span>
+          <span data-text={about.heading}>{about.heading}</span>
         </h2>
         {about.paragraphs.map((paragraph) => (
           <p class="about-compact-paragraph reveal">

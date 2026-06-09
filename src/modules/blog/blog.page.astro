@@ -16,11 +16,6 @@ const allTags = Array.from(tagSet).sort();
 
 const formatDate = (d: Date) =>
   d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-
-const readingTime = (post: (typeof posts)[number]) => {
-  const wordCount = (post.body ?? '').trim().split(/\s+/).length;
-  return Math.max(1, Math.ceil(wordCount / 200));
-};
 ---
 
 <Layout
@@ -90,9 +85,6 @@ const readingTime = (post: (typeof posts)[number]) => {
                       >
                         {formatDate(post.data.pubDate)}
                       </time>
-                      <span class="feed-reading-time">
-                        {readingTime(post)} min read
-                      </span>
                     </div>
                     <h2 class="feed-title">{post.data.title}</h2>
                     <p class="feed-excerpt">{post.data.description}</p>
@@ -280,17 +272,10 @@ const readingTime = (post: (typeof posts)[number]) => {
     gap: var(--space-3);
   }
 
-  .feed-date,
-  .feed-reading-time {
+  .feed-date {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--color-text-subtle);
-  }
-
-  .feed-reading-time::before {
-    content: '· ';
-    color: var(--color-border);
-    margin-right: var(--space-1);
   }
 
   .feed-title {

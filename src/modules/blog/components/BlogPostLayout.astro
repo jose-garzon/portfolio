@@ -21,7 +21,6 @@ interface Props {
   description: string;
   pubDate: Date;
   tags: string[];
-  wordCount: number;
   prevPost?: AdjacentPost;
   nextPost?: AdjacentPost;
   relatedPosts?: RelatedPost[];
@@ -32,13 +31,11 @@ const {
   description,
   pubDate,
   tags,
-  wordCount,
   prevPost,
   nextPost,
   relatedPosts = [],
 } = Astro.props;
 
-const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 const formattedDate = pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
@@ -66,8 +63,6 @@ const formatShortDate = (d: Date) =>
       <header class="post-header">
         <div class="post-meta-top">
           <time class="post-date" datetime={pubDate.toISOString()}>{formattedDate}</time>
-          <span class="meta-sep" aria-hidden="true">·</span>
-          <span class="reading-time">{readingTime} min read</span>
         </div>
         <h1 class="post-title scanlines"><span data-text={title}>{title}</span></h1>
         <p class="post-description">{description}</p>
@@ -180,15 +175,10 @@ const formatShortDate = (d: Date) =>
     margin-bottom: var(--space-5);
   }
 
-  .post-date,
-  .reading-time {
+  .post-date {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--color-text-subtle);
-  }
-
-  .meta-sep {
-    color: var(--color-border);
   }
 
   .post-title {
