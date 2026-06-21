@@ -1,7 +1,7 @@
 ---
 name: Medixio
 role: Solo engineer / Founder
-period: "2025, ongoing"
+period: "2026, ongoing"
 status: in-progress
 summary: An AI agent that keeps patients with chronic conditions on top of their care. Appointments, medications, follow-ups; tool-using LLM agent over a real medical workflow, not a chat-window demo.
 stack:
@@ -10,7 +10,7 @@ stack:
   - PostgreSQL
   - LLM Agents
   - Docker
-github: https://github.com/jose-garzon
+github: https://github.com/jose-garzon/medixio
 blogSlug: hello-world
 featured: true
 order: 1
@@ -18,30 +18,32 @@ order: 1
 
 ## Problem
 
-[placeholder — describe the actual problem you're solving for patients with chronic conditions. Who specifically? What breaks today? What's the moment of failure that motivated this — a missed follow-up, a forgotten medication, a scheduling fall-through?]
+This one isn't abstract. My wife lives with a chronic autoimmune disease, and I watch the coordination cost land on her every week — appointments across multiple specialists, procedures, lab work, medications that change. The hard part is the timing: tracking all of it is hardest exactly during a flare, which is exactly when staying on top of it matters most. A calendar doesn't carry that load. Another app she has to maintain doesn't either.
 
-Chronic care patients touch 4 to 8 specialists across a year. Each one schedules independently. Medications change. Side-effects need reporting back. The coordination cost lands on the patient at the moment they have least capacity to absorb it.
+So the goal is narrow and honest: something that holds the timeline for her, so that managing the disease isn't itself a second job she has to do while sick.
+
+The second motive I won't pretend away — I wanted to learn how to build a real AI agent. Not a chat-window demo, but an agent wired into a real workflow with real stakes. This is the project where I do that.
 
 ## Approach
 
-[placeholder — sketch the architecture in two paragraphs. Agent loop, tools, persistence, escalation path. Where does the LLM stop and deterministic code take over?]
+The design starts from a boundary, not a feature list: the LLM reads, deterministic code writes. The agent can query the record, summarize the timeline, and answer questions freely — but every mutation (logging a procedure, recording a medication change, scheduling a follow-up) goes through validated, deterministic tools the model can call but can't bypass. The model proposes; typed code decides whether it happens.
 
-The agent is a long-running conversation tied to a patient record. Tools wrap real clinical actions: schedule a follow-up, log a side-effect, reach a human nurse, surface a missed dose. The LLM proposes; a deterministic layer executes. State persists between sessions so a patient can resume mid-thought a week later.
+Two hard rules sit on top of that. **No medical advice** — it tracks, reminds, and surfaces; it never suggests a dosage, a diagnosis, or a treatment. And **human-in-the-loop for anything consequential** — booking, contacting a doctor, anything that touches the outside world is confirmed, never autonomous. For a tool sitting next to someone's health, the wrong kind of autonomy is a bug, not a feature.
 
-## Architecture
+Stack is Python, FastAPI, PydanticAI for the agent and tool definitions, and PostgreSQL for the record. PydanticAI specifically because typed tool signatures are how I keep the model inside the lines.
 
-[diagram pending: agent loop, tool surface, deterministic execution layer, persistence, human-escalation path]
+## Current state
+
+Honest version: mostly scaffolding. The data model and the agent loop are taking shape, but it's early, and I'm rebuilding it from scratch — the [public repo](https://github.com/jose-garzon/medixio) still holds an older version I outgrew before I understood the problem well enough. The redo is the real project. I'd rather show the foundation being poured than fake a finished building.
 
 ## Tradeoffs
 
-- **Agent autonomy vs safety.** [placeholder — what did you let the agent decide vs gate behind deterministic code?]
-- **Latency vs reasoning depth.** [placeholder — when did fast win over smart?]
-- **Persistence model.** [placeholder — long-running thread state, eviction strategy, what gets summarized vs verbatim.]
+- **Agent autonomy vs safety.** I deliberately gave up the impressive autonomous-agent demo. Reads are free; writes and outside actions are gated. With health data, the constraint is the product.
+- **Build it myself vs stitch existing apps.** No off-the-shelf tool connects calendar, procedures, meds, and notes into one timeline that carries itself — and building it is also how I learn agents. Both reasons are real.
+- **Rewrite vs salvage.** The old version works in the demo sense but encodes a shallow understanding of the problem. Starting over costs time I'd rather have kept; carrying the wrong foundation costs more.
 
 ## What I'd do differently
 
-[placeholder — write this honestly. Pick 2 to 3 calls you'd unmake. Reading "what I'd do differently" on a project is the highest-trust signal an engineer can ship.]
+- I built the first version before I understood the problem — I modeled "an AI health assistant" in the abstract instead of the specific load my wife actually carries. Hence the rewrite. Next time I write the workflow down before the code.
+- I reached for agent autonomy as the interesting part. The interesting part turned out to be the boundary: what the agent is *not* allowed to do. I'd start from that constraint instead of arriving at it.
 
-## Links
-
-- Related writing: see *Hello, world* for the broader transition into systems-and-backend work this project sits inside.
