@@ -26,15 +26,7 @@ interface Props {
   relatedPosts?: RelatedPost[];
 }
 
-const {
-  title,
-  description,
-  pubDate,
-  tags,
-  prevPost,
-  nextPost,
-  relatedPosts = [],
-} = Astro.props;
+const { title, description, pubDate, tags, prevPost, nextPost, relatedPosts = [] } = Astro.props;
 
 const formattedDate = pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -43,7 +35,12 @@ const formattedDate = pubDate.toLocaleDateString('en-US', {
   timeZone: 'UTC',
 });
 const formatShortDate = (d: Date) =>
-  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+  d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
 ---
 
 <Layout

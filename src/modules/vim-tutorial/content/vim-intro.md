@@ -1,5 +1,5 @@
 ---
-title: "Learn Vim by Doing"
+title: "Learn Vim btw"
 summary: "An interactive, level-by-level path to the Vim grammar — practice each concept in a real editor as you read."
 ---
 

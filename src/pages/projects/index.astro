@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { projects } from '../../shared/data/projects';
-import { fullName } from '../../shared/data/personal';
 import Badge from '../../shared/components/Badge.astro';
+import { fullName } from '../../shared/data/personal';
+import { projects } from '../../shared/data/projects';
 
 const featured = projects.filter((p) => p.featured);
 const rest = projects.filter((p) => !p.featured);

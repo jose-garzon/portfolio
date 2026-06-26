@@ -8,7 +8,7 @@
     "slug": "medixio"
   },
   {
-    "name": "Learn Vim by Doing",
+    "name": "Learn Vim btw",
     "description": "An interactive, level-by-level Vim tutorial. Each lesson pairs a concept with a real in-browser Vim editor, so you practice motions, operators, and macros as you read.",
     "stack": ["Astro", "CodeMirror", "Vim", "MDX"],
     "href": "/vim",

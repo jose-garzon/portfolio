@@ -8,9 +8,7 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const caseHref = project.slug
-  ? `/projects/${project.slug}`
-  : project.href;
+const caseHref = project.slug ? `/projects/${project.slug}` : project.href;
 const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
 ---
 

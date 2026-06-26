@@ -1,12 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
-import { getEntry } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 
 const allPosts = await getCollection('blog');
 const livePosts = allPosts.filter((p) => !p.data.draft);
-const latestPost = livePosts.sort(
-  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
-)[0];
+const latestPost = livePosts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())[0];
 
 const allProjects = await getCollection('projects');
 const shippingCount = allProjects.filter((p) => p.data.status === 'shipping').length;
@@ -31,7 +28,7 @@ const doors = [
     href: '/now',
     index: '01',
     label: 'now',
-    title: 'What I\'m doing now',
+    title: "What I'm doing now",
     teaser: `Currently shipping. Currently reading. Currently learning. Updated ${nowFreshness}.`,
     meta: 'live',
   },
@@ -49,7 +46,7 @@ const doors = [
     href: '/#projects',
     index: '03',
     label: 'projects',
-    title: 'Things I\'ve built',
+    title: "Things I've built",
     teaser: `${shippingCount} shipping, ${inProgressCount} in progress. Case studies with the problem, the approach, what broke.`,
     meta: `${allProjects.length} total`,
   },

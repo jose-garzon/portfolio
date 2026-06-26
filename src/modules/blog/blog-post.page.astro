@@ -35,7 +35,10 @@ const scored = livePosts
     overlap: p.data.tags.filter((t) => tagSet.has(t)).length,
   }))
   .filter((s) => s.overlap > 0)
-  .sort((a, b) => b.overlap - a.overlap || b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime())
+  .sort(
+    (a, b) =>
+      b.overlap - a.overlap || b.post.data.pubDate.getTime() - a.post.data.pubDate.getTime(),
+  )
   .slice(0, 2)
   .map((s) => s.post);
 
