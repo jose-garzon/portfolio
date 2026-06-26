@@ -8,19 +8,19 @@
     "slug": "medixio"
   },
   {
+    "name": "Learn Vim by Doing",
+    "description": "An interactive, level-by-level Vim tutorial. Each lesson pairs a concept with a real in-browser Vim editor, so you practice motions, operators, and macros as you read.",
+    "stack": ["Astro", "CodeMirror", "Vim", "MDX"],
+    "href": "/vim",
+    "cta": "launch tutorial",
+    "featured": true
+  },
+  {
     "name": "Portfolio Site",
     "description": "This site. Astro 6, React islands, zero-JS static sections. Hacker-coded design system, written in the open.",
     "stack": ["Astro", "React", "TypeScript", "MDX"],
     "github": "https://github.com/jose-garzon/portfolio",
     "featured": false,
     "slug": "portfolio"
-  },
-  {
-    "name": "Learn Vim by Doing",
-    "description": "An interactive, level-by-level Vim tutorial. Each lesson pairs a concept with a real in-browser Vim editor — CodeMirror plus genuine modal keybindings — so you practice motions, operators, and macros as you read.",
-    "stack": ["Astro", "CodeMirror", "Vim", "MDX"],
-    "href": "/vim",
-    "cta": "launch tutorial",
-    "featured": false
   }
 ]
