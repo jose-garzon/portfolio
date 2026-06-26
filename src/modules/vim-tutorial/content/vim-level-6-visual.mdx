@@ -6,7 +6,7 @@ summary: "Select by character, line, and block, then act on the selection."
 
 import Exercise from '../components/Exercise.astro';
 
-Visual mode lets you select text explicitly and then apply operators to the selection. Text objects are usually faster, but Visual mode is more intuitive and indispensable for certain jobs — especially column editing.
+Visual mode is Vim with training wheels you never have to take off. Select first, see exactly what you've got highlighted, then hit an operator. For most edits a text object is faster (no selecting, just `ci"`), but some jobs are far clearer when you can *see* the range. And one of them, editing in columns with Visual block, has no real equivalent anywhere else.
 
 ## Entering Visual Mode
 
@@ -110,5 +110,25 @@ const e = 5`}
 1. Press `Ctrl+v`, then `G` to select down.
 2. Press `$` to extend the selection to each line's end.
 3. Press `A`, type `;`, press `Esc` — every line now ends with `;`.
+
+</Exercise>
+
+<Exercise
+  title="Capstone — turn raw rows into a typed enum"
+  goal="Chain character-wise, line-wise, and block edits into one transform."
+  code={`RED
+GREEN
+BLUE
+YELLOW
+PURPLE`}
+>
+
+Convert this flat list into a block of object entries — `RED: "red",` and so on — using Visual mode for every step instead of editing line by line:
+
+1. **Block prefix.** `Ctrl+v`, `G`, then `I` and two spaces, `Esc` — indent all five.
+2. **Block suffix, part one.** `Ctrl+v`, `G`, `$`, then `A`, type `: ""`, `Esc` — every line now ends with `: ""`.
+3. **Fill the value with a lowercased copy of the key.** On line 1: `0w` to reach the key, `yiw` to yank it. Press `f"` to land on the opening quote, `a`, then `Ctrl+r 0` to paste the key between the quotes, `Esc`. Lowercase it in place with `viwu`. That precise little routine is a perfect macro — record it with `qa … q` and replay `4@a` down the rest.
+4. **Trailing commas.** `Ctrl+v`, `G`, `$`, `A`, type `,`, `Esc`.
+5. Reselect any line range with `V` and press `=` to tidy the indentation.
 
 </Exercise>

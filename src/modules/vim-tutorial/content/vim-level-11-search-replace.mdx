@@ -6,7 +6,7 @@ summary: "The substitute command and regex for surgical edits."
 
 import Exercise from '../components/Exercise.astro';
 
-Vim's substitute command is one of the most powerful text tools in any editor. It supports full regular expressions and gives fine-grained control over where and how replacements happen.
+`:s` is a tiny find-and-replace language living inside your editor. Full regular expressions, surgical control over scope, optional confirm-each-one prompting. When a rename is too irregular for `n` `.` and too big to do by hand, this is the tool. It looks cryptic for five minutes, then becomes the thing you miss in every editor that doesn't have it.
 
 ## The Substitute Command
 
@@ -29,6 +29,15 @@ The `g` flag means "all on the line"; `%` means "the whole file"; `c` prompts fo
 ```
 
 Vim uses its own regex flavor: `\+` means "one or more" (note the backslash), `\d` is a digit, `\<` and `\>` are word boundaries, `^` and `$` anchor line start and end.
+
+> **Heads up about the editor below.** Real Vim and Neovim use the flavor above. The embedded editor here runs on CodeMirror, which uses **JavaScript** regular expressions — so in these exercises drop the backslash on quantifiers (`\d+`, not `\d\+`), use `(...)` for groups, and `$1` `$2` for backreferences. The `:%s/old/new/flags` structure is identical; only the pattern dialect changes. Where the real-Vim form differs, it's noted inline.
+
+```
+\d+   (here)   →  \d\+   (real Vim)     one or more digits
+(\w+) (here)   →  \(\w\+\) (real Vim)   a capture group
+$1    (here)   →  \1     (real Vim)     reuse a captured group
+&     (both)                            the whole match
+```
 
 <Exercise
   title="Substitute on a line"
@@ -88,9 +97,9 @@ admin002 deleted record
 user345 logged out`}
 >
 
-1. Replace `user` + digits with `member`: `:%s/user\d\+/member/g`.
-2. Undo. Replace lines starting with `admin`: `:%s/^admin\d\+/superuser/g`.
-3. Undo. Uppercase the last word of each line: `:%s/\w\+$/ACTION/g`.
+1. Replace `user` + digits with `member`: `:%s/user\d+/member/g`. (Real Vim: `\d\+`.)
+2. Undo. Replace lines starting with `admin`: `:%s/^admin\d+/superuser/g`.
+3. Undo. Replace the last word of each line: `:%s/\w+$/ACTION/g`.
 
 </Exercise>
 
@@ -111,5 +120,22 @@ user345 logged out`}
 1. Rename the class: `:%s/UserProfile/MemberCard/g`.
 2. Rename the field: `:%s/userData/memberData/g`.
 3. Rename the flag: `:%s/userLoading/isLoading/g`.
+
+</Exercise>
+
+<Exercise
+  title="Capstone — capture groups and the whole-match &"
+  goal="Reorder and wrap text by reusing what the pattern captured."
+  code={`John Smith
+Jane Doe
+Alan Turing
+Grace Hopper`}
+>
+
+A plain replace can only swap fixed text. Capture groups let you grab pieces of each match and rearrange them. Wrap part of the pattern in `(...)`, then reference what you caught with `$1`, `$2`. `&` is the whole match.
+
+1. Flip every name to `Last, First`: `:%s/(\w+) (\w+)/$2, $1/`. Group 1 is the first name, group 2 the last; the replacement reorders them. (Real Vim: `\(\w\+\) \(\w\+\)` with `\1` `\2`.)
+2. Undo with `u`. Now quote each entire line using the whole match: `:%s/.+/"&"/` — `&` stands in for everything the pattern matched.
+3. Undo. Do both at once — reorder *and* quote: `:%s/(\w+) (\w+)/"$2, $1"/`.
 
 </Exercise>

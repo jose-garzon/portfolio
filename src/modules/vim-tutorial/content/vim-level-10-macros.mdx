@@ -6,7 +6,7 @@ summary: "Record a sequence of edits and replay it across lines."
 
 import Exercise from '../components/Exercise.astro';
 
-Macros record a sequence of commands and replay them as many times as you want. They're the answer to "I need to make this same complex edit in 50 places."
+The dot command repeats your last *change*. A macro repeats your last *routine* — a whole sequence of moves and edits, replayed on command. This is the answer to the task that would otherwise eat your afternoon: "make this same fiddly edit in fifty places." Record it once, fire it fifty times, go get coffee.
 
 ## Recording and Replaying
 
@@ -96,5 +96,25 @@ item five`}
 2. Press `@a` on line 2.
 3. Press `@@` to repeat on line 3.
 4. Press `@@` again for lines 4 and 5 — inspecting each result as you go.
+
+</Exercise>
+
+<Exercise
+  title="Capstone — a macro that searches and edits"
+  goal="When targets aren't aligned, search inside the macro and do two edits per hit."
+  code={`const a = getValue("alpha");
+let b = getValue("beta");
+var c = getValue("gamma");
+const d = getValue("delta");`}
+>
+
+The lines start differently, so columns won't help and the targets aren't adjacent — this is the job the dot command can't finish on its own. Each `getValue("...")` needs to become a bare `fetch()`: rename the call **and** empty the arguments. Bake the search into the macro so every replay finds its own next target.
+
+1. Press `gg` to start from a known spot.
+2. Record: `qa`, then `/getValue` and Enter to land on the first call.
+3. Press `ciw`, type `fetch`, press `Esc` — the name is changed.
+4. Press `f(`, then `ci(` and `Esc` — the argument is gone, leaving `fetch()`.
+5. Press `q` to stop.
+6. Press `3@a` — the search makes each replay hunt down the next call by itself.
 
 </Exercise>

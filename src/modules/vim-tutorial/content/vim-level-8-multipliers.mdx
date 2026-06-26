@@ -6,7 +6,7 @@ summary: "Prefix almost any command with a count to repeat it."
 
 import Exercise from '../components/Exercise.astro';
 
-Almost every command in Vim accepts a count prefix. Type a number before a motion or operator and Vim repeats it. It's one of the simplest features to learn and one of the most satisfying to use.
+Stick a number in front of almost any command and Vim does it that many times. `5j`, `3dd`, `d4w`. That's the entire feature, and it's the cheapest power you'll ever buy: nothing new to memorize, you just say *how many* before you say *what*. Stop mashing `j` ten times like it's an arrow key.
 
 ## Basic Examples
 
@@ -89,21 +89,18 @@ const g = 7;`}
 
 <Exercise
   title="Multiplied indentation"
-  goal="A count before >> indents that many levels."
-  code={`function outer() {
-function middle() {
-function inner() {
-const value = 42;
-return value;
-}
-}
-}`}
+  goal="A count before >> indents that many lines at once — not one line that many levels."
+  code={`const query = db
+.select("id", "name", "email")
+.from("users")
+.where("active", true)
+.orderBy("name")
+.limit(10);`}
 >
 
-1. On `function middle()`, press `>>`.
-2. On `function inner()`, press `2>>`.
-3. On `const value`, press `3>>`.
-4. On `return value`, press `3>>`.
+1. On the `.select` line (line 2), press `5>>` — indents five lines in one stroke. The whole chain lines up under `const query`.
+2. Undo with `u`. Now press `>>` alone — only the current line moves. The count is what scales it.
+3. Redo your indent. To go *deeper*, repeat the operator: `>>` again pushes the current line one more level. Count picks how many lines; repetition picks how many levels.
 
 </Exercise>
 

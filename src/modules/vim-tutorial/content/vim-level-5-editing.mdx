@@ -6,7 +6,7 @@ summary: "x, r, s, J, p, undo/redo, and the mighty dot command."
 
 import Exercise from '../components/Exercise.astro';
 
-This level fills in the remaining essentials: quick single-character edits, copy-paste, undo/redo, and the dot command — arguably the most powerful thing in Vim.
+A grab bag of small, sharp tools: fix a single character, join two lines, paste what you cut, walk your undo history. And one command that outshines them all, hiding behind a single key: the dot. `.` repeats your last change, and once it's in your hands you'll feel naked editing without it.
 
 ## Single-Character Operations
 
@@ -34,7 +34,7 @@ Note: `d`, `dd`, `c` all cut to the default register — deleting *is* cutting, 
 .  → repeat the last change
 ```
 
-The canonical workflow: search with `/name`, change once with `ciw` + new text + `Esc`, then `n` to find the next match and `.` to repeat. `n.n.n.` becomes a rhythm. Master this — it's one of the most important patterns in Vim.
+The move that defines fluent Vim: search with `/name`, change one match with `ciw` + new text + `Esc`, then bounce `n` `.` `n` `.` down the file. Each `n` finds the next hit, each `.` re-runs the edit. It turns "rename this in twelve places" into a drum beat. Learn this one pattern and you've learned why people refuse to leave.
 
 <Exercise
   title="Single-character fixes"
@@ -44,7 +44,7 @@ The quikc brown foxe jumps ovver the lazzy dog.`}
 >
 
 1. `Thiss` — cursor on the extra `s`, press `x`.
-2. `sentense` — cursor on the wrong `e`, press `r` then `c`.
+2. `sentense` — cursor on the wrong `s` (the one before the last `e`), press `r` then `c` to make it `sentence`.
 3. `itt` — cursor on the extra `t`, press `x`.
 4. `foxe` — cursor on the `e`, press `x`.
 5. `ovver` and `lazzy` — cursor on the doubled letter, press `x`.
@@ -99,9 +99,9 @@ const e = getValue();`}
 >
 
 1. Type `/console.log` and Enter.
-2. Press `cw`, type `logger.info`, press `Esc`.
+2. Press `ct(`, type `logger.info`, press `Esc`. Why `ct(` and not `cw`? `cw` stops at the `.`, leaving `.log` behind; `ct(` changes everything up to the `(`.
 3. Press `n` for the next match, then `.` to repeat.
-4. Continue `n.n.n.` through all of them.
+4. Continue `n.n.n.` through all of them — same edit, four keystrokes.
 
 </Exercise>
 

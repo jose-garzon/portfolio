@@ -6,7 +6,7 @@ summary: "Jump straight to what you want with search and in-line motions."
 
 import Exercise from '../components/Exercise.astro';
 
-Movement gets you to the right neighborhood. Search gets you to the exact character. This level covers two kinds of search: file-wide and within-line — both essential for fast editing.
+Motions get you to the right neighborhood. Search drops you on the doorstep. Once `/` and `f` are in your fingers, you stop counting `j`s and `w`s and just go straight to the thing you're looking at. Two flavors here: search across the file, and search within the line. You'll reach for both constantly.
 
 ## File-Wide Search
 
@@ -86,12 +86,12 @@ const message = "Hello, world, how are you?";`}
 >
 
 On line 1:
-1. Press `0`, then `f b` is `fb` to reach `base`.
-2. Press `dt,` — delete to (not including) the first comma.
+1. Press `0`, then `fb` to land on `base`.
+2. Press `dt,` — delete up to (but not including) the first comma. `base` vanishes, the comma stays.
 
 On line 2:
 1. Press `0`, then `f"` to jump to the opening quote.
-2. Press `df,` — delete from `"Hello` through the comma. See what happens.
+2. Press `df,` — delete from the quote *through* the first comma. Notice `f` includes the target, `t` stops short of it.
 
 </Exercise>
 

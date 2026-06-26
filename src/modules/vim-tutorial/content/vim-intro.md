@@ -3,17 +3,17 @@ title: "Learn Vim by Doing"
 summary: "An interactive, level-by-level path to the Vim grammar — practice each concept in a real editor as you read."
 ---
 
-If you've ever watched an experienced Vim user edit code, it can look like magic. Lines disappear, text transforms, and the cursor flies around the file with zero mouse usage. The secret isn't memorizing hundreds of shortcuts — it's understanding a simple grammar.
+Watch someone fluent in Vim and it looks like a magic trick. Lines vanish, text rearranges itself, the cursor teleports, and their hands never leave the home row. Here's the secret they won't tell you: they didn't memorize hundreds of shortcuts. They learned a grammar, and the grammar does the rest.
 
 ## The Vim Grammar
 
-Vim operates on a composable system: `operator` + `motion` (or `text object`). Once you internalize this grammar, commands stop being things you memorize and start being things you *construct*.
+Vim is a tiny language: `operator` + `motion` (or `text object`). Learn the words once and you stop *recalling* commands. You start *composing* them, mid-thought, for edits you've never made before.
 
 - `d` (delete) + `w` (word) = `dw` — delete a word
 - `c` (change) + `i"` (inside quotes) = `ci"` — change the content inside quotes
 - `y` (yank/copy) + `ap` (a paragraph) = `yap` — copy an entire paragraph
 
-The operator tells Vim *what to do*. The motion tells it *where to do it*. Everything else in Vim builds on this foundation.
+The operator says *what to do*. The motion says *where*. That's the whole idea. Every other feature in Vim is a variation on this one sentence.
 
 ## How This Works
 
@@ -23,4 +23,4 @@ Press `i` to enter Insert mode, `Esc` to return to Normal mode, and experiment f
 
 ## The Learning Path
 
-Master each level before moving to the next. Don't try to learn everything at once — that's how people give up. Start with Level 0 and go from there.
+Go in order, one level at a time. The fastest way to quit Vim is to swallow it whole on day one. Don't. Land each level until the keys feel automatic, then move up. Start at Level 0.
