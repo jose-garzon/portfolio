@@ -1,7 +1,7 @@
 ---
 title: 'Python Async — Coroutines, the Event Loop, and Cheap Concurrency'
 description: "Coming from JavaScript, I assumed async was async everywhere. Then I met Python's event loop — a guest engine you install yourself. Notes on coroutines, Futures, Tasks, and why none of it runs until something drives it."
-pubDate: 2026-02-20
+pubDate: 2026-04-01
 tags: ['learning', 'python', 'async', 'backend']
 draft: false
 ---
@@ -134,11 +134,11 @@ A Task is a recipe card that's already been handed to the chef and is actively c
 
 ## Questions this raises
 
-- [ ] What happens inside `asyncio.gather()` if one coroutine raises — do the others keep running?
-- [ ] What is `asyncio.shield()`, and when would I reach for it?
-- [ ] When should I prefer `gather()` over `create_task()` in the bot?
-- [ ] What's the real difference between `asyncio.sleep()` and `time.sleep()` inside an async context?
-- [ ] Can two Tasks ever run truly in parallel (separate CPU cores), or is it always one at a time?
+-  What happens inside `asyncio.gather()` if one coroutine raises — do the others keep running?
+-  What is `asyncio.shield()`, and when would I reach for it?
+-  When should I prefer `gather()` over `create_task()` in the bot?
+-  What's the real difference between `asyncio.sleep()` and `time.sleep()` inside an async context?
+-  Can two Tasks ever run truly in parallel (separate CPU cores), or is it always one at a time?
 
 ## Practice
 
