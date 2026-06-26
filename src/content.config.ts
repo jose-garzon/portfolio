@@ -36,4 +36,17 @@ const now = defineCollection({
   }),
 });
 
-export const collections = { blog, projects, now };
+const vim = defineCollection({
+  loader: glob({
+    pattern: ['vim-intro.{md,mdx}', 'vim-level-*.{md,mdx}'],
+    base: './src/modules/vim-tutorial/content',
+  }),
+  schema: z.object({
+    title: z.string(),
+    level: z.number().optional(),
+    summary: z.string().optional(),
+    draft: z.boolean().optional().default(false),
+  }),
+});
+
+export const collections = { blog, projects, now, vim };

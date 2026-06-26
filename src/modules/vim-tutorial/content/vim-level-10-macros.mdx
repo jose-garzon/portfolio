@@ -1,0 +1,100 @@
+---
+title: "Macros"
+level: 10
+summary: "Record a sequence of edits and replay it across lines."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+Macros record a sequence of commands and replay them as many times as you want. They're the answer to "I need to make this same complex edit in 50 places."
+
+## Recording and Replaying
+
+```
+q{letter}  → start recording into a register (qa)
+q          → stop recording
+@{letter}  → replay the macro (@a)
+@@         → repeat the last macro
+5@a        → replay 5 times
+```
+
+## Tips
+
+- **Start from a known position** — macros replay exactly what you recorded, so keep them positionally consistent.
+- **End with a motion to the next target** (often `j`) so each replay lands ready for the next.
+- **Use `n` inside a macro** to jump by search when targets aren't evenly spaced.
+
+Use the dot command for a single repeated change; reach for a macro when you need to chain several commands together.
+
+<Exercise
+  title="Your first macro — add semicolons"
+  goal="Record A; Esc j once, then replay it down the block."
+  code={`const a = 1
+const b = 2
+const c = 3
+const d = 4
+const e = 5
+const f = 6
+const g = 7
+const h = 8`}
+>
+
+1. On line 1, press `qa` to start recording into register `a`.
+2. Press `A`, type `;`, press `Esc`.
+3. Press `j` to move down, then `q` to stop recording.
+4. Press `7@a` to apply it to the remaining lines.
+
+</Exercise>
+
+<Exercise
+  title="Wrap each value in quotes"
+  goal="A macro can mix line-start and line-end edits."
+  code={`red
+green
+blue
+yellow
+purple
+orange`}
+>
+
+1. On `red`, press `qa`.
+2. Press `I`, type `"`, press `Esc`.
+3. Press `A`, type `",`, press `Esc`.
+4. Press `j`, then `q` to stop.
+5. Press `5@a` for the remaining lines.
+
+</Exercise>
+
+<Exercise
+  title="Prefix each line"
+  goal="Insert at the line start, then move on."
+  code={`function getUser() {}
+function getProduct() {}
+function getOrder() {}
+function getInvoice() {}
+function getReport() {}`}
+>
+
+1. On line 1, press `qa`.
+2. Press `I`, type `async `, press `Esc`.
+3. Press `j`, then `q`.
+4. Press `4@a` to apply to the rest.
+
+</Exercise>
+
+<Exercise
+  title="Step through with @@"
+  goal="Replay once with @a, then @@ to repeat one item at a time."
+  code={`item one
+item two
+item three
+item four
+item five`}
+>
+
+1. On line 1, record `qa`: press `I`, type `- [ ] `, press `Esc`, press `j`, press `q`.
+2. Press `@a` on line 2.
+3. Press `@@` to repeat on line 3.
+4. Press `@@` again for lines 4 and 5 — inspecting each result as you go.
+
+</Exercise>

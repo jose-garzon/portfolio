@@ -8,7 +8,10 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const caseHref = project.slug ? `/projects/${project.slug}` : undefined;
+const caseHref = project.slug
+  ? `/projects/${project.slug}`
+  : project.href;
+const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
 ---
 
 <article class="card" data-featured={project.featured}>
@@ -74,7 +77,7 @@ const caseHref = project.slug ? `/projects/${project.slug}` : undefined;
 
     {caseHref && (
       <span class="card-read" aria-hidden="true">
-        read case study <span class="card-read-arrow">→</span>
+        {caseLabel} <span class="card-read-arrow">→</span>
       </span>
     )}
   </div>

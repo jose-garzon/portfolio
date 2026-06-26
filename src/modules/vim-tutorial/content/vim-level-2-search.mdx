@@ -1,0 +1,123 @@
+---
+title: "Search & Precise Navigation"
+level: 2
+summary: "Jump straight to what you want with search and in-line motions."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+Movement gets you to the right neighborhood. Search gets you to the exact character. This level covers two kinds of search: file-wide and within-line — both essential for fast editing.
+
+## File-Wide Search
+
+```
+/text  ?text  → search forward / backward
+n  N          → next / previous match
+*  #          → search word under cursor forward / backward
+:noh          → clear search highlight
+```
+
+`*` is one of the most useful commands in Vim: put your cursor on a word, press `*`, and jump through every occurrence with `n`.
+
+## Within-Line Search
+
+```
+f{char}  → jump onto the next {char} on the line
+t{char}  → jump just before {char}
+F  T     → same, but backward
+;  ,     → repeat last f/F/t/T forward / backward
+```
+
+`f` lands *on* the character, `t` lands *before* it. Both also work as motions: `dt,` deletes up to the next comma, `df)` deletes through the next `)`. That's the grammar in action.
+
+<Exercise
+  title="File-wide search"
+  goal="Move through matches with n and N without scrolling."
+  code={`const firstName = "Alice";
+const lastName = "Smith";
+const fullName = firstName + " " + lastName;
+const nameLength = fullName.length;
+console.log("Name:", fullName);`}
+>
+
+1. Type `/Name` and Enter — find the first occurrence.
+2. Press `n` repeatedly to visit each match.
+3. Press `N` to go backward.
+4. Put the cursor on `fullName` and press `*` to search that exact word.
+5. Press `:noh` and Enter to clear the highlight.
+
+</Exercise>
+
+<Exercise
+  title="Plain search vs word boundaries"
+  goal="Know when to use /word vs * for precise matching."
+  code={`const count = 0;
+const discount = 10;
+const accountNumber = 12345;
+const recount = count + 1;`}
+>
+
+1. Type `/count` — it matches `count`, `discount`, `accountNumber`, `recount`.
+2. Put the cursor on the word `count` and press `*` — it matches only the exact word.
+3. `/count` is a plain substring search; `*` adds word boundaries automatically.
+
+</Exercise>
+
+<Exercise
+  title="Within-line search with f and t"
+  goal="Use ; and , to repeat the last f/t in either direction."
+  code={`function processOrder(orderId, customerId, productList, discountCode) {`}
+>
+
+1. Press `0` to go to the start of the line.
+2. Press `f(` — jump onto the `(`.
+3. Press `f,` — jump to the first `,`.
+4. Press `;` twice — repeat to the next commas.
+5. Press `,` — jump back to the previous comma.
+6. Press `0`, then `t)` — land just before the `)`.
+
+</Exercise>
+
+<Exercise
+  title="Combining f/t with operators"
+  goal="Use f/t as motions for operators, not just for navigation."
+  code={`const result = calculate(base, rate, multiplier);
+const message = "Hello, world, how are you?";`}
+>
+
+On line 1:
+1. Press `0`, then `f b` is `fb` to reach `base`.
+2. Press `dt,` — delete to (not including) the first comma.
+
+On line 2:
+1. Press `0`, then `f"` to jump to the opening quote.
+2. Press `df,` — delete from `"Hello` through the comma. See what happens.
+
+</Exercise>
+
+<Exercise
+  title="Search-driven audit"
+  goal="Use * and n/N to quickly count how often something appears."
+  code={`function getUserData(userId) {
+  const user = db.find(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return { id: user.id, name: user.name };
+}
+
+function updateUserData(userId, newData) {
+  const user = db.find(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+  db.update(userId, newData);
+}`}
+>
+
+1. Put the cursor on `userId` and press `*` — jump through each occurrence with `n`.
+2. Press `N` to navigate backward.
+3. Search `/Error` and visit both occurrences with `n`.
+4. Put the cursor on `find` and press `*`. How many times does it appear?
+
+</Exercise>

@@ -8,6 +8,8 @@ export interface Project {
   live?: string;
   featured?: boolean;
   slug?: string;
+  href?: string;
+  cta?: string;
 }
 
 export const projects: Project[] = data;

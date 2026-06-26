@@ -1,0 +1,89 @@
+.editor {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--color-bg-alt);
+  box-shadow:
+    -8px 0 28px rgba(255, 45, 85, 0.05),
+    8px 0 28px rgba(45, 127, 255, 0.04);
+  transition:
+    border-color var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+}
+
+.editor:focus-within {
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    -10px 0 32px rgba(255, 45, 85, 0.09),
+    10px 0 32px rgba(45, 127, 255, 0.07);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.mode {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.2em 0.6em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-subtle);
+}
+
+.mode[data-mode="insert"] {
+  color: var(--color-accent-green);
+  border-color: var(--color-accent-green);
+}
+
+.mode[data-mode="visual"] {
+  color: var(--color-blue-bright);
+  border-color: var(--color-blue);
+}
+
+.mode[data-mode="normal"] {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.hint {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  letter-spacing: 0.02em;
+}
+
+.reset {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-3);
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) ease,
+    border-color var(--duration-fast) ease;
+}
+
+.reset:hover {
+  color: var(--color-text);
+  border-color: var(--color-text-subtle);
+}
+
+.host :global(.cm-editor) {
+  height: 100%;
+}

@@ -1,0 +1,37 @@
+---
+import { getCollection, render } from 'astro:content';
+import VimLevelLayout from '../../modules/vim-tutorial/components/VimLevelLayout.astro';
+import { levels } from '../../modules/vim-tutorial/levels';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('vim');
+  const byId = new Map(entries.map((e) => [e.id, e]));
+
+  return levels.map((lvl, i) => {
+    const prev = levels[i - 1];
+    const next = levels[i + 1];
+    return {
+      params: { slug: lvl.slug },
+      props: {
+        entry: byId.get(lvl.collectionId),
+        level: lvl,
+        prev: prev ? { slug: prev.slug, title: prev.title } : undefined,
+        next: next ? { slug: next.slug, title: next.title } : undefined,
+      },
+    };
+  });
+}
+
+const { entry, level, prev, next } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<VimLevelLayout
+  title={level.title}
+  summary={level.summary}
+  level={level.level}
+  prev={prev}
+  next={next}
+>
+  <Content />
+</VimLevelLayout>

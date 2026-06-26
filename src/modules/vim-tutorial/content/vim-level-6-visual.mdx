@@ -1,0 +1,114 @@
+---
+title: "Visual Mode"
+level: 6
+summary: "Select by character, line, and block, then act on the selection."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+Visual mode lets you select text explicitly and then apply operators to the selection. Text objects are usually faster, but Visual mode is more intuitive and indispensable for certain jobs — especially column editing.
+
+## Entering Visual Mode
+
+```
+v       → character-wise
+V       → line-wise
+Ctrl+v  → block-wise (column selection)
+gv      → re-select the last selection
+```
+
+## Operators on a Selection
+
+```
+d  c  y      → delete / change / yank
+>  <  =      → indent / de-indent / auto-indent
+~  u  U      → toggle / lower / upper case
+```
+
+## Visual Block (Ctrl+v)
+
+The unique one: select a rectangular region. To add text to the start of many lines — `Ctrl+v`, select down with `j`, press `I`, type your text, press `Esc`, and it applies to every line. Invaluable for prefixes, columns, and aligned data.
+
+<Exercise
+  title="Character-wise selection"
+  goal="v plus a motion selects a region; operators act on it."
+  code={`The quick brown fox jumps over the lazy dog.
+Pack my box with five dozen liquor jugs.`}
+>
+
+1. On `quick`, press `v`, then `e` to select the word; press `e` again to extend.
+2. Press `Esc` to cancel.
+3. On `q` of `quick`, press `ve` to select, then `d` to delete; undo with `u`.
+4. Select `brown fox` with `v` + motion and press `~` to toggle case.
+
+</Exercise>
+
+<Exercise
+  title="Line-wise selection"
+  goal="V selects whole lines; > and < indent the block."
+  code={`function processItems(items) {
+  const results = [];
+  for (const item of items) {
+    const processed = transform(item);
+    results.push(processed);
+  }
+  return results;
+}`}
+>
+
+1. On the `for` line, press `V`, then `j` three times to select the block.
+2. Press `>` to indent it one level.
+3. Press `gv` to reselect, then `<` to un-indent.
+4. Select the two `const`-style lines and press `d`; undo.
+
+</Exercise>
+
+<Exercise
+  title="Visual block — add a prefix"
+  goal="Apply the same text to the start of many lines at once."
+  code={`apple
+banana
+cherry
+date
+elderberry
+fig`}
+>
+
+1. Press `Ctrl+v` to enter Visual block.
+2. Press `G` to extend the cursor down every line.
+3. Press `I`, type `- ` (dash space).
+4. Press `Esc` — every line now starts with `- `.
+
+</Exercise>
+
+<Exercise
+  title="Visual block — delete a column"
+  goal="Block mode removes a rectangular region."
+  code={`| id  | name    | email              |
+| 1   | Alice   | alice@example.com  |
+| 2   | Bob     | bob@example.com    |
+| 3   | Carol   | carol@example.com  |`}
+>
+
+1. Put the cursor on the `|` at the start of the first line.
+2. Press `Ctrl+v`, then `j` three times to extend down.
+3. Press `l` until the first column is fully selected.
+4. Press `d` to delete the column.
+
+</Exercise>
+
+<Exercise
+  title="Visual block — append to line ends"
+  goal="$ extends the block to each line's end before A."
+  code={`const a = 1
+const b = 2
+const c = 3
+const d = 4
+const e = 5`}
+>
+
+1. Press `Ctrl+v`, then `G` to select down.
+2. Press `$` to extend the selection to each line's end.
+3. Press `A`, type `;`, press `Esc` — every line now ends with `;`.
+
+</Exercise>

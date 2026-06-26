@@ -1,0 +1,97 @@
+---
+title: "Inserting Text"
+level: 3
+summary: "Enter Insert mode the right way: i, a, I, A, o, O."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+You've learned to navigate. Now it's time to write. Vim gives you several ways to enter Insert mode, each placing the cursor in a slightly different spot. Picking the right one means fewer keystrokes.
+
+## Entering Insert Mode
+
+```
+i  → insert before the cursor
+a  → insert after the cursor (append)
+I  → insert at the first non-blank of the line
+A  → insert at the end of the line
+o  → open a new line below and insert
+O  → open a new line above and insert
+```
+
+`A` and `o` are especially handy: `A` appends to a line end without navigating there, `o` starts a fresh line from anywhere.
+
+## Leaving Insert Mode
+
+Press `Esc` (or `Ctrl+[`) to return to Normal mode. The habit to build: Insert mode is for typing only. As soon as you're done, drop back to Normal mode — don't navigate or delete chunks while in Insert.
+
+<Exercise
+  title="i vs a — before or after"
+  goal="i inserts before the cursor, a inserts after."
+  code={`hello world`}
+>
+
+1. Put the cursor on the `w` of `world`.
+2. Press `i`, type `beautiful ` (trailing space), press `Esc`. Result: `hello beautiful world`.
+3. Undo with `u`.
+4. Put the cursor on the `o` of `hello`, press `a`, type ` there`, press `Esc`. Result: `hello there world`.
+
+</Exercise>
+
+<Exercise
+  title="I and A — line boundaries"
+  goal="Use A to append to line ends without navigating there manually."
+  code={`  const items = [];
+  const total = 0;
+  const label = "";`}
+>
+
+1. With the cursor anywhere on line 1, press `A`, type ` // items list`, press `Esc`.
+2. Move down with `j`, press `I`, type `let `, press `Esc`.
+3. On the last line press `A`, add ` // empty string`, press `Esc`.
+
+</Exercise>
+
+<Exercise
+  title="o and O — open new lines"
+  goal="Insert lines without moving to line ends or using arrow keys."
+  code={`function greet() {
+  console.log("Hello");
+}`}
+>
+
+1. Put the cursor on the `console.log` line, press `o`, type `console.log("World");`, press `Esc`.
+2. Put the cursor on the `function greet()` line, press `O`, type `// Greeting function`, press `Esc`.
+
+</Exercise>
+
+<Exercise
+  title="Choosing the right insert command"
+  goal="Match the insert command to where you need to type."
+  code={`const name = "Alice"
+const age = 30
+const city = "NYC"`}
+>
+
+1. Add a `;` to the end of every line — use `A` on each.
+2. Add `let ` to the start of the `age` line — use `I`.
+3. Add a comment line `// user data` above the first — use `O` on it.
+4. Add `const country = "US";` after the `city` line — use `o`.
+
+</Exercise>
+
+<Exercise
+  title="Real code — fill in the missing pieces"
+  goal="Use the correct insert command every time."
+  code={`function fetchUser(id) {
+  const response = await fetch(\`/api/users/\`)
+  const data = await response
+  return data
+}`}
+>
+
+1. The URL needs the id. Put the cursor on the closing `` ` `` after `/users/` and use `i` to insert `${id}` before it.
+2. `response` needs `.json()`. Press `A` on that line and type `.json()`.
+3. Add semicolons with `A` on each line that's missing one.
+
+</Exercise>

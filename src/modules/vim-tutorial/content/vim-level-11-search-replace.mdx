@@ -1,0 +1,115 @@
+---
+title: "Search & Replace"
+level: 11
+summary: "The substitute command and regex for surgical edits."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+Vim's substitute command is one of the most powerful text tools in any editor. It supports full regular expressions and gives fine-grained control over where and how replacements happen.
+
+## The Substitute Command
+
+```
+:s/old/new/     → first match on the current line
+:s/old/new/g    → all matches on the current line
+:%s/old/new/g   → all matches in the whole file
+:%s/old/new/gc  → file-wide, confirm each one
+```
+
+The `g` flag means "all on the line"; `%` means "the whole file"; `c` prompts for confirmation (`y` to replace, `n` to skip, `q` to quit).
+
+## Regex Patterns
+
+```
+\<word\>   → exact word (word boundaries)
+\d\+       → one or more digits
+^import    → lines starting with "import"
+};$        → lines ending with "};"
+```
+
+Vim uses its own regex flavor: `\+` means "one or more" (note the backslash), `\d` is a digit, `\<` and `\>` are word boundaries, `^` and `$` anchor line start and end.
+
+<Exercise
+  title="Substitute on a line"
+  goal="Without g, only the first match per line changes."
+  code={`The cat sat on the mat near the cat.`}
+>
+
+1. Type `:s/cat/dog/` and Enter — only the first `cat` changes.
+2. Undo. Type `:s/cat/dog/g` — all of them on the line change.
+3. Undo. Type `:s/the/a/g`.
+
+</Exercise>
+
+<Exercise
+  title="File-wide substitution"
+  goal="%s reaches every line; mind partial matches."
+  code={`function getUser(userId) {
+  const user = db.getUser(userId);
+  return formatUser(user);
+}
+
+function updateUser(userId, data) {
+  const user = db.getUser(userId);
+  return db.updateUser(userId, data);
+}`}
+>
+
+1. Type `:%s/user/member/g` — every `user` changes, including inside `userId` and `getUser`.
+2. Undo. Type `:%s/User/Member/g` — only the capitalized form changes.
+
+</Exercise>
+
+<Exercise
+  title="Confirm each replacement"
+  goal="Use the c flag for selective, not blind, replacement."
+  code={`const timeout = 1000;
+const retryTimeout = 500;
+const connectionTimeout = 3000;
+const requestTimeout = 2000;
+const sessionTimeout = 30000;`}
+>
+
+1. Type `:%s/timeout/delay/gc`.
+2. Press `y` to accept, `n` to skip, stepping through each prompt.
+3. Verify only the ones you accepted changed.
+
+</Exercise>
+
+<Exercise
+  title="Regex patterns"
+  goal="Use the \d digit class, anchors, and word boundaries to target precisely."
+  code={`user123 logged in
+admin456 created record
+user789 updated profile
+guest001 viewed page
+admin002 deleted record
+user345 logged out`}
+>
+
+1. Replace `user` + digits with `member`: `:%s/user\d\+/member/g`.
+2. Undo. Replace lines starting with `admin`: `:%s/^admin\d\+/superuser/g`.
+3. Undo. Uppercase the last word of each line: `:%s/\w\+$/ACTION/g`.
+
+</Exercise>
+
+<Exercise
+  title="Real-world refactor"
+  goal="One command per rename — the power of :s for large edits."
+  code={`class UserProfile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { userData: null, userLoading: false };
+  }
+  getUserData() {
+    fetchUser(this.props.userId);
+  }
+}`}
+>
+
+1. Rename the class: `:%s/UserProfile/MemberCard/g`.
+2. Rename the field: `:%s/userData/memberData/g`.
+3. Rename the flag: `:%s/userLoading/isLoading/g`.
+
+</Exercise>

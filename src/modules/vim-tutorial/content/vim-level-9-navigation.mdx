@@ -1,0 +1,80 @@
+---
+title: "File & Buffer Navigation"
+level: 9
+summary: "Move between files and buffers, save, and quit."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+Editing within a file is one thing; moving between files efficiently is another. Vim's buffer system is different from tab-based editors, and understanding it unlocks fast multi-file workflows.
+
+## Buffers, Windows, Tabs
+
+- A **buffer** is an open file (it stays in memory even when not visible).
+- A **window** is a viewport onto a buffer.
+- A **tab** is a layout of windows.
+
+```
+:bnext  :bprev  → cycle buffers
+Ctrl+^          → toggle the two most recent buffers
+:ls             → list open buffers
+:b {name}       → jump to a buffer by name
+```
+
+## Splits
+
+```
+:sp  :vsp       → horizontal / vertical split
+Ctrl+w h/j/k/l  → move between windows
+Ctrl+w w        → cycle windows
+Ctrl+w q        → close the current window
+```
+
+## Saving & Quitting
+
+```
+:w  :q  :wq  :q!   → save, quit, save+quit, quit without saving
+ZZ  ZQ            → save+quit / quit shortcuts
+```
+
+> Buffers, splits, and `:w`/`:q` need a real Vim session with multiple files, so they can't run in the single embedded editor below. Most Vim and Neovim users also add a fuzzy finder — [fzf.vim](https://github.com/junegunn/fzf.vim) or [Telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) — to jump to files by name instantly. The exercise here practices the in-file navigation that makes moving *within* a buffer just as fast.
+
+<Exercise
+  title="Fast in-file navigation"
+  goal="Reach any line quickly with gg, G, counts, and centering."
+  code={`// config.js
+const DB_HOST = "localhost";
+const DB_PORT = 5432;
+const DB_NAME = "myapp";
+const API_KEY = "secret123";
+const MAX_CONNECTIONS = 10;
+const TIMEOUT_MS = 30000;
+const RETRY_LIMIT = 3;
+const LOG_LEVEL = "debug";
+const CACHE_TTL = 600;
+module.exports = { DB_HOST, DB_PORT, DB_NAME };`}
+>
+
+1. Press `G` to jump to the last line, then `gg` to return to the top.
+2. Press `4G` to jump to `API_KEY`, then `zz` to center it.
+3. Search `/TIMEOUT` and Enter to jump straight to that constant.
+4. Put the cursor on `DB_HOST` and press `*` to find its other uses.
+
+</Exercise>
+
+<Exercise
+  title="Edit, then keep moving"
+  goal="Combine navigation with edits — the everyday rhythm."
+  code={`const express = require("express");
+const routes = require("./routes");
+const app = express();
+app.use("/api", routes);
+app.listen(3000);`}
+>
+
+1. Jump to the `listen` line with `/listen` and Enter.
+2. Change the port from `3000` to `8080` with `ciw`.
+3. Press `gg` to return to the top.
+4. On the `app.use` line, press `o` to open a line below and add `app.use(logger);`.
+
+</Exercise>

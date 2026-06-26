@@ -1,0 +1,120 @@
+---
+title: "Quick Editing"
+level: 5
+summary: "x, r, s, J, p, undo/redo, and the mighty dot command."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+This level fills in the remaining essentials: quick single-character edits, copy-paste, undo/redo, and the dot command — arguably the most powerful thing in Vim.
+
+## Single-Character Operations
+
+```
+x  X  → delete character under / before the cursor
+r     → replace one character (ra → 'a')
+s     → substitute character (delete + Insert mode)
+~     → toggle case
+J  gJ → join line below (with / without a space)
+```
+
+## Copy, Paste, Undo
+
+```
+yy  p  P  → yank line, paste after / before
+u         → undo
+Ctrl+r    → redo
+```
+
+Note: `d`, `dd`, `c` all cut to the default register — deleting *is* cutting, so you can always paste what you removed.
+
+## The Dot Command
+
+```
+.  → repeat the last change
+```
+
+The canonical workflow: search with `/name`, change once with `ciw` + new text + `Esc`, then `n` to find the next match and `.` to repeat. `n.n.n.` becomes a rhythm. Master this — it's one of the most important patterns in Vim.
+
+<Exercise
+  title="Single-character fixes"
+  goal="Use r to substitute and x to delete without entering Insert mode."
+  code={`Thiss is a sentense with smoe typos in itt.
+The quikc brown foxe jumps ovver the lazzy dog.`}
+>
+
+1. `Thiss` — cursor on the extra `s`, press `x`.
+2. `sentense` — cursor on the wrong `e`, press `r` then `c`.
+3. `itt` — cursor on the extra `t`, press `x`.
+4. `foxe` — cursor on the `e`, press `x`.
+5. `ovver` and `lazzy` — cursor on the doubled letter, press `x`.
+
+</Exercise>
+
+<Exercise
+  title="Join lines"
+  goal="J adds a space, gJ does not."
+  code={`const message =
+  "Hello, world!";
+
+const items = [
+  1,
+  2,
+  3,
+];`}
+>
+
+1. On `const message =`, press `J` — joins the next line with a space.
+2. On `const items = [`, press `J` a few times to collapse the array onto one line.
+3. Undo, then try `gJ` instead — no space is added.
+
+</Exercise>
+
+<Exercise
+  title="The dot command"
+  goal="Make one change, then j + . to repeat it on identical targets."
+  code={`const a = getValue();
+const b = getValue();
+const c = getValue();
+const d = getValue();
+const e = getValue();`}
+>
+
+1. On the first `getValue`, press `ciw`, type `fetchData`, press `Esc`.
+2. Press `j` to move to the next line.
+3. Press `.` to repeat the change.
+4. Continue `j` then `.` down the rest.
+
+</Exercise>
+
+<Exercise
+  title="The n + . rhythm"
+  goal="Search, change once, then n and . through every occurrence."
+  code={`function processUser(user) {
+  console.log(user.name);
+  console.log(user.email);
+  console.log(user.phone);
+  console.log(user.address);
+}`}
+>
+
+1. Type `/console.log` and Enter.
+2. Press `cw`, type `logger.info`, press `Esc`.
+3. Press `n` for the next match, then `.` to repeat.
+4. Continue `n.n.n.` through all of them.
+
+</Exercise>
+
+<Exercise
+  title="Undo / redo"
+  goal="Undo and redo step through each individual change."
+  code={`const version = 1;
+const name = "app";
+const author = "Alice";`}
+>
+
+1. Make three changes: `1` → `2`, `"app"` → `"myapp"`, `"Alice"` → `"Bob"`.
+2. Press `u` three times — each change reverts in turn.
+3. Press `Ctrl+r` to redo them back, one at a time.
+
+</Exercise>

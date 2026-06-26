@@ -1,0 +1,147 @@
+---
+title: "Operators + Motions"
+level: 4
+summary: "The superpower: compose operators with motions and text objects."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+This is where Vim stops feeling like a different editor and starts feeling like a superpower. The operator + motion grammar is fully unlocked here, along with Vim's most unique feature: text objects.
+
+## The Main Operators
+
+```
+d  → delete (also cuts to register)
+c  → change (delete and enter Insert mode)
+y  → yank (copy)
+>  <  =  → indent, de-indent, auto-indent
+```
+
+## Common Combinations
+
+```
+dw dd D   → delete word / line / to end of line
+cc C      → change line / to end of line
+yy        → yank line
+>> << ==  → indent / de-indent / auto-indent line
+```
+
+## Text Objects: The Real Power
+
+Text objects operate on semantic units. They take `i` (inner) or `a` (around):
+
+```
+iw aw     → inner / a word
+ip ap     → inner / a paragraph
+i" a"     → inside quotes / including the quotes
+i( a(     → inside / including parentheses
+i{ a{     → inside / including braces
+it at     → inside / including an HTML/JSX tag
+```
+
+Combine an operator with a text object and you describe an edit precisely: `ci"` means *change the thing inside these quotes* — no manual selecting required. `ciw` is the most-used rename command.
+
+<Exercise
+  title="Delete with text objects"
+  goal="Feel the difference between i (inner) and a (around)."
+  code={`const greeting = "Hello, world!";
+const numbers = [1, 2, 3, 4, 5];
+const user = { name: "Alice", age: 30 };`}
+>
+
+1. With the cursor in `"Hello, world!"`, press `di"` — deletes inside the quotes; the quotes stay.
+2. Undo, then press `da"` — deletes the string including the quotes.
+3. On the `numbers` line, put the cursor inside `[...]` and press `di[`.
+4. On the `user` line, put the cursor inside `{...}` and press `di{`.
+
+</Exercise>
+
+<Exercise
+  title="Change with text objects"
+  goal="Use ciw to rename words and ci( or ci{ to replace delimited content."
+  code={`function calculateTotal(price, quantity, taxRate) {
+  const subtotal = price * quantity;
+  return subtotal;
+}`}
+>
+
+1. On `calculateTotal`, press `ciw`, type `computeSum`, press `Esc`.
+2. On `price` in the parameter list, press `ciw`, type `unitPrice`, press `Esc`.
+3. Inside the `(...)` parameters, press `ci(`, type `item, count, rate`, press `Esc`.
+4. Inside the function body `{...}`, press `ci{` and type a new body.
+
+</Exercise>
+
+<Exercise
+  title="Yank and paste with text objects"
+  goal="Copy and replace structured content with yi and ci."
+  code={`const config = {
+  host: "localhost",
+  port: 3000,
+};
+
+const devConfig = {
+  host: "",
+  port: 0,
+};`}
+>
+
+1. With the cursor in `"localhost"`, press `yi"` to yank the content.
+2. Move to the empty `""` in `devConfig`, press `ci"`, then `Ctrl+r "` to paste the register, press `Esc`.
+3. Put the cursor in the first `{...}`, press `yi{` to yank the block.
+4. Move to the second `{...}` and press `ci{` then `Ctrl+r "`.
+
+</Exercise>
+
+<Exercise
+  title="Operators with motions"
+  goal="Operators combine with counts and motions, not just text objects."
+  code={`import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useCallback } from "react";
+import { useMemo } from "react";`}
+>
+
+1. On line 2, press `d3j` — delete three lines downward.
+2. Undo. On line 1, press `y2j` to yank three lines, then `G` and `p` to paste at the end.
+3. On any line, press `>>` to indent, then `<<` to un-indent.
+
+</Exercise>
+
+<Exercise
+  title="HTML / JSX text objects"
+  goal="cit and dat operate on whole tags."
+  code={`<div className="container">
+  <h1>Welcome to my app</h1>
+  <p>This is a <strong>very important</strong> message.</p>
+  <button onClick={handleClick}>Click me</button>
+</div>`}
+>
+
+1. Inside the `<h1>` content, press `cit`, type `Hello World`, press `Esc`.
+2. On the `<strong>` element, press `dat` — delete the entire tag.
+3. Inside `"container"`, press `ci"` and type `wrapper`.
+4. On the word `handleClick`, press `ciw` and type `onButtonClick`.
+
+</Exercise>
+
+<Exercise
+  title="Challenge — refactor without the mouse"
+  goal="All edits with text objects and operators only."
+  code={`const user = {
+  firstName: "John",
+  lastName: "Doe",
+  emailAddress: "john.doe@example.com",
+  phoneNumber: "555-1234",
+  homeCity: "New York",
+};`}
+>
+
+1. Change `"John"` to `"Jane"`.
+2. Change `"Doe"` to `"Smith"`.
+3. Change the email to `"jane.smith@example.com"`.
+4. Delete the `phoneNumber` line with `dd`.
+5. Change `"New York"` to `"Los Angeles"`.
+
+</Exercise>

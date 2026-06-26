@@ -35,8 +35,15 @@ const ordered = [...featured, ...rest];
 
       <ol class="project-feed">
         {ordered.map((project, i) => {
-          const href = project.slug ? `/projects/${project.slug}` : project.github;
-          const external = !project.slug;
+          const href = project.slug
+            ? `/projects/${project.slug}`
+            : (project.href ?? project.github);
+          const external = !project.slug && !project.href;
+          const route = project.slug
+            ? 'case study →'
+            : project.href
+              ? `${project.cta ?? 'open'} →`
+              : 'github ↗';
           return (
             <li class="project-row" data-featured={project.featured}>
               <a
@@ -53,7 +60,7 @@ const ordered = [...featured, ...rest];
                     <span class="project-flag">featured</span>
                   )}
                   <span class="project-route">
-                    {project.slug ? `case study →` : `github ↗`}
+                    {route}
                   </span>
                 </div>
                 <h2 class="project-row-title">{project.name}</h2>

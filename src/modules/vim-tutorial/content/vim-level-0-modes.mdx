@@ -1,0 +1,67 @@
+---
+title: "Vim Modes"
+level: 0
+summary: "Normal, Insert, Visual, Command — the modes that make Vim fast."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+Before you can do anything useful in Vim, you need to understand modes. This is the single concept that confuses every beginner — and the one that makes Vim so powerful once it clicks.
+
+Unlike regular editors where you're always in "typing mode," Vim separates concerns into distinct modes. Each mode has a purpose, and switching between them is what gives Vim its speed.
+
+## The Four Main Modes
+
+- **Normal** — your home base. Navigate, run commands, compose operators. You start here. Press `Esc` to return at any time.
+- **Insert** — where you actually type text, like a regular editor.
+- **Visual** — for selecting text, then applying operators to the selection.
+- **Command** — for ex commands like saving and quitting. Enter it by typing `:`.
+
+## The Key Insight
+
+Most of your time should be spent in Normal mode, not Insert mode. You drop into Insert mode to write text, then immediately return to Normal mode to navigate and edit. When in doubt, press `Esc` — it always brings you back to Normal mode. That's your safety net.
+
+<Exercise
+  title="Enter and exit Insert mode"
+  goal="Feel the transition between modes — make it fast and deliberate."
+  code={`hello world`}
+>
+
+1. You start in Normal mode.
+2. Press `i` — now you're in Insert mode (watch the badge above).
+3. Type ` vim` so the line reads `hello vim world`.
+4. Press `Esc` — back to Normal mode.
+5. Press `i` again, then immediately `Esc` without typing.
+6. Enter Insert mode with `a`, type `!`, press `Esc`.
+
+</Exercise>
+
+<Exercise
+  title="Recognize and recover from the wrong mode"
+  goal="Esc is your safety net — build the reflex of pressing it whenever you're unsure."
+  code={`the quick brown fox
+jumps over the lazy dog`}
+>
+
+1. In Normal mode, press `hjkl` — the cursor moves, you don't type letters.
+2. Press `i` to enter Insert mode and type a few characters.
+3. Press `Esc` to return to Normal mode.
+4. Press `Esc` three more times — it always keeps you safely in Normal mode.
+
+</Exercise>
+
+<Exercise
+  title="Visit all four modes in sequence"
+  goal="Know how to get back to Normal mode from any of them."
+  code={`function greet(name) {
+  return "Hello";
+}`}
+>
+
+1. Start in Normal mode. Move to `"Hello"` with a few `w` presses.
+2. Press `v` for Visual mode, then `e` to select the word `Hello`.
+3. Press `Esc` — back to Normal.
+4. Press `i` for Insert mode, type a character, press `Esc`.
+5. Type `:` for Command mode (then `Esc` to dismiss the prompt).
+
+</Exercise>

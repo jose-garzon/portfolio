@@ -1,0 +1,129 @@
+---
+title: "Multipliers"
+level: 8
+summary: "Prefix almost any command with a count to repeat it."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+Almost every command in Vim accepts a count prefix. Type a number before a motion or operator and Vim repeats it. It's one of the simplest features to learn and one of the most satisfying to use.
+
+## Basic Examples
+
+```
+5j     → move down 5 lines
+3dd    → delete 3 lines
+2yy    → yank 2 lines
+d3w    → delete 3 words
+5x     → delete 5 characters
+4>>    → indent 4 lines
+```
+
+## How It Composes
+
+The pattern is `[count] operator [count] motion`, and Vim multiplies the counts:
+
+```
+2d3w   → delete 6 words (2 × 3)
+```
+
+The mental model shifts from "repeat this action" to "do this action at this scale." Combined with the dot command, multipliers give you precise control over bulk edits.
+
+<Exercise
+  title="Multiplied movement"
+  goal="Use number prefixes instead of repeated single presses."
+  code={`line 1
+line 2
+line 3
+line 4
+line 5
+line 6
+line 7
+line 8
+line 9
+line 10
+line 11
+line 12
+line 13
+line 14
+line 15`}
+>
+
+1. From the top, press `5j` — land on line 6.
+2. Press `3k` — back to line 3.
+3. Press `8G` — jump to line 8.
+4. Press `3j`, then `2k`.
+
+</Exercise>
+
+<Exercise
+  title="Multiplied deletion and yank"
+  goal="3dd, 2yy, and d3w act at scale in one command."
+  code={`const a = 1;
+const b = 2;
+const c = 3;
+const d = 4;
+const e = 5;
+const f = 6;
+const g = 7;`}
+>
+
+1. On the `const c` line, press `3dd` — deletes three lines.
+2. Undo.
+3. On line 1, press `2yy`, then `G` and `p` to paste at the end.
+4. On any `const`, press `d3w` to delete three words forward.
+
+</Exercise>
+
+<Exercise
+  title="Multiplied word navigation"
+  goal="Multiplied w/b/e beats pressing them repeatedly."
+  code={`const totalItemCount = calculateSum(itemPrices, taxRates, discountValues);`}
+>
+
+1. Press `0`, then `3w` — jump three words forward.
+2. Press `5w`, then `4b` to come back.
+3. Press `2e` to land on the end of the second word forward.
+
+</Exercise>
+
+<Exercise
+  title="Multiplied indentation"
+  goal="A count before >> indents that many levels."
+  code={`function outer() {
+function middle() {
+function inner() {
+const value = 42;
+return value;
+}
+}
+}`}
+>
+
+1. On `function middle()`, press `>>`.
+2. On `function inner()`, press `2>>`.
+3. On `const value`, press `3>>`.
+4. On `return value`, press `3>>`.
+
+</Exercise>
+
+<Exercise
+  title="Combined challenge"
+  goal="One multiplied command per task — no repeated pressing."
+  code={`error: connection refused
+error: timeout exceeded
+error: invalid token
+error: not found
+error: server unavailable
+warning: rate limit approaching
+warning: memory usage high
+info: process started
+info: cache cleared`}
+>
+
+1. Delete the first 5 `error:` lines with `5dd`.
+2. Undo. Go to the first `warning:` line and press `2dd`.
+3. Undo. From line 1, jump to the last line with a single `8j`.
+4. Select the last 2 lines with `V1j` and indent with `>`.
+
+</Exercise>

@@ -1,0 +1,163 @@
+---
+title: "Basic Movement"
+level: 1
+summary: "Move by character, word, line, and file without touching the mouse."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+Movement is the foundation of Vim. Before editing anything, you need to get your cursor where you want it — fast. Resist the urge to use arrow keys; the home-row commands exist so your hands never leave the keyboard.
+
+## Character & Word
+
+```
+h j k l   → left, down, up, right
+w / b     → next / previous word (start)
+e / ge    → end of word / end of previous word
+W B E     → same, but WORD (whitespace-separated)
+```
+
+## Line & File
+
+```
+0 ^ $ g_  → line start, first non-blank, line end, last non-blank
+gg / G    → start / end of file
+42G  :42  → go to line 42
+%         → jump to matching bracket
+```
+
+## Blocks & Scrolling
+
+```
+{ }       → previous / next paragraph
+Ctrl+d/u  → half page down / up
+zz zt zb  → cursor to center / top / bottom of screen
+H M L     → top / middle / bottom of visible screen
+```
+
+<Exercise
+  title="hjkl navigation"
+  goal="Build muscle memory for hjkl. It will feel slow — that's fine."
+  code={`line one here
+line two here
+line three here
+line four here
+line five here`}
+>
+
+1. Start at the top. Press `j` three times — you land on `line four`.
+2. Press `l` five times — move right five characters.
+3. Press `k` twice, then `h` three times.
+4. Navigate to the `e` in `three` using only `hjkl`.
+
+</Exercise>
+
+<Exercise
+  title="Word vs WORD"
+  goal="Understand the difference between w/b/e (word) and W/B/E (WORD)."
+  code={`const userFirstName = "Alice";
+const userLastName = "Smith";
+const userEmailAddress = "alice@example.com";`}
+>
+
+1. From the start, press `w` repeatedly and watch how it treats punctuation as words.
+2. Press `b` to move back word by word.
+3. Press `W` to jump by WORD — notice it skips punctuation differently.
+4. Navigate to `"Alice"` with `w`, then `e` to land on the closing `"`.
+5. Press `ge` to go back to the end of the previous word.
+
+</Exercise>
+
+<Exercise
+  title="Line navigation"
+  goal="Know when to use 0 vs ^ vs $ vs g_."
+  code={`    function calculateTotalPrice(items, taxRate, discountCode) {`}
+>
+
+1. Press `0` — the very start of the line, before the spaces.
+2. Press `^` — the first non-blank character (`f` of `function`).
+3. Press `$` — the end of the line.
+4. Press `g_` — the last non-blank character (the `{`).
+
+</Exercise>
+
+<Exercise
+  title="File navigation"
+  goal="Navigate large files without scrolling manually."
+  code={`line 1
+line 2
+line 3
+line 4
+line 5
+line 6
+line 7
+line 8
+line 9
+line 10
+line 11
+line 12`}
+>
+
+1. Press `G` — jump to the last line.
+2. Press `gg` — jump to the first line.
+3. Press `10G` — jump to line 10.
+4. Type `:5` and Enter — jump to line 5.
+5. Press `gg`, then `zz` to center the cursor.
+
+</Exercise>
+
+<Exercise
+  title="Block navigation"
+  goal="Move between code blocks without scrolling."
+  code={`function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}`}
+>
+
+1. From the top, press `}` — jump to the next blank line.
+2. Press `}` again to reach the next block.
+3. Press `{` to jump back up.
+4. Navigate to a `{` and press `%` — it jumps to the matching `}`.
+
+</Exercise>
+
+<Exercise
+  title="Combined movement challenge"
+  goal="Find the most efficient path — avoid hjkl for long distances."
+  code={`import React from "react";
+import { useState, useEffect } from "react";
+
+const App = () => {
+  const [count, setCount] = useState(0);
+  const [name, setName] = useState("world");
+
+  return (
+    <div>
+      <h1>Hello {name}</h1>
+      <button onClick={() => setCount(count + 1)}>
+        Count: {count}
+      </button>
+    </div>
+  );
+};
+
+export default App;`}
+>
+
+Starting from `gg`, reach each target with the fewest keystrokes:
+
+1. The word `useState` on line 2.
+2. The `0` inside `useState(0)`.
+3. The closing `}` of the component (use `%` or `G`).
+4. `export` on the last line.
+5. Back to `import` on line 1.
+
+</Exercise>

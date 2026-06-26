@@ -1,0 +1,118 @@
+---
+title: "Marks"
+level: 12
+summary: "Drop marks and jump back to exact positions."
+---
+
+import Exercise from '../components/Exercise.astro';
+
+Marks let you bookmark positions in a file and jump back to them instantly — handy when you're working across distant parts of a file without losing your place.
+
+## Setting and Jumping
+
+```
+m{letter}  → set a mark (ma)
+'{letter}  → jump to the mark's line ('a)
+`{letter}  → jump to the mark's exact position (`a)
+```
+
+Lowercase marks (`a`–`z`) are local to the file; uppercase marks (`A`–`Z`) are global across files.
+
+## Special Marks
+
+```
+''  → jump back to where you were before the last jump
+`.  → jump to the position of the last edit
+```
+
+These two work like browser back/forward for your cursor. Marks also serve as motion targets: `d'a` deletes from the current line to mark `a`'s line.
+
+<Exercise
+  title="Set and jump between marks"
+  goal="Drop several marks and hop between them instantly."
+  code={`function initializeApp() {
+  loadConfig();
+  connectDatabase();
+  startServer();
+}
+
+function loadConfig() {
+  return readFile("config.json");
+}
+
+function connectDatabase() {
+  return db.connect(config.dbUrl);
+}
+
+function startServer() {
+  app.listen(config.port || 3000);
+}`}
+>
+
+1. On `initializeApp`, press `ma`.
+2. Move down to `loadConfig` and press `mb`.
+3. Move to `connectDatabase` and press `mc`.
+4. Now press `'a`, then `'c`, then `'b` — jumping straight to each.
+
+</Exercise>
+
+<Exercise
+  title="Exact position with backtick"
+  goal="'a jumps to the line; the backtick form jumps to the exact column."
+  code={`const configuration = {
+  database: {
+    host: "localhost",
+    port: 5432,
+  },
+  server: {
+    host: "0.0.0.0",
+    port: 3000,
+  },
+};`}
+>
+
+1. Put the cursor on the `l` of `"localhost"` and press `ma`.
+2. Move to the `3` in `3000` and press `mb`.
+3. Press `` `a `` — you land on the exact character of mark `a`.
+4. Compare `'b` (jumps to the line) with `` `b `` (jumps to the column).
+
+</Exercise>
+
+<Exercise
+  title="The '' and backtick-dot marks"
+  goal="Return to your last edit, and jump back after navigating away."
+  code={`function longFunction() {
+  const step1 = doFirstThing();
+  const step2 = doSecondThing(step1);
+  const step3 = doThirdThing(step2);
+  const step4 = doFourthThing(step3);
+  const step5 = doFifthThing(step4);
+  return step5;
+}`}
+>
+
+1. Press `gg`, then search `/step4` and Enter.
+2. Press `ciw`, type `phase4`, press `Esc`.
+3. Navigate away with `/step1`, then press `` `. `` to return to your last edit.
+4. Press `''` to toggle back to where you jumped from.
+
+</Exercise>
+
+<Exercise
+  title="Marks as motion targets"
+  goal="Operators accept marks as their range."
+  code={`const routes = [
+  { path: "/home", component: Home },
+  { path: "/users", component: Users },
+  { path: "/products", component: Products },
+  { path: "/orders", component: Orders },
+  { path: "/admin", component: Admin },
+];`}
+>
+
+1. On the `"/users"` line, press `ma`.
+2. Move to the `"/admin"` line.
+3. Press `d'a` — delete from here back to mark `a`'s line.
+4. Undo with `u`.
+
+</Exercise>
