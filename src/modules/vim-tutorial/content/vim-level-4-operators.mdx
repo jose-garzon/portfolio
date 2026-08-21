@@ -6,7 +6,7 @@ summary: "The superpower: compose operators with motions and text objects."
 
 import Exercise from '../components/Exercise.astro';
 
-This is the level people mean when they say Vim "clicked." Everything so far was vocabulary. Here you start forming sentences. Operators combine with the motions and text objects you already know, so the number of edits you can express explodes — and you never had to memorize any of them. This is also home to Vim's best idea, the one almost no other editor copied: text objects.
+This is the level people mean when they say Vim "clicked." Everything so far was vocabulary. Here you start forming sentences. Operators combine with the motions and text objects you already know, so the number of edits you can express explodes, and you never had to memorize any of them. This is also home to Vim's best idea, the one almost no other editor copied: text objects.
 
 ## The Main Operators
 
@@ -39,7 +39,7 @@ i{ a{     → inside / including braces
 it at     → inside / including an HTML/JSX tag
 ```
 
-Combine an operator with a text object and you describe an edit precisely: `ci"` means *change the thing inside these quotes* — no manual selecting required. `ciw` is the most-used rename command.
+Combine an operator with a text object and you describe an edit precisely: `ci"` means *change the thing inside these quotes*, no manual selecting required. `ciw` is the most-used rename command.
 
 <Exercise
   title="Delete with text objects"
@@ -49,8 +49,8 @@ const numbers = [1, 2, 3, 4, 5];
 const user = { name: "Alice", age: 30 };`}
 >
 
-1. With the cursor in `"Hello, world!"`, press `di"` — deletes inside the quotes; the quotes stay.
-2. Undo, then press `da"` — deletes the string including the quotes.
+1. With the cursor in `"Hello, world!"`, press `di"`: deletes inside the quotes; the quotes stay.
+2. Undo, then press `da"`: deletes the string including the quotes.
 3. On the `numbers` line, put the cursor inside `[...]` and press `di[`.
 4. On the `user` line, put the cursor inside `{...}` and press `di{`.
 
@@ -103,7 +103,7 @@ import { useCallback } from "react";
 import { useMemo } from "react";`}
 >
 
-1. On line 2, press `d2j` — deletes the current line plus two below (three total). Counts on `j` reach *that many lines down*, so `d2j` spans three lines, not two.
+1. On line 2, press `d2j`: deletes the current line plus two below (three total). Counts on `j` reach *that many lines down*, so `d2j` spans three lines, not two.
 2. Undo. On line 1, press `y2j` to yank three lines, then `G` and `p` to paste at the end.
 3. On any line, press `>>` to indent, then `<<` to un-indent.
 
@@ -120,14 +120,14 @@ import { useMemo } from "react";`}
 >
 
 1. Inside the `<h1>` content, press `cit`, type `Hello World`, press `Esc`.
-2. On the `<strong>` element, press `dat` — delete the entire tag.
+2. On the `<strong>` element, press `dat`: delete the entire tag.
 3. Inside `"container"`, press `ci"` and type `wrapper`.
 4. On the word `handleClick`, press `ciw` and type `onButtonClick`.
 
 </Exercise>
 
 <Exercise
-  title="Challenge — refactor without the mouse"
+  title="Challenge: refactor without the mouse"
   goal="All edits with text objects and operators only."
   code={`const user = {
   firstName: "John",
@@ -147,7 +147,7 @@ import { useMemo } from "react";`}
 </Exercise>
 
 <Exercise
-  title="Capstone — reshape a function, operators only"
+  title="Capstone: reshape a function, operators only"
   goal="Compose text objects, counts, dot, and yank/paste into one clean refactor. No mouse, no Insert-mode navigation."
   code={`function handler(req, res) {
   const id = req.body.id;
@@ -157,12 +157,12 @@ import { useMemo } from "react";`}
 }`}
 >
 
-The three `const` lines were copy-pasted and never finished — every one still reads `req.body.id`. Fix the whole function with operators and motions:
+The three `const` lines were copy-pasted and never finished: every one still reads `req.body.id`. Fix the whole function with operators and motions:
 
 1. Rename `handler` to `updateUser`: cursor on the word, `ciw`, type it, `Esc`.
 2. Line 2 keeps `.id`. On line 3, put the cursor on the trailing `id` and `ciw` it to `name`. On line 4, `ciw` the trailing `id` to `email`.
 3. Replace the response payload: cursor inside the `{ ok: true }`, press `ci{`, type ` id, name, email `, `Esc`.
 4. The function has no error guard. On the `const id` line press `O`, type `if (!req.body) return res.status(400).end();`, `Esc`.
-5. Grab the whole body in one stroke: `yi{` yanks everything inside the function's braces — confirm the register holds all the inner lines at once.
+5. Grab the whole body in one stroke: `yi{` yanks everything inside the function's braces. Confirm the register holds all the inner lines at once.
 
 </Exercise>

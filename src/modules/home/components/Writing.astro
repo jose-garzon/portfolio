@@ -269,6 +269,11 @@ const formatDate = (d: Date) =>
     line-height: 1.7;
     max-width: 70ch;
     margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
   }
 
   .feed-tags {

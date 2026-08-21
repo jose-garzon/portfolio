@@ -20,7 +20,7 @@ const { title, summary, level, prev, next } = Astro.props;
 const levelLabel = String(level).padStart(2, '0');
 ---
 
-<Layout title={`Vim · ${title} — ${fullName}`} description={summary}>
+<Layout title={`Vim · ${title} · ${fullName}`} description={summary}>
   <main class="vim-main">
     <div class="container">
       <div class="vim-shell">

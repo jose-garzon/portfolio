@@ -26,7 +26,7 @@ u         → undo
 Ctrl+r    → redo
 ```
 
-Note: `d`, `dd`, `c` all cut to the default register — deleting *is* cutting, so you can always paste what you removed.
+Note: `d`, `dd`, `c` all cut to the default register, deleting *is* cutting, so you can always paste what you removed.
 
 ## The Dot Command
 
@@ -43,11 +43,11 @@ The move that defines fluent Vim: search with `/name`, change one match with `ci
 The quikc brown foxe jumps ovver the lazzy dog.`}
 >
 
-1. `Thiss` — cursor on the extra `s`, press `x`.
-2. `sentense` — cursor on the wrong `s` (the one before the last `e`), press `r` then `c` to make it `sentence`.
-3. `itt` — cursor on the extra `t`, press `x`.
-4. `foxe` — cursor on the `e`, press `x`.
-5. `ovver` and `lazzy` — cursor on the doubled letter, press `x`.
+1. `Thiss`: cursor on the extra `s`, press `x`.
+2. `sentense`: cursor on the wrong `s` (the one before the last `e`), press `r` then `c` to make it `sentence`.
+3. `itt`: cursor on the extra `t`, press `x`.
+4. `foxe`: cursor on the `e`, press `x`.
+5. `ovver` and `lazzy`: cursor on the doubled letter, press `x`.
 
 </Exercise>
 
@@ -64,9 +64,9 @@ const items = [
 ];`}
 >
 
-1. On `const message =`, press `J` — joins the next line with a space.
+1. On `const message =`, press `J`: joins the next line with a space.
 2. On `const items = [`, press `J` a few times to collapse the array onto one line.
-3. Undo, then try `gJ` instead — no space is added.
+3. Undo, then try `gJ` instead: no space is added.
 
 </Exercise>
 
@@ -101,7 +101,7 @@ const e = getValue();`}
 1. Type `/console.log` and Enter.
 2. Press `ct(`, type `logger.info`, press `Esc`. Why `ct(` and not `cw`? `cw` stops at the `.`, leaving `.log` behind; `ct(` changes everything up to the `(`.
 3. Press `n` for the next match, then `.` to repeat.
-4. Continue `n.n.n.` through all of them — same edit, four keystrokes.
+4. Continue `n.n.n.` through all of them: same edit, four keystrokes.
 
 </Exercise>
 
@@ -114,7 +114,7 @@ const author = "Alice";`}
 >
 
 1. Make three changes: `1` → `2`, `"app"` → `"myapp"`, `"Alice"` → `"Bob"`.
-2. Press `u` three times — each change reverts in turn.
+2. Press `u` three times: each change reverts in turn.
 3. Press `Ctrl+r` to redo them back, one at a time.
 
 </Exercise>

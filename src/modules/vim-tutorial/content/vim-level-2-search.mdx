@@ -40,7 +40,7 @@ const nameLength = fullName.length;
 console.log("Name:", fullName);`}
 >
 
-1. Type `/Name` and Enter — find the first occurrence.
+1. Type `/Name` and Enter: find the first occurrence.
 2. Press `n` repeatedly to visit each match.
 3. Press `N` to go backward.
 4. Put the cursor on `fullName` and press `*` to search that exact word.
@@ -57,8 +57,8 @@ const accountNumber = 12345;
 const recount = count + 1;`}
 >
 
-1. Type `/count` — it matches `count`, `discount`, `accountNumber`, `recount`.
-2. Put the cursor on the word `count` and press `*` — it matches only the exact word.
+1. Type `/count`: it matches `count`, `discount`, `accountNumber`, `recount`.
+2. Put the cursor on the word `count` and press `*`: it matches only the exact word.
 3. `/count` is a plain substring search; `*` adds word boundaries automatically.
 
 </Exercise>
@@ -70,11 +70,11 @@ const recount = count + 1;`}
 >
 
 1. Press `0` to go to the start of the line.
-2. Press `f(` — jump onto the `(`.
-3. Press `f,` — jump to the first `,`.
-4. Press `;` twice — repeat to the next commas.
-5. Press `,` — jump back to the previous comma.
-6. Press `0`, then `t)` — land just before the `)`.
+2. Press `f(`: jump onto the `(`.
+3. Press `f,`: jump to the first `,`.
+4. Press `;` twice: repeat to the next commas.
+5. Press `,`: jump back to the previous comma.
+6. Press `0`, then `t)`: land just before the `)`.
 
 </Exercise>
 
@@ -87,11 +87,11 @@ const message = "Hello, world, how are you?";`}
 
 On line 1:
 1. Press `0`, then `fb` to land on `base`.
-2. Press `dt,` — delete up to (but not including) the first comma. `base` vanishes, the comma stays.
+2. Press `dt,`: delete up to (but not including) the first comma. `base` vanishes, the comma stays.
 
 On line 2:
 1. Press `0`, then `f"` to jump to the opening quote.
-2. Press `df,` — delete from the quote *through* the first comma. Notice `f` includes the target, `t` stops short of it.
+2. Press `df,`: delete from the quote *through* the first comma. Notice `f` includes the target, `t` stops short of it.
 
 </Exercise>
 
@@ -115,7 +115,7 @@ function updateUserData(userId, newData) {
 }`}
 >
 
-1. Put the cursor on `userId` and press `*` — jump through each occurrence with `n`.
+1. Put the cursor on `userId` and press `*`: jump through each occurrence with `n`.
 2. Press `N` to navigate backward.
 3. Search `/Error` and visit both occurrences with `n`.
 4. Put the cursor on `find` and press `*`. How many times does it appear?

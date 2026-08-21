@@ -12,7 +12,7 @@ export const levels: Level[] = [
     level: 0,
     collectionId: 'vim-level-0-modes',
     title: 'Vim Modes',
-    summary: 'Normal, Insert, Visual, Command — the modes that make Vim fast.',
+    summary: 'Normal, Insert, Visual, Command · the modes that make Vim fast.',
   },
   {
     slug: '01-movement',

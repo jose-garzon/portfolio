@@ -1,6 +1,6 @@
 [
   {
-    "company": "Globant — Aeroméxico",
+    "company": "Globant · Aeroméxico",
     "role": "Software Engineer",
     "period": "May 2025 – Present",
     "description": "Rebuilding the Aeroméxico web platform flow by flow, replacing a legacy monolith with a microfrontend architecture built to let multiple teams ship independently.",
@@ -22,7 +22,7 @@
     ]
   },
   {
-    "company": "Globant — Disney",
+    "company": "Globant · Disney",
     "role": "Senior Frontend Developer",
     "period": "Dec 2022 – May 2025",
     "description": "Built an internal tool used by Disney financial planners to schedule releases across FX, Nat Geo, and other Disney-owned networks from an economic perspective.",
@@ -34,7 +34,7 @@
     ]
   },
   {
-    "company": "Globant — Growie",
+    "company": "Globant · Growie",
     "role": "Frontend Developer",
     "period": "Jul 2021 – Dec 2022",
     "description": "Built the admin platform for Growie, a blockchain-based real estate investment product, and set up the CMS powering its marketing content.",

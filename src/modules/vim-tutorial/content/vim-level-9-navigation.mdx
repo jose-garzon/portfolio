@@ -37,7 +37,7 @@ Ctrl+w q        → close the current window
 ZZ  ZQ            → save+quit / quit shortcuts
 ```
 
-> Buffers, splits, and `:w`/`:q` need a real Vim session with multiple files, so they can't run in the single embedded editor below. Most Vim and Neovim users also add a fuzzy finder — [fzf.vim](https://github.com/junegunn/fzf.vim) or [Telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) — to jump to files by name instantly. The exercise here practices the in-file navigation that makes moving *within* a buffer just as fast.
+> Buffers, splits, and `:w`/`:q` need a real Vim session with multiple files, so they can't run in the single embedded editor below. Most Vim and Neovim users also add a fuzzy finder ([fzf.vim](https://github.com/junegunn/fzf.vim) or [Telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)) to jump to files by name instantly. The exercise here practices the in-file navigation that makes moving *within* a buffer just as fast.
 
 <Exercise
   title="Fast in-file navigation"
@@ -64,7 +64,7 @@ module.exports = { DB_HOST, DB_PORT, DB_NAME };`}
 
 <Exercise
   title="Edit, then keep moving"
-  goal="Combine navigation with edits — the everyday rhythm."
+  goal="Combine navigation with edits: the everyday rhythm."
   code={`const express = require("express");
 const routes = require("./routes");
 const app = express();

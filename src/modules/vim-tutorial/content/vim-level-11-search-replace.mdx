@@ -30,7 +30,7 @@ The `g` flag means "all on the line"; `%` means "the whole file"; `c` prompts fo
 
 Vim uses its own regex flavor: `\+` means "one or more" (note the backslash), `\d` is a digit, `\<` and `\>` are word boundaries, `^` and `$` anchor line start and end.
 
-> **Heads up about the editor below.** Real Vim and Neovim use the flavor above. The embedded editor here runs on CodeMirror, which uses **JavaScript** regular expressions — so in these exercises drop the backslash on quantifiers (`\d+`, not `\d\+`), use `(...)` for groups, and `$1` `$2` for backreferences. The `:%s/old/new/flags` structure is identical; only the pattern dialect changes. Where the real-Vim form differs, it's noted inline.
+> **Heads up about the editor below.** Real Vim and Neovim use the flavor above. The embedded editor here runs on CodeMirror, which uses **JavaScript** regular expressions, so in these exercises drop the backslash on quantifiers (`\d+`, not `\d\+`), use `(...)` for groups, and `$1` `$2` for backreferences. The `:%s/old/new/flags` structure is identical; only the pattern dialect changes. Where the real-Vim form differs, it's noted inline.
 
 ```
 \d+   (here)   →  \d\+   (real Vim)     one or more digits
@@ -45,8 +45,8 @@ $1    (here)   →  \1     (real Vim)     reuse a captured group
   code={`The cat sat on the mat near the cat.`}
 >
 
-1. Type `:s/cat/dog/` and Enter — only the first `cat` changes.
-2. Undo. Type `:s/cat/dog/g` — all of them on the line change.
+1. Type `:s/cat/dog/` and Enter: only the first `cat` changes.
+2. Undo. Type `:s/cat/dog/g`: all of them on the line change.
 3. Undo. Type `:s/the/a/g`.
 
 </Exercise>
@@ -65,8 +65,8 @@ function updateUser(userId, data) {
 }`}
 >
 
-1. Type `:%s/user/member/g` — every `user` changes, including inside `userId` and `getUser`.
-2. Undo. Type `:%s/User/Member/g` — only the capitalized form changes.
+1. Type `:%s/user/member/g`: every `user` changes, including inside `userId` and `getUser`.
+2. Undo. Type `:%s/User/Member/g`: only the capitalized form changes.
 
 </Exercise>
 
@@ -105,7 +105,7 @@ user345 logged out`}
 
 <Exercise
   title="Real-world refactor"
-  goal="One command per rename — the power of :s for large edits."
+  goal="One command per rename: the power of :s for large edits."
   code={`class UserProfile extends Component {
   constructor(props) {
     super(props);
@@ -124,7 +124,7 @@ user345 logged out`}
 </Exercise>
 
 <Exercise
-  title="Capstone — capture groups and the whole-match &"
+  title="Capstone: capture groups and the whole-match &"
   goal="Reorder and wrap text by reusing what the pattern captured."
   code={`John Smith
 Jane Doe
@@ -135,7 +135,7 @@ Grace Hopper`}
 A plain replace can only swap fixed text. Capture groups let you grab pieces of each match and rearrange them. Wrap part of the pattern in `(...)`, then reference what you caught with `$1`, `$2`. `&` is the whole match.
 
 1. Flip every name to `Last, First`: `:%s/(\w+) (\w+)/$2, $1/`. Group 1 is the first name, group 2 the last; the replacement reorders them. (Real Vim: `\(\w\+\) \(\w\+\)` with `\1` `\2`.)
-2. Undo with `u`. Now quote each entire line using the whole match: `:%s/.+/"&"/` — `&` stands in for everything the pattern matched.
-3. Undo. Do both at once — reorder *and* quote: `:%s/(\w+) (\w+)/"$2, $1"/`.
+2. Undo with `u`. Now quote each entire line using the whole match: `:%s/.+/"&"/`. `&` stands in for everything the pattern matched.
+3. Undo. Do both at once, reorder *and* quote: `:%s/(\w+) (\w+)/"$2, $1"/`.
 
 </Exercise>

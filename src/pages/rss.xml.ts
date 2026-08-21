@@ -10,7 +10,7 @@ export async function GET(context: APIContext) {
     .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
   return rss({
-    title: `${fullName} — Writing`,
+    title: `${fullName} · Writing`,
     description:
       'Engineering notes on LLMs, backend, systems, and what I am figuring out. Learning in public.',
     site: context.site ?? 'https://jose-garzon.dev',

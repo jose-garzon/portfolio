@@ -23,10 +23,10 @@ O  → open a new line above and insert
 
 ## Leaving Insert Mode
 
-Press `Esc` (or `Ctrl+[`) to return to Normal mode. The habit to build: Insert mode is for typing only. As soon as you're done, drop back to Normal mode — don't navigate or delete chunks while in Insert.
+Press `Esc` (or `Ctrl+[`) to return to Normal mode. The habit to build: Insert mode is for typing only. As soon as you're done, drop back to Normal mode: don't navigate or delete chunks while in Insert.
 
 <Exercise
-  title="i vs a — before or after"
+  title="i vs a: before or after"
   goal="i inserts before the cursor, a inserts after."
   code={`hello world`}
 >
@@ -39,7 +39,7 @@ Press `Esc` (or `Ctrl+[`) to return to Normal mode. The habit to build: Insert m
 </Exercise>
 
 <Exercise
-  title="I and A — line boundaries"
+  title="I and A: line boundaries"
   goal="Use A to append to line ends without navigating there manually."
   code={`  const items = [];
   const total = 0;
@@ -53,7 +53,7 @@ Press `Esc` (or `Ctrl+[`) to return to Normal mode. The habit to build: Insert m
 </Exercise>
 
 <Exercise
-  title="o and O — open new lines"
+  title="o and O: open new lines"
   goal="Insert lines without moving to line ends or using arrow keys."
   code={`function greet() {
   console.log("Hello");
@@ -73,15 +73,15 @@ const age = 30
 const city = "NYC"`}
 >
 
-1. Add a `;` to the end of every line — use `A` on each.
-2. Add `let ` to the start of the `age` line — use `I`.
-3. Add a comment line `// user data` above the first — use `O` on it.
-4. Add `const country = "US";` after the `city` line — use `o`.
+1. Add a `;` to the end of every line: use `A` on each.
+2. Add `let ` to the start of the `age` line: use `I`.
+3. Add a comment line `// user data` above the first: use `O` on it.
+4. Add `const country = "US";` after the `city` line: use `o`.
 
 </Exercise>
 
 <Exercise
-  title="Real code — fill in the missing pieces"
+  title="Real code: fill in the missing pieces"
   goal="Use the correct insert command every time."
   code={`function fetchUser(id) {
   const response = await fetch(\`/api/users/\`)

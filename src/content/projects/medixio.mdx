@@ -18,32 +18,32 @@ order: 1
 
 ## Problem
 
-This one isn't abstract. My wife lives with a chronic autoimmune disease, and I watch the coordination cost land on her every week — appointments across multiple specialists, procedures, lab work, medications that change. The hard part is the timing: tracking all of it is hardest exactly during a flare, which is exactly when staying on top of it matters most. A calendar doesn't carry that load. Another app she has to maintain doesn't either.
+This one isn't abstract. My wife lives with a chronic autoimmune disease, and I watch the coordination cost land on her every week: appointments across multiple specialists, procedures, lab work, medications that change. The hard part is the timing: tracking all of it is hardest exactly during a flare, which is exactly when staying on top of it matters most. A calendar doesn't carry that load. Another app she has to maintain doesn't either.
 
 So the goal is narrow and honest: something that holds the timeline for her, so that managing the disease isn't itself a second job she has to do while sick.
 
-The second motive I won't pretend away — I wanted to learn how to build a real AI agent. Not a chat-window demo, but an agent wired into a real workflow with real stakes. This is the project where I do that.
+The second motive I won't pretend away: I wanted to learn how to build a real AI agent. Not a chat-window demo, but an agent wired into a real workflow with real stakes. This is the project where I do that.
 
 ## Approach
 
-The design starts from a boundary, not a feature list: the LLM reads, deterministic code writes. The agent can query the record, summarize the timeline, and answer questions freely — but every mutation (logging a procedure, recording a medication change, scheduling a follow-up) goes through validated, deterministic tools the model can call but can't bypass. The model proposes; typed code decides whether it happens.
+The design starts from a boundary, not a feature list: the LLM reads, deterministic code writes. The agent can query the record, summarize the timeline, and answer questions freely, but every mutation (logging a procedure, recording a medication change, scheduling a follow-up) goes through validated, deterministic tools the model can call but can't bypass. The model proposes; typed code decides whether it happens.
 
-Two hard rules sit on top of that. **No medical advice** — it tracks, reminds, and surfaces; it never suggests a dosage, a diagnosis, or a treatment. And **human-in-the-loop for anything consequential** — booking, contacting a doctor, anything that touches the outside world is confirmed, never autonomous. For a tool sitting next to someone's health, the wrong kind of autonomy is a bug, not a feature.
+Two hard rules sit on top of that. **No medical advice**: it tracks, reminds, and surfaces; it never suggests a dosage, a diagnosis, or a treatment. And **human-in-the-loop for anything consequential**: booking, contacting a doctor, anything that touches the outside world is confirmed, never autonomous. For a tool sitting next to someone's health, the wrong kind of autonomy is a bug, not a feature.
 
 Stack is Python, FastAPI, PydanticAI for the agent and tool definitions, and PostgreSQL for the record. PydanticAI specifically because typed tool signatures are how I keep the model inside the lines.
 
 ## Current state
 
-Honest version: mostly scaffolding. The data model and the agent loop are taking shape, but it's early, and I'm rebuilding it from scratch — the [public repo](https://github.com/jose-garzon/medixio) still holds an older version I outgrew before I understood the problem well enough. The redo is the real project. I'd rather show the foundation being poured than fake a finished building.
+Honest version: mostly scaffolding. The data model and the agent loop are taking shape, but it's early, and I'm rebuilding it from scratch: the [public repo](https://github.com/jose-garzon/medixio) still holds an older version I outgrew before I understood the problem well enough. The redo is the real project. I'd rather show the foundation being poured than fake a finished building.
 
 ## Tradeoffs
 
 - **Agent autonomy vs safety.** I deliberately gave up the impressive autonomous-agent demo. Reads are free; writes and outside actions are gated. With health data, the constraint is the product.
-- **Build it myself vs stitch existing apps.** No off-the-shelf tool connects calendar, procedures, meds, and notes into one timeline that carries itself — and building it is also how I learn agents. Both reasons are real.
+- **Build it myself vs stitch existing apps.** No off-the-shelf tool connects calendar, procedures, meds, and notes into one timeline that carries itself, and building it is also how I learn agents. Both reasons are real.
 - **Rewrite vs salvage.** The old version works in the demo sense but encodes a shallow understanding of the problem. Starting over costs time I'd rather have kept; carrying the wrong foundation costs more.
 
 ## What I'd do differently
 
-- I built the first version before I understood the problem — I modeled "an AI health assistant" in the abstract instead of the specific load my wife actually carries. Hence the rewrite. Next time I write the workflow down before the code.
+- I built the first version before I understood the problem: I modeled "an AI health assistant" in the abstract instead of the specific load my wife actually carries. Hence the rewrite. Next time I write the workflow down before the code.
 - I reached for agent autonomy as the interesting part. The interesting part turned out to be the boundary: what the agent is *not* allowed to do. I'd start from that constraint instead of arriving at it.
 

@@ -19,7 +19,7 @@
   --color-glitch-magenta: #ff006e;
   --color-hack-yellow: #ffbe0b;
 
-  /* Electric blue — secondary accent */
+  /* Electric blue: secondary accent */
   --color-blue: #2d7fff;
   --color-blue-bright: #3d8fff;
   --color-blue-dark: #1a5fbf;
@@ -199,7 +199,7 @@ h3,
   color: var(--color-text);
 }
 
-/* ===== RGB split glitch — hover only, opt-in via data-text attribute ===== */
+/* ===== RGB split glitch: hover only, opt-in via data-text attribute ===== */
 @keyframes glitch-red {
   0%,
   100% {

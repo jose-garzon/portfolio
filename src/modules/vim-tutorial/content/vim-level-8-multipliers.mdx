@@ -49,9 +49,9 @@ line 14
 line 15`}
 >
 
-1. From the top, press `5j` — land on line 6.
-2. Press `3k` — back to line 3.
-3. Press `8G` — jump to line 8.
+1. From the top, press `5j`: land on line 6.
+2. Press `3k`: back to line 3.
+3. Press `8G`: jump to line 8.
 4. Press `3j`, then `2k`.
 
 </Exercise>
@@ -68,7 +68,7 @@ const f = 6;
 const g = 7;`}
 >
 
-1. On the `const c` line, press `3dd` — deletes three lines.
+1. On the `const c` line, press `3dd`: deletes three lines.
 2. Undo.
 3. On line 1, press `2yy`, then `G` and `p` to paste at the end.
 4. On any `const`, press `d3w` to delete three words forward.
@@ -81,7 +81,7 @@ const g = 7;`}
   code={`const totalItemCount = calculateSum(itemPrices, taxRates, discountValues);`}
 >
 
-1. Press `0`, then `3w` — jump three words forward.
+1. Press `0`, then `3w`: jump three words forward.
 2. Press `5w`, then `4b` to come back.
 3. Press `2e` to land on the end of the second word forward.
 
@@ -89,7 +89,7 @@ const g = 7;`}
 
 <Exercise
   title="Multiplied indentation"
-  goal="A count before >> indents that many lines at once — not one line that many levels."
+  goal="A count before >> indents that many lines at once: not one line that many levels."
   code={`const query = db
 .select("id", "name", "email")
 .from("users")
@@ -98,15 +98,15 @@ const g = 7;`}
 .limit(10);`}
 >
 
-1. On the `.select` line (line 2), press `5>>` — indents five lines in one stroke. The whole chain lines up under `const query`.
-2. Undo with `u`. Now press `>>` alone — only the current line moves. The count is what scales it.
+1. On the `.select` line (line 2), press `5>>`: indents five lines in one stroke. The whole chain lines up under `const query`.
+2. Undo with `u`. Now press `>>` alone: only the current line moves. The count is what scales it.
 3. Redo your indent. To go *deeper*, repeat the operator: `>>` again pushes the current line one more level. Count picks how many lines; repetition picks how many levels.
 
 </Exercise>
 
 <Exercise
   title="Combined challenge"
-  goal="One multiplied command per task — no repeated pressing."
+  goal="One multiplied command per task: no repeated pressing."
   code={`error: connection refused
 error: timeout exceeded
 error: invalid token

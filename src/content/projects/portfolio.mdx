@@ -3,7 +3,7 @@ name: Portfolio Site
 role: Solo engineer
 period: "2026"
 status: shipping
-summary: This site. Astro 6, a single React island for the mobile nav, zero-runtime JS everywhere else. Designed as a Quiet Operator — hacker register without cosplay, crimson on near-black, three-font system, glitch only on hover.
+summary: This site. Astro 6, a single React island for the mobile nav, zero-runtime JS everywhere else. Designed as a Quiet Operator, hacker register without cosplay, crimson on near-black, three-font system, glitch only on hover.
 stack:
   - Astro
   - React
@@ -19,15 +19,15 @@ order: 2
 
 ## Problem
 
-A portfolio is the one thing on a résumé you can actually inspect the source of. My day job is frontend at scale — migrating Aeroméxico off a legacy site, module by module — but the direction I'm pushing toward is broader: systems, backend, becoming a genuinely good engineer rather than a framework operator. A template wouldn't carry that. If someone opens the network tab or the repo and the surface holds up, they have their answer before they reach the experience section.
+A portfolio is the one thing on a résumé you can actually inspect the source of. My day job is frontend at scale (migrating Aeroméxico off a legacy site, module by module), but the direction I'm pushing toward is broader: systems, backend, becoming a genuinely good engineer rather than a framework operator. A template wouldn't carry that. If someone opens the network tab or the repo and the surface holds up, they have their answer before they reach the experience section.
 
 So the rule was simple: nothing here gets to be decoration. Every choice should be defensible if someone asks about it.
 
 ## Approach
 
-Static-by-default. Astro 6 ships HTML and zero JavaScript unless a component earns hydration. Exactly one does — the header, a `client:load` island using Base UI for the mobile dialog. Everything else server-renders and stays inert.
+Static-by-default. Astro 6 ships HTML and zero JavaScript unless a component earns hydration. Exactly one does: the header, a `client:load` island using Base UI for the mobile dialog. Everything else server-renders and stays inert.
 
-Content lives in three collections — `blog`, `projects`, `now` — typed with Zod schemas in `content.config.ts`, authored in MDX. The visual system carries the register without imagery: crimson (`#ff2d55`) on near-black, a three-font split (Orbitron for display, Space Grotesk for body, JetBrains Mono for code), and a glitch effect that only fires on hover via `data-text` pseudo-elements. All of it tuned to one north star I wrote down before building — *the Quiet Operator*: hacker register without the cosplay.
+Content lives in three collections (`blog`, `projects`, `now`) typed with Zod schemas in `content.config.ts`, authored in MDX. The visual system carries the register without imagery: crimson (`#ff2d55`) on near-black, a three-font split (Orbitron for display, Space Grotesk for body, JetBrains Mono for code), and a glitch effect that only fires on hover via `data-text` pseudo-elements. All of it tuned to one north star I wrote down before building, *the Quiet Operator*: hacker register without the cosplay.
 
 Tooling is deliberately strict: Biome for lint and format, Husky + lint-staged gating every commit, Vitest wired in for when the interactive surface grows enough to need it.
 
@@ -37,7 +37,7 @@ File-based routing in `src/pages/`. A single `Layout.astro` shell wraps every pa
 
 ## Tradeoffs
 
-- **Scoped styles vs a utility framework.** Per-component `<style>` keeps the file-per-component story honest — read one file, see all of its CSS. The cost is no shared spacing utilities; tokens close most of that gap.
+- **Scoped styles vs a utility framework.** Per-component `<style>` keeps the file-per-component story honest: read one file, see all of its CSS. The cost is no shared spacing utilities; tokens close most of that gap.
 - **MDX vs plain Markdown.** MDX pulls in a heavier content pipeline than these posts strictly need. Kept it so long-form writing can embed real components inline without a second system.
 - **One island, not zero.** A fully static build was on the table. The mobile nav needs focus-trapped dialog behavior, and hand-rolling that correctly costs more than shipping one small Base UI island.
 

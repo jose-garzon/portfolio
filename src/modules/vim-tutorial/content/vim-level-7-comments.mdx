@@ -16,13 +16,13 @@ gc{motion} → toggle comment over a motion (gcap, gc3j, gcG)
 gc (visual)→ toggle comment on the selection
 ```
 
-`gc` is just another operator — it composes with every motion and text object you already know. `gcip` comments an inner paragraph; `gc2j` comments three lines. There's nothing new to learn.
+`gc` is just another operator: it composes with every motion and text object you already know. `gcip` comments an inner paragraph; `gc2j` comments three lines. There's nothing new to learn.
 
-> The editor below uses core Vim and doesn't include the commentary plugin, so `gcc` won't fire here. The exercises practice the **manual equivalent** — using Visual block and `I//` — which produces the same result and reinforces Level 6.
+> The editor below uses core Vim and doesn't include the commentary plugin, so `gcc` won't fire here. The exercises practice the **manual equivalent** (using Visual block and `I//`), which produces the same result and reinforces Level 6.
 
 <Exercise
   title="Comment a line manually"
-  goal="I at the line start inserts a // prefix — the manual gcc."
+  goal="I at the line start inserts a // prefix: the manual gcc."
   code={`function greet(name) {
   const message = \`Hello, \${name}!\`;
   console.log(message);
@@ -31,7 +31,7 @@ gc (visual)→ toggle comment on the selection
 >
 
 1. Put the cursor on the `console.log` line.
-2. Press `I`, type `// `, press `Esc` — the line is now commented.
+2. Press `I`, type `// `, press `Esc`: the line is now commented.
 3. To uncomment: press `0`, then `x` twice (or `2x`) to remove the `//`.
 
 </Exercise>
@@ -51,13 +51,13 @@ if (DEBUG) {
 
 1. Put the cursor at the start of the first `console.log` line.
 2. Press `Ctrl+v`, then `j` three times to span all four lines.
-3. Press `I`, type `// `, press `Esc` — all four are commented.
+3. Press `I`, type `// `, press `Esc`: all four are commented.
 4. To uncomment: `Ctrl+v`, select the `// ` column, press `d`.
 
 </Exercise>
 
 <Exercise
-  title="Debugging workflow — silence the logs"
+  title="Debugging workflow: silence the logs"
   goal="Comment a block to test without noise, then restore it."
   code={`function calculatePrice(item) {
   const basePrice = item.price;

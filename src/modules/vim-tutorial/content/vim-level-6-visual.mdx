@@ -27,7 +27,7 @@ d  c  y      → delete / change / yank
 
 ## Visual Block (Ctrl+v)
 
-The unique one: select a rectangular region. To add text to the start of many lines — `Ctrl+v`, select down with `j`, press `I`, type your text, press `Esc`, and it applies to every line. Invaluable for prefixes, columns, and aligned data.
+The unique one: select a rectangular region. To add text to the start of many lines: `Ctrl+v`, select down with `j`, press `I`, type your text, press `Esc`, and it applies to every line. Invaluable for prefixes, columns, and aligned data.
 
 <Exercise
   title="Character-wise selection"
@@ -64,7 +64,7 @@ Pack my box with five dozen liquor jugs.`}
 </Exercise>
 
 <Exercise
-  title="Visual block — add a prefix"
+  title="Visual block: add a prefix"
   goal="Apply the same text to the start of many lines at once."
   code={`apple
 banana
@@ -77,12 +77,12 @@ fig`}
 1. Press `Ctrl+v` to enter Visual block.
 2. Press `G` to extend the cursor down every line.
 3. Press `I`, type `- ` (dash space).
-4. Press `Esc` — every line now starts with `- `.
+4. Press `Esc`: every line now starts with `- `.
 
 </Exercise>
 
 <Exercise
-  title="Visual block — delete a column"
+  title="Visual block: delete a column"
   goal="Block mode removes a rectangular region."
   code={`| id  | name    | email              |
 | 1   | Alice   | alice@example.com  |
@@ -98,7 +98,7 @@ fig`}
 </Exercise>
 
 <Exercise
-  title="Visual block — append to line ends"
+  title="Visual block: append to line ends"
   goal="$ extends the block to each line's end before A."
   code={`const a = 1
 const b = 2
@@ -109,12 +109,12 @@ const e = 5`}
 
 1. Press `Ctrl+v`, then `G` to select down.
 2. Press `$` to extend the selection to each line's end.
-3. Press `A`, type `;`, press `Esc` — every line now ends with `;`.
+3. Press `A`, type `;`, press `Esc`: every line now ends with `;`.
 
 </Exercise>
 
 <Exercise
-  title="Capstone — turn raw rows into a typed enum"
+  title="Capstone: turn raw rows into a typed enum"
   goal="Chain character-wise, line-wise, and block edits into one transform."
   code={`RED
 GREEN
@@ -123,11 +123,11 @@ YELLOW
 PURPLE`}
 >
 
-Convert this flat list into a block of object entries — `RED: "red",` and so on — using Visual mode for every step instead of editing line by line:
+Convert this flat list into a block of object entries (`RED: "red",` and so on) using Visual mode for every step instead of editing line by line:
 
-1. **Block prefix.** `Ctrl+v`, `G`, then `I` and two spaces, `Esc` — indent all five.
-2. **Block suffix, part one.** `Ctrl+v`, `G`, `$`, then `A`, type `: ""`, `Esc` — every line now ends with `: ""`.
-3. **Fill the value with a lowercased copy of the key.** On line 1: `0w` to reach the key, `yiw` to yank it. Press `f"` to land on the opening quote, `a`, then `Ctrl+r 0` to paste the key between the quotes, `Esc`. Lowercase it in place with `viwu`. That precise little routine is a perfect macro — record it with `qa … q` and replay `4@a` down the rest.
+1. **Block prefix.** `Ctrl+v`, `G`, then `I` and two spaces, `Esc`: indent all five.
+2. **Block suffix, part one.** `Ctrl+v`, `G`, `$`, then `A`, type `: ""`, `Esc`: every line now ends with `: ""`.
+3. **Fill the value with a lowercased copy of the key.** On line 1: `0w` to reach the key, `yiw` to yank it. Press `f"` to land on the opening quote, `a`, then `Ctrl+r 0` to paste the key between the quotes, `Esc`. Lowercase it in place with `viwu`. That precise little routine is a perfect macro: record it with `qa … q` and replay `4@a` down the rest.
 4. **Trailing commas.** `Ctrl+v`, `G`, `$`, `A`, type `,`, `Esc`.
 5. Reselect any line range with `V` and press `=` to tidy the indentation.
 

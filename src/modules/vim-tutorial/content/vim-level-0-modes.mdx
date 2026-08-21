@@ -1,21 +1,21 @@
 ---
 title: "Vim Modes"
 level: 0
-summary: "Normal, Insert, Visual, Command — the modes that make Vim fast."
+summary: "Normal, Insert, Visual, Command: the modes that make Vim fast."
 ---
 
 import Exercise from '../components/Exercise.astro';
 
 Modes are the thing that makes beginners bounce off Vim. They're also the thing that makes it fast. Get past the first hour of confusion and this concept pays you back for years.
 
-Every other editor has one mode: you type, letters appear. Vim splits that into separate modes, each tuned for one job. The trade is simple — a steeper start in exchange for editing at the speed of thought.
+Every other editor has one mode: you type, letters appear. Vim splits that into separate modes, each tuned for one job. The trade is simple: a steeper start in exchange for editing at the speed of thought.
 
 ## The Four Main Modes
 
-- **Normal** — your home base. Navigate, run commands, compose operators. You start here. Press `Esc` to return at any time.
-- **Insert** — where you actually type text, like a regular editor.
-- **Visual** — for selecting text, then applying operators to the selection.
-- **Command** — for ex commands like saving and quitting. Enter it by typing `:`.
+- **Normal**: your home base. Navigate, run commands, compose operators. You start here. Press `Esc` to return at any time.
+- **Insert**: where you actually type text, like a regular editor.
+- **Visual**: for selecting text, then applying operators to the selection.
+- **Command**: for ex commands like saving and quitting. Enter it by typing `:`.
 
 ## The Key Insight
 
@@ -23,14 +23,14 @@ Here's the mindset shift: Normal mode is home, not Insert. You dip into Insert t
 
 <Exercise
   title="Enter and exit Insert mode"
-  goal="Feel the transition between modes — make it fast and deliberate."
+  goal="Feel the transition between modes: make it fast and deliberate."
   code={`hello world`}
 >
 
 1. You start in Normal mode.
-2. Press `i` — now you're in Insert mode (watch the badge above).
+2. Press `i`: now you're in Insert mode (watch the badge above).
 3. Type ` vim` so the line reads `hello vim world`.
-4. Press `Esc` — back to Normal mode.
+4. Press `Esc`: back to Normal mode.
 5. Press `i` again, then immediately `Esc` without typing.
 6. Enter Insert mode with `a`, type `!`, press `Esc`.
 
@@ -38,15 +38,15 @@ Here's the mindset shift: Normal mode is home, not Insert. You dip into Insert t
 
 <Exercise
   title="Recognize and recover from the wrong mode"
-  goal="Esc is your safety net — build the reflex of pressing it whenever you're unsure."
+  goal="Esc is your safety net: build the reflex of pressing it whenever you're unsure."
   code={`the quick brown fox
 jumps over the lazy dog`}
 >
 
-1. In Normal mode, press `hjkl` — the cursor moves, you don't type letters.
+1. In Normal mode, press `hjkl`: the cursor moves, you don't type letters.
 2. Press `i` to enter Insert mode and type a few characters.
 3. Press `Esc` to return to Normal mode.
-4. Press `Esc` three more times — it always keeps you safely in Normal mode.
+4. Press `Esc` three more times: it always keeps you safely in Normal mode.
 
 </Exercise>
 
@@ -60,7 +60,7 @@ jumps over the lazy dog`}
 
 1. Start in Normal mode. Move to `"Hello"` with a few `w` presses.
 2. Press `v` for Visual mode, then `e` to select the word `Hello`.
-3. Press `Esc` — back to Normal.
+3. Press `Esc`: back to Normal.
 4. Press `i` for Insert mode, type a character, press `Esc`.
 5. Type `:` for Command mode (then `Esc` to dismiss the prompt).
 
