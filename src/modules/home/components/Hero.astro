@@ -9,15 +9,6 @@ const latestPost = allPosts
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())[0];
 
-const LATEST_TITLE_MAX = 60;
-
-const truncate = (text: string, max: number) => {
-  if (text.length <= max) return text;
-  const cut = text.slice(0, max - 1);
-  const lastSpace = cut.lastIndexOf(' ');
-  return `${(lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
-};
-
 const latestFormattedDate = latestPost
   ? latestPost.data.pubDate.toLocaleDateString('en-US', {
       month: 'short',
@@ -111,7 +102,7 @@ const latestFormattedDate = latestPost
             <span class="hero-latest-prefix" aria-hidden="true">{`//`}</span>
             latest writing
           </span>
-          <span class="hero-latest-title">{truncate(latestPost.data.title, LATEST_TITLE_MAX)}</span>
+          <span class="hero-latest-title">{latestPost.data.title}</span>
           <span class="hero-latest-meta">
             <span class="hero-latest-date">{latestFormattedDate}</span>
           </span>
