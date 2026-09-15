@@ -8,6 +8,23 @@
     "slug": "medixio"
   },
   {
+    "name": "Perfect Binding",
+    "description": "Desktop app that turns a PDF into a print-ready booklet. Saddle stitch, folded and glued, or perfect binding, with margin trimming and a sheet-by-sheet proof. Runs offline, the PDF never leaves the machine.",
+    "stack": ["TypeScript", "Electron", "React", "pdf.js"],
+    "github": "https://github.com/jose-garzon/perfect-binding",
+    "featured": true,
+    "slug": "perfect-binding"
+  },
+  {
+    "name": "workout-pal",
+    "description": "Local-first training PWA. An LLM drafts the split, the app runs it: guided workout mode, rest timers, per-set logging. No account, no backend, everything stays in the browser.",
+    "stack": ["Next.js", "TypeScript", "Dexie", "Zustand"],
+    "github": "https://github.com/jose-garzon/workout",
+    "live": "https://workout-beta-nine.vercel.app",
+    "featured": true,
+    "slug": "workout-pal"
+  },
+  {
     "name": "Learn Vim btw",
     "description": "An interactive, level-by-level Vim tutorial. Each lesson pairs a concept with a real in-browser Vim editor, so you practice motions, operators, and macros as you read.",
     "stack": ["Astro", "CodeMirror", "Vim", "MDX"],

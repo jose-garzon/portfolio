@@ -448,4 +448,21 @@ const statusLabel = {
     padding: 0.15em 0.45em;
     border-radius: var(--radius-sm);
   }
+
+  .case-main .prose img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 75vh;
+    height: auto;
+    margin-block: var(--space-8);
+    margin-inline: auto;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+
+  .case-main .prose p:has(> img) {
+    margin: 0;
+  }
 </style>
