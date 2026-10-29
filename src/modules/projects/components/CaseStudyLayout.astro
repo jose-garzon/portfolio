@@ -1,7 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import AuthorPanel from '../../../shared/components/AuthorPanel.astro';
 import Badge from '../../../shared/components/Badge.astro';
+import TocRail from '../../../shared/components/TocRail.astro';
 import { fullName } from '../../../shared/data/personal';
+import '../../../shared/styles/prose.css';
 
 interface Props {
   name: string;
@@ -13,6 +16,8 @@ interface Props {
   github?: string;
   live?: string;
   blogSlug?: string;
+  highlights?: string[];
+  sections?: { slug: string; text: string }[];
   prevProject?: { slug: string; name: string };
   nextProject?: { slug: string; name: string };
 }
@@ -27,6 +32,8 @@ const {
   github,
   live,
   blogSlug,
+  highlights = [],
+  sections = [],
   prevProject,
   nextProject,
 } = Astro.props;
@@ -42,9 +49,9 @@ const statusLabel = {
   title={`${name} · ${fullName}`}
   description={summary}
 >
-  <main class="case-main">
+  <main id="main" class="case-main">
     <div class="container">
-      <nav class="case-nav">
+      <nav class="case-nav" aria-label="Breadcrumb">
         <a href="/#projects" class="back-link">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path
@@ -59,8 +66,7 @@ const statusLabel = {
       </nav>
 
       <header class="case-header">
-        <p class="section-label scanlines">case study</p>
-        <h1 class="case-title scanlines"><span data-text={name}>{name}</span></h1>
+        <h1 class="case-title"><span data-text={name}>{name}</span></h1>
         <p class="case-summary">{summary}</p>
 
         <dl class="meta-grid">
@@ -98,14 +104,14 @@ const statusLabel = {
             {github && (
               <li>
                 <a href={github} target="_blank" rel="noopener" class="case-link">
-                  → source on github
+                  → source on github<span class="sr-only"> (opens in new tab)</span>
                 </a>
               </li>
             )}
             {live && (
               <li>
                 <a href={live} target="_blank" rel="noopener" class="case-link">
-                  → live
+                  → live site<span class="sr-only"> (opens in new tab)</span>
                 </a>
               </li>
             )}
@@ -120,20 +126,34 @@ const statusLabel = {
         )}
       </header>
 
-      <article class="prose">
-        <slot />
-      </article>
+      {highlights.length > 0 && (
+        <section class="highlights cut" aria-labelledby="highlights-heading">
+          <h2 id="highlights-heading" class="data-tag highlights-label">// key decisions</h2>
+          <ol class="highlights-list">
+            {highlights.map((item) => <li>{item}</li>)}
+          </ol>
+        </section>
+      )}
+
+      <div class="reading-body">
+        <article class="prose">
+          <slot />
+        </article>
+        <TocRail sections={sections} />
+      </div>
 
       <footer class="case-footer">
+        <AuthorPanel label="built by" />
+
         {(prevProject || nextProject) && (
-          <div class="case-pager">
+          <nav class="case-pager" aria-label="Adjacent case studies">
             {prevProject ? (
               <a href={`/projects/${prevProject.slug}`} class="pager-link pager-link--prev">
                 <span class="pager-direction">← previous case study</span>
                 <span class="pager-name">{prevProject.name}</span>
               </a>
             ) : (
-              <span></span>
+              <span aria-hidden="true"></span>
             )}
             {nextProject ? (
               <a href={`/projects/${nextProject.slug}`} class="pager-link pager-link--next">
@@ -141,14 +161,30 @@ const statusLabel = {
                 <span class="pager-name">{nextProject.name}</span>
               </a>
             ) : (
-              <span></span>
+              <span aria-hidden="true"></span>
             )}
-          </div>
+          </nav>
         )}
+
+        <a href="/projects" class="back-link">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path
+              d="M12 7H2M6 2L1 7l5 5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+          All projects
+        </a>
       </footer>
     </div>
   </main>
 </Layout>
+
+<script>
+  import '../../../shared/scripts/prose-enhance';
+</script>
 
 <style>
   .case-main {
@@ -166,10 +202,10 @@ const statusLabel = {
     gap: var(--space-2);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
+    min-height: 44px;
     color: var(--color-text-subtle);
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-2) var(--space-4);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
     transition:
       color var(--duration-fast) ease,
       border-color var(--duration-fast) ease,
@@ -177,8 +213,8 @@ const statusLabel = {
   }
 
   .back-link:hover {
-    color: var(--color-text-muted);
-    border-color: var(--color-text-subtle);
+    color: var(--color-cyan);
+    border-color: var(--color-cyan);
     background: var(--color-surface);
   }
 
@@ -189,19 +225,22 @@ const statusLabel = {
   }
 
   .case-title {
-    font-size: var(--text-4xl);
-    font-weight: 700;
+    text-wrap: balance;
+    font-size: var(--text-5xl);
+    font-weight: 400;
+    text-transform: uppercase;
     color: var(--color-text);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    line-height: 0.92;
+    letter-spacing: 0.01em;
     margin-bottom: var(--space-5);
   }
 
   .case-summary {
     font-size: var(--text-lg);
     color: var(--color-text-muted);
-    line-height: 1.7;
-    max-width: 65ch;
+    line-height: 1.65;
+    max-width: var(--read-measure);
+    text-wrap: pretty;
     margin-bottom: var(--space-10);
   }
 
@@ -239,36 +278,32 @@ const statusLabel = {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     padding: var(--space-1) var(--space-3);
-    border-radius: var(--radius-full);
     border: 1px solid;
   }
 
   .status-dot {
     width: 6px;
     height: 6px;
-    border-radius: 50%;
   }
 
   .status--shipping {
     color: var(--color-accent-green);
-    border-color: rgba(57, 211, 83, 0.3);
-    background: rgba(57, 211, 83, 0.06);
+    border-color: color-mix(in srgb, var(--color-accent-green) 30%, transparent);
+    background: color-mix(in srgb, var(--color-accent-green) 6%, transparent);
   }
 
   .status--shipping .status-dot {
     background: var(--color-accent-green);
-    box-shadow: 0 0 6px var(--color-accent-green);
   }
 
   .status--in-progress {
     color: var(--color-hack-yellow);
-    border-color: rgba(255, 190, 11, 0.3);
-    background: rgba(255, 190, 11, 0.06);
+    border-color: color-mix(in srgb, var(--color-hack-yellow) 30%, transparent);
+    background: color-mix(in srgb, var(--color-hack-yellow) 6%, transparent);
   }
 
   .status--in-progress .status-dot {
     background: var(--color-hack-yellow);
-    box-shadow: 0 0 6px var(--color-hack-yellow);
   }
 
   .status--archived {
@@ -291,22 +326,71 @@ const statusLabel = {
   .case-links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-5);
+    gap: 0 var(--space-6);
     list-style: none;
   }
 
   .case-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     font-family: var(--font-mono);
     font-size: var(--text-sm);
-    color: var(--color-accent);
-    transition: color var(--duration-fast) ease;
+    color: var(--color-cyan);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-cyan) 45%, transparent);
+    text-underline-offset: 3px;
+    transition: text-decoration-color var(--duration-fast) ease;
   }
 
   .case-link:hover {
-    color: var(--color-accent-warm);
+    text-decoration-color: var(--color-cyan);
+  }
+
+  .highlights {
+    position: relative;
+    max-width: var(--read-wide);
+    margin-bottom: var(--space-12);
+    padding: var(--space-8);
+    padding-left: calc(var(--space-8) + 6px);
+    background: var(--color-surface);
+  }
+
+  .highlights::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    background: var(--color-accent);
+  }
+
+  .highlights-label {
+    margin-bottom: var(--space-5);
+  }
+
+  .highlights-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-5) var(--space-8);
+    list-style: none;
+  }
+
+  .highlights-list li {
+    color: var(--color-text);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .highlights-list li::before {
+    content: '>';
+    margin-right: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
   }
 
   .case-footer {
+    max-width: var(--read-measure);
     margin-top: var(--space-16);
     padding-top: var(--space-10);
     border-top: 1px solid var(--color-border);
@@ -316,6 +400,16 @@ const statusLabel = {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-6);
+    margin-bottom: var(--space-10);
+  }
+
+  .case-pager:has(> :only-child),
+  .case-pager:has(> span[aria-hidden]) {
+    grid-template-columns: 1fr;
+  }
+
+  .case-pager > span[aria-hidden] {
+    display: none;
   }
 
   .pager-link {
@@ -324,7 +418,6 @@ const statusLabel = {
     gap: var(--space-2);
     padding: var(--space-5) var(--space-6);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
     background: var(--color-surface);
     transition:
       border-color var(--duration-normal) var(--ease-out),
@@ -332,7 +425,7 @@ const statusLabel = {
   }
 
   .pager-link:hover {
-    border-color: var(--color-accent-dim);
+    border-color: var(--color-cyan);
     background: var(--color-surface-raised);
   }
 
@@ -363,7 +456,7 @@ const statusLabel = {
 
   @media (max-width: 640px) {
     .meta-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .case-pager {
@@ -374,95 +467,5 @@ const statusLabel = {
       text-align: left;
       align-items: flex-start;
     }
-  }
-</style>
-
-<style is:global>
-  .case-main .prose {
-    max-width: var(--max-prose);
-    line-height: 1.9;
-    color: var(--color-text-muted);
-    font-size: var(--text-lg);
-  }
-
-  .case-main .prose h2 {
-    font-family: var(--font-display);
-    color: var(--color-text);
-    font-size: var(--text-2xl);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-top: var(--space-12);
-    margin-bottom: var(--space-5);
-    padding-bottom: var(--space-3);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .case-main .prose h3 {
-    font-family: var(--font-display);
-    color: var(--color-text);
-    font-size: var(--text-xl);
-    font-weight: 700;
-    margin-top: var(--space-10);
-    margin-bottom: var(--space-4);
-  }
-
-  .case-main .prose p {
-    margin-bottom: var(--space-6);
-  }
-
-  .case-main .prose ul,
-  .case-main .prose ol {
-    padding-left: var(--space-6);
-    margin-bottom: var(--space-6);
-  }
-
-  .case-main .prose ul { list-style: disc; }
-  .case-main .prose ol { list-style: decimal; }
-
-  .case-main .prose li {
-    margin-bottom: var(--space-3);
-  }
-
-  .case-main .prose strong {
-    color: var(--color-text);
-    font-weight: 600;
-  }
-
-  .case-main .prose a {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-decoration-color: var(--color-accent-dim);
-    text-underline-offset: 3px;
-  }
-
-  .case-main .prose a:hover {
-    text-decoration-color: var(--color-accent);
-  }
-
-  .case-main .prose code {
-    font-family: var(--font-mono);
-    font-size: 0.875em;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    color: var(--color-accent);
-    padding: 0.15em 0.45em;
-    border-radius: var(--radius-sm);
-  }
-
-  .case-main .prose img {
-    display: block;
-    width: auto;
-    max-width: 100%;
-    max-height: 75vh;
-    height: auto;
-    margin-block: var(--space-8);
-    margin-inline: auto;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-surface);
-  }
-
-  .case-main .prose p:has(> img) {
-    margin: 0;
   }
 </style>

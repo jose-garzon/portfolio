@@ -1,7 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import Badge from '../../../shared/components/Badge.astro';
+import AuthorPanel from '../../../shared/components/AuthorPanel.astro';
+import TocRail from '../../../shared/components/TocRail.astro';
 import { fullName } from '../../../shared/data/personal';
+import '../../../shared/styles/prose.css';
 
 interface RelatedPost {
   slug: string;
@@ -24,9 +27,21 @@ interface Props {
   prevPost?: AdjacentPost;
   nextPost?: AdjacentPost;
   relatedPosts?: RelatedPost[];
+  sections?: { slug: string; text: string }[];
+  readingMinutes: number;
 }
 
-const { title, description, pubDate, tags, prevPost, nextPost, relatedPosts = [] } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  tags,
+  prevPost,
+  nextPost,
+  relatedPosts = [],
+  sections = [],
+  readingMinutes,
+} = Astro.props;
 
 const formattedDate = pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -46,10 +61,12 @@ const formatShortDate = (d: Date) =>
 <Layout
   title={`${title} · ${fullName}`}
   description={description}
+  type="article"
+  publishedTime={pubDate}
 >
-  <main class="post-main">
+  <main id="main" class="post-main">
     <div class="container">
-      <nav class="post-nav">
+      <nav class="post-nav" aria-label="Breadcrumb">
         <a href="/blog" class="back-link">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M12 7H2M6 2L1 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -61,21 +78,35 @@ const formatShortDate = (d: Date) =>
       <header class="post-header">
         <div class="post-meta-top">
           <time class="post-date" datetime={pubDate.toISOString()}>{formattedDate}</time>
+          <span class="post-meta-sep" aria-hidden="true">//</span>
+          <span class="post-date">{readingMinutes} min read</span>
         </div>
-        <h1 class="post-title scanlines"><span data-text={title}>{title}</span></h1>
+        <h1 class="post-title"><span data-text={title}>{title}</span></h1>
         <p class="post-description">{description}</p>
         {tags.length > 0 && (
-          <ul class="tag-list">
-            {tags.map((tag) => <li><Badge pill>{tag}</Badge></li>)}
+          <ul class="tag-list" aria-label="Tags">
+            {tags.map((tag) => (
+              <li>
+                <a href={`/blog?tag=${encodeURIComponent(tag)}`} class="tag-link">
+                  <Badge pill>#{tag}</Badge>
+                </a>
+              </li>
+            ))}
           </ul>
         )}
       </header>
 
-      <div class="prose">
-        <slot />
+      <div class="reading-body">
+        <article class="prose">
+          <slot />
+        </article>
+
+        <TocRail sections={sections} />
       </div>
 
       <footer class="post-footer">
+        <AuthorPanel />
+
         {(prevPost || nextPost) && (
           <nav class="post-pager" aria-label="Adjacent posts">
             {prevPost ? (
@@ -84,7 +115,7 @@ const formatShortDate = (d: Date) =>
                 <span class="pager-title">{prevPost.title}</span>
               </a>
             ) : (
-              <span></span>
+              <span aria-hidden="true"></span>
             )}
             {nextPost ? (
               <a href={`/blog/${nextPost.slug}`} class="pager-link pager-link--next">
@@ -92,17 +123,14 @@ const formatShortDate = (d: Date) =>
                 <span class="pager-title">{nextPost.title}</span>
               </a>
             ) : (
-              <span></span>
+              <span aria-hidden="true"></span>
             )}
           </nav>
         )}
 
         {relatedPosts.length > 0 && (
           <section class="related" aria-labelledby="related-heading">
-            <p id="related-heading" class="related-kicker">
-              <span class="related-kicker-prefix" aria-hidden="true">//</span>
-              related
-            </p>
+            <h2 id="related-heading" class="related-heading">Related</h2>
             <ul class="related-list">
               {relatedPosts.map((rel) => (
                 <li>
@@ -118,14 +146,14 @@ const formatShortDate = (d: Date) =>
             </ul>
           </section>
         )}
-
-        <div class="post-tail">
-          <a href="/blog" class="tail-link">← back to writing</a>
-        </div>
       </footer>
     </div>
   </main>
 </Layout>
+
+<script>
+  import '../../../shared/scripts/prose-enhance';
+</script>
 
 <style>
   .post-main {
@@ -134,17 +162,18 @@ const formatShortDate = (d: Date) =>
   }
 
   .post-nav {
-    margin-bottom: var(--space-10);
+    margin-bottom: var(--space-8);
   }
 
   .back-link {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
+    min-height: 44px;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--color-text-subtle);
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-2) var(--space-4);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-full);
     transition:
@@ -154,13 +183,13 @@ const formatShortDate = (d: Date) =>
   }
 
   .back-link:hover {
-    color: var(--color-text-muted);
-    border-color: var(--color-text-subtle);
+    color: var(--color-cyan);
+    border-color: var(--color-cyan);
     background: var(--color-surface);
   }
 
   .post-header {
-    max-width: var(--max-prose);
+    max-width: var(--read-measure);
     margin-bottom: var(--space-12);
     padding-bottom: var(--space-10);
     border-bottom: 1px solid var(--color-border);
@@ -179,12 +208,20 @@ const formatShortDate = (d: Date) =>
     color: var(--color-text-subtle);
   }
 
+  .post-meta-sep {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+  }
+
   .post-title {
+    text-wrap: balance;
     font-size: var(--text-4xl);
-    font-weight: 700;
+    font-weight: 400;
+    text-transform: uppercase;
     color: var(--color-text);
-    line-height: 1.15;
-    letter-spacing: -0.03em;
+    line-height: 0.92;
+    letter-spacing: 0.01em;
     margin-bottom: var(--space-5);
   }
 
@@ -202,8 +239,26 @@ const formatShortDate = (d: Date) =>
     list-style: none;
   }
 
+  .tag-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--color-text-subtle);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .tag-link:hover {
+    color: var(--color-cyan);
+  }
+
+  .tag-link:hover :global(.badge) {
+    border-color: var(--color-cyan);
+  }
+
+
+
   .post-footer {
-    max-width: var(--max-prose);
+    max-width: var(--read-measure);
     margin-top: var(--space-section);
     padding-top: var(--space-10);
     border-top: 1px solid var(--color-border);
@@ -257,20 +312,14 @@ const formatShortDate = (d: Date) =>
     margin-bottom: var(--space-12);
   }
 
-  .related-kicker {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
+  .related-heading {
+    font-family: var(--font-pixel);
+    font-size: var(--text-sm);
+    font-weight: 400;
     color: var(--color-text-subtle);
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
     margin-bottom: var(--space-5);
-  }
-
-  .related-kicker-prefix {
-    color: var(--color-accent);
   }
 
   .related-list {
@@ -330,30 +379,6 @@ const formatShortDate = (d: Date) =>
     line-height: 1.6;
   }
 
-  .post-tail {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    padding-top: var(--space-8);
-    border-top: 1px solid var(--color-border);
-  }
-
-  .tail-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    transition: color var(--duration-fast) ease;
-  }
-
-  .tail-link:hover {
-    color: var(--color-accent);
-  }
-
   @media (max-width: 640px) {
     .post-pager {
       grid-template-columns: 1fr;
@@ -371,144 +396,5 @@ const formatShortDate = (d: Date) =>
         'title'
         'excerpt';
     }
-  }
-</style>
-
-<style is:global>
-  .prose {
-    max-width: var(--max-prose);
-    line-height: 1.9;
-    color: var(--color-text-muted);
-    font-size: var(--text-lg);
-  }
-
-  .prose h1,
-  .prose h2,
-  .prose h3,
-  .prose h4 {
-    color: var(--color-text);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-top: var(--space-12);
-    margin-bottom: var(--space-5);
-    line-height: 1.25;
-  }
-
-  .prose h1 { font-size: var(--text-3xl); }
-  .prose h2 { font-size: var(--text-2xl); }
-  .prose h3 { font-size: var(--text-xl); }
-
-  .prose h2 {
-    padding-bottom: var(--space-3);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .prose p {
-    margin-bottom: var(--space-6);
-    color: var(--color-text-muted);
-  }
-
-  .prose strong {
-    color: var(--color-text);
-    font-weight: 600;
-  }
-
-  .prose a {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-decoration-color: var(--color-accent-dim);
-    text-underline-offset: 3px;
-    transition: text-decoration-color 0.15s ease;
-  }
-
-  .prose a:hover {
-    text-decoration-color: var(--color-accent);
-  }
-
-  .prose code {
-    font-family: var(--font-mono);
-    font-size: 0.875em;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    color: var(--color-accent);
-    padding: 0.15em 0.45em;
-    border-radius: var(--radius-sm);
-  }
-
-  .prose pre {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-6);
-    overflow-x: auto;
-    margin-bottom: var(--space-8);
-    position: relative;
-  }
-
-  .prose pre code {
-    background: none;
-    border: none;
-    padding: 0;
-    color: var(--color-text);
-    font-size: var(--text-sm);
-  }
-
-  .prose ul,
-  .prose ol {
-    padding-left: var(--space-6);
-    margin-bottom: var(--space-6);
-  }
-
-  .prose ul { list-style: disc; }
-  .prose ol { list-style: decimal; }
-
-  .prose li {
-    margin-bottom: var(--space-2);
-    color: var(--color-text-muted);
-  }
-
-  .prose blockquote {
-    border-left: 2px solid var(--color-accent);
-    padding-left: var(--space-6);
-    margin-left: 0;
-    margin-block: var(--space-8);
-    color: var(--color-text-muted);
-    font-style: italic;
-  }
-
-  .prose blockquote p {
-    margin-bottom: 0;
-  }
-
-  .prose hr {
-    border: none;
-    border-top: 1px solid var(--color-border);
-    margin-block: var(--space-10);
-  }
-
-  .prose img {
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-border);
-    margin-block: var(--space-8);
-  }
-
-  .prose table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: var(--space-8);
-    font-size: var(--text-sm);
-  }
-
-  .prose th,
-  .prose td {
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--color-border);
-    text-align: left;
-  }
-
-  .prose th {
-    background: var(--color-surface);
-    color: var(--color-text);
-    font-weight: 600;
   }
 </style>

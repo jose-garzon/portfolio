@@ -21,7 +21,8 @@ export async function getStaticPaths() {
 }
 
 const { entry, prevProject, nextProject } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const sections = headings.filter((h) => h.depth === 2).map(({ slug, text }) => ({ slug, text }));
 ---
 
 <CaseStudyLayout
@@ -34,6 +35,8 @@ const { Content } = await render(entry);
   github={entry.data.github}
   live={entry.data.live}
   blogSlug={entry.data.blogSlug}
+  highlights={entry.data.highlights}
+  sections={sections}
   prevProject={prevProject}
   nextProject={nextProject}
 >

@@ -24,6 +24,7 @@ const projects = defineCollection({
     github: z.string().url().optional(),
     live: z.string().url().optional(),
     blogSlug: z.string().optional(),
+    highlights: z.array(z.string()).optional(),
     featured: z.boolean().optional().default(false),
     order: z.number().optional().default(0),
   }),

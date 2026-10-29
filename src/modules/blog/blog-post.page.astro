@@ -10,10 +10,13 @@ const { slug } = Astro.props;
 const entry = await getEntry('blog', slug);
 
 if (!entry) {
-  return Astro.redirect('/blog');
+  return Astro.rewrite('/404');
 }
 
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
+const sections = headings.filter((h) => h.depth === 2).map(({ slug, text }) => ({ slug, text }));
+const wordCount = (entry.body ?? '').split(/\s+/).filter(Boolean).length;
+const readingMinutes = Math.max(1, Math.round(wordCount / 230));
 
 const allPosts = await getCollection('blog');
 const livePosts = allPosts
@@ -59,6 +62,8 @@ const relatedPosts = scored.map((p) => ({
   prevPost={prevPost ? { slug: prevPost.id, title: prevPost.data.title } : undefined}
   nextPost={nextPost ? { slug: nextPost.id, title: nextPost.data.title } : undefined}
   relatedPosts={relatedPosts}
+  sections={sections}
+  readingMinutes={readingMinutes}
 >
   <Content />
 </BlogPostLayout>

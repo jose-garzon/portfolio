@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { fullName } from '../shared/data/personal';
+---
+
+<Layout title={`Not found · ${fullName}`} description="This page does not exist.">
+  <main id="main" class="nf-main">
+    <div class="container">
+      <p class="data-tag">err 404 // no such route</p>
+      <h1 class="nf-title">Signal lost</h1>
+      <p class="nf-copy">Nothing lives at this address. It may have moved, or it never existed.</p>
+      <ul class="nf-links">
+        <li><a href="/blog">Read the writing</a></li>
+        <li><a href="/">Go home</a></li>
+      </ul>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .nf-main {
+    padding-top: calc(var(--nav-height) + var(--space-16));
+    padding-bottom: var(--space-section);
+  }
+
+  .nf-title {
+    font-size: var(--text-4xl);
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.92;
+    margin-block: var(--space-4) var(--space-6);
+  }
+
+  .nf-copy {
+    max-width: var(--max-measure);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+  }
+
+  .nf-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    list-style: none;
+  }
+
+  .nf-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-cyan);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

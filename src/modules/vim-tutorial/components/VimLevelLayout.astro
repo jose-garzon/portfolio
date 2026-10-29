@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import { fullName } from '../../../shared/data/personal';
 import { levels } from '../levels';
+import '../vim.css';
 
 interface Adjacent {
   slug: string;
@@ -12,74 +13,40 @@ interface Props {
   title: string;
   summary: string;
   level: number;
+  counts: Record<string, number>;
   prev?: Adjacent;
   next?: Adjacent;
 }
 
-const { title, summary, level, prev, next } = Astro.props;
-const levelLabel = String(level).padStart(2, '0');
+const { title, summary, level, counts, prev, next } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+const lastLevel = pad(levels[levels.length - 1].level);
 ---
 
 <Layout title={`Vim · ${title} · ${fullName}`} description={summary}>
-  <main class="vim-main">
+  <main id="main" class="vim-main vim-page">
     <div class="container">
       <div class="vim-shell">
         <div class="vim-content">
-      <nav class="vim-nav">
-        <a href="/vim" class="back-link">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path d="M12 7H2M6 2L1 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-          Back to Vim
-        </a>
-      </nav>
+          <a href="/vim" class="back-link cut">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M12 7H2M6 2L1 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            All levels
+          </a>
 
-      <header class="vim-header">
-        <p class="kicker">
-          <span class="kicker-prefix" aria-hidden="true">//</span>
-          level {levelLabel}
-        </p>
-        <h1 class="vim-title scanlines"><span data-text={title}>{title}</span></h1>
-        <p class="vim-summary">{summary}</p>
-      </header>
+          <header class="vim-header">
+            <p class="section-label">level {pad(level)} / {lastLevel}</p>
+            <h1 class="vim-title"><span data-text={title}>{title}</span></h1>
+            <p class="vim-summary">{summary}</p>
+          </header>
 
-      <div class="prose">
-        <slot />
-      </div>
-
-      <footer class="vim-footer">
-        <nav class="vim-pager" aria-label="Adjacent levels">
-          {prev ? (
-            <a href={`/vim/${prev.slug}`} class="pager-link pager-link--prev">
-              <span class="pager-direction">← previous level</span>
-              <span class="pager-title">{prev.title}</span>
-            </a>
-          ) : (
-            <span></span>
-          )}
-          {next ? (
-            <a href={`/vim/${next.slug}`} class="pager-link pager-link--next">
-              <span class="pager-direction">next level →</span>
-              <span class="pager-title">{next.title}</span>
-            </a>
-          ) : (
-            <span></span>
-          )}
-        </nav>
-
-        <div class="vim-tail">
-          <a href="/vim" class="tail-link">← back to all levels</a>
-        </div>
-      </footer>
-        </div>
-
-        <aside class="vim-sidebar" aria-label="Levels">
-          <nav class="sidebar-inner">
-            <p class="sidebar-kicker">
-              <span class="sidebar-kicker-prefix" aria-hidden="true">//</span>
-              levels
-            </p>
-            <ol class="sidebar-list">
+          <details class="level-strip">
+            <summary class="level-strip-summary">
+              <span>Levels</span>
+              <span class="level-strip-current">{pad(level)} / {lastLevel}</span>
+            </summary>
+            <ol class="level-strip-list">
               {levels.map((lvl) => (
                 <li>
                   <a
@@ -87,20 +54,79 @@ const levelLabel = String(level).padStart(2, '0');
                     class="sidebar-link"
                     aria-current={lvl.level === level ? 'page' : undefined}
                   >
-                    <span class="sidebar-index" aria-hidden="true">
-                      {String(lvl.level).padStart(2, '0')}
-                    </span>
+                    <span class="sidebar-index">{pad(lvl.level)}</span>
                     <span class="sidebar-title">{lvl.title}</span>
+                    <span class="vim-progress" data-progress-for={lvl.slug} data-total={counts[lvl.slug]}></span>
                   </a>
                 </li>
               ))}
             </ol>
-          </nav>
-        </aside>
+          </details>
+
+          <div class="vim-prose">
+            <slot />
+          </div>
+
+          <footer class="vim-footer">
+            <nav class="vim-pager" aria-label="Adjacent levels">
+              {prev && (
+                <a href={`/vim/${prev.slug}`} class="pager-link pager-link--prev cut" rel="prev" aria-keyshortcuts="[">
+                  <span class="pager-direction">← previous level</span>
+                  <span class="pager-title">{prev.title}</span>
+                </a>
+              )}
+              {next ? (
+                <a href={`/vim/${next.slug}`} class="pager-link pager-link--next cut" rel="next" aria-keyshortcuts="]">
+                  <span class="pager-direction">next level →</span>
+                  <span class="pager-title">{next.title}</span>
+                </a>
+              ) : (
+                <a href="/vim" class="pager-link pager-link--next pager-link--finish cut">
+                  <span class="pager-direction">last level</span>
+                  <span class="pager-title">You've covered the core. Review your progress →</span>
+                </a>
+              )}
+            </nav>
+            <p class="pager-keys">
+              <kbd>[</kbd> and <kbd>]</kbd> switch levels when you're outside an editor.
+            </p>
+          </footer>
+        </div>
+
+        <nav class="vim-sidebar" aria-label="Levels">
+          <p class="section-label">levels</p>
+          <ol class="sidebar-list">
+            {levels.map((lvl) => (
+              <li>
+                <a
+                  href={`/vim/${lvl.slug}`}
+                  class="sidebar-link"
+                  aria-current={lvl.level === level ? 'page' : undefined}
+                >
+                  <span class="sidebar-index">{pad(lvl.level)}</span>
+                  <span class="sidebar-title">{lvl.title}</span>
+                  <span class="vim-progress" data-progress-for={lvl.slug} data-total={counts[lvl.slug]}></span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
       </div>
     </div>
   </main>
 </Layout>
+
+<script>
+  import '../progress-ui';
+
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey || (e.key !== '[' && e.key !== ']')) return;
+    const target = e.target as HTMLElement;
+    if (target.closest('input, textarea, select, [contenteditable="true"], .cm-editor')) return;
+    const link = document.querySelector<HTMLAnchorElement>(e.key === '[' ? '.vim-pager a[rel="prev"]' : '.vim-pager a[rel="next"]');
+    if (link) window.location.href = link.href;
+  });
+</script>
 
 <style>
   .vim-main {
@@ -110,7 +136,7 @@ const levelLabel = String(level).padStart(2, '0');
 
   .vim-shell {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 220px;
+    grid-template-columns: minmax(0, 1fr) 240px;
     gap: var(--space-12);
     align-items: start;
   }
@@ -119,48 +145,77 @@ const levelLabel = String(level).padStart(2, '0');
     min-width: 0;
   }
 
+  .back-link {
+    --cut: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 44px;
+    margin-bottom: var(--space-10);
+    padding: 0 var(--space-4);
+    font-family: var(--font-pixel);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    transition:
+      color var(--duration-fast) ease,
+      background var(--duration-fast) ease;
+  }
+
+  .back-link:hover {
+    color: var(--color-bg);
+    background: var(--color-cyan);
+  }
+
+  .vim-header {
+    max-width: var(--max-prose);
+    margin-bottom: var(--space-12);
+    padding-bottom: var(--space-10);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .vim-title {
+    text-transform: uppercase;
+    font-size: var(--text-5xl);
+    color: var(--color-text);
+    line-height: 0.92;
+    letter-spacing: 0.01em;
+    margin-bottom: var(--space-5);
+    text-wrap: balance;
+  }
+
+  .vim-summary {
+    font-size: var(--text-lg);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+
   .vim-sidebar {
     position: sticky;
     top: calc(var(--nav-height) + var(--space-8));
     max-height: calc(100vh - var(--nav-height) - var(--space-12));
     overflow-y: auto;
-  }
-
-  .sidebar-inner {
     border-left: 1px solid var(--color-border);
     padding-left: var(--space-5);
   }
 
-  .sidebar-kicker {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin-bottom: var(--space-4);
-  }
-
-  .sidebar-kicker-prefix {
-    color: var(--color-accent);
-  }
-
-  .sidebar-list {
+  .sidebar-list,
+  .level-strip-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--space-1);
   }
 
   .sidebar-link {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: baseline;
     gap: var(--space-3);
+    min-height: 44px;
     padding: var(--space-2) var(--space-3);
     margin-left: calc(var(--space-3) * -1);
-    border-radius: var(--radius-sm);
     color: var(--color-text-subtle);
     transition:
       color var(--duration-fast) ease,
@@ -168,14 +223,14 @@ const levelLabel = String(level).padStart(2, '0');
   }
 
   .sidebar-link:hover {
-    color: var(--color-text);
+    color: var(--color-cyan);
     background: var(--color-surface);
   }
 
   .sidebar-index {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    color: var(--color-text-subtle);
+    font-variant-numeric: tabular-nums;
   }
 
   .sidebar-title {
@@ -184,11 +239,43 @@ const levelLabel = String(level).padStart(2, '0');
   }
 
   .sidebar-link[aria-current='page'] {
-    color: var(--color-accent);
+    color: var(--color-text);
+    background: var(--color-surface);
+    box-shadow: inset 2px 0 0 var(--color-accent);
   }
 
   .sidebar-link[aria-current='page'] .sidebar-index {
     color: var(--color-accent);
+  }
+
+  .level-strip {
+    display: none;
+    margin-bottom: var(--space-10);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-alt);
+  }
+
+  .level-strip-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 var(--space-4);
+    font-family: var(--font-pixel);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-cyan);
+    cursor: pointer;
+  }
+
+  .level-strip-current {
+    color: var(--color-text-muted);
+  }
+
+  .level-strip-list {
+    padding: var(--space-2) var(--space-4) var(--space-4) var(--space-6);
+    border-top: 1px solid var(--color-border);
   }
 
   @media (max-width: 1024px) {
@@ -199,71 +286,10 @@ const levelLabel = String(level).padStart(2, '0');
     .vim-sidebar {
       display: none;
     }
-  }
 
-  .vim-nav {
-    margin-bottom: var(--space-10);
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
-    transition:
-      color var(--duration-fast) ease,
-      border-color var(--duration-fast) ease,
-      background var(--duration-fast) ease;
-  }
-
-  .back-link:hover {
-    color: var(--color-text-muted);
-    border-color: var(--color-text-subtle);
-    background: var(--color-surface);
-  }
-
-  .vim-header {
-    max-width: var(--max-prose);
-    margin-bottom: var(--space-12);
-    padding-bottom: var(--space-10);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .kicker {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    margin-bottom: var(--space-4);
-  }
-
-  .kicker-prefix {
-    color: var(--color-accent);
-  }
-
-  .vim-title {
-    font-family: var(--font-display);
-    font-size: var(--text-4xl);
-    font-weight: 700;
-    color: var(--color-text);
-    line-height: 1.15;
-    letter-spacing: -0.03em;
-    margin-bottom: var(--space-5);
-  }
-
-  .vim-summary {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    line-height: 1.7;
+    .level-strip {
+      display: block;
+    }
   }
 
   .vim-footer {
@@ -277,63 +303,70 @@ const levelLabel = String(level).padStart(2, '0');
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-5);
-    margin-bottom: var(--space-10);
   }
 
   .pager-link {
+    --cut: 12px;
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
     padding: var(--space-5);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
     background: var(--color-surface);
-    transition:
-      border-color var(--duration-normal) var(--ease-out),
-      background var(--duration-normal) var(--ease-out);
+    transition: background var(--duration-normal) var(--ease-out);
   }
 
   .pager-link:hover {
-    border-color: var(--color-accent-dim);
     background: var(--color-surface-raised);
   }
 
+  .pager-link:hover .pager-title {
+    color: var(--color-cyan);
+  }
+
   .pager-link--next {
+    grid-column: 2;
     text-align: right;
     align-items: flex-end;
   }
 
+  .pager-link--finish {
+    background: var(--color-accent);
+  }
+
+  .pager-link--finish .pager-direction,
+  .pager-link--finish .pager-title {
+    color: var(--color-bg);
+  }
+
+  .pager-link--finish:hover {
+    background: var(--color-cyan);
+  }
+
+  .pager-link--finish:hover .pager-title {
+    color: var(--color-bg);
+  }
+
   .pager-direction {
-    font-family: var(--font-mono);
+    font-family: var(--font-pixel);
     font-size: var(--text-xs);
+    text-transform: uppercase;
     color: var(--color-text-subtle);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
   }
 
   .pager-title {
-    font-size: var(--text-base);
+    font-family: var(--font-condensed);
+    font-size: var(--text-lg);
     font-weight: 600;
     color: var(--color-text);
     line-height: 1.3;
-  }
-
-  .vim-tail {
-    padding-top: var(--space-8);
-    border-top: 1px solid var(--color-border);
-  }
-
-  .tail-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
     transition: color var(--duration-fast) ease;
   }
 
-  .tail-link:hover {
-    color: var(--color-accent);
+  .pager-keys {
+    margin-top: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--color-text-subtle);
   }
 
   @media (max-width: 640px) {
@@ -342,124 +375,13 @@ const levelLabel = String(level).padStart(2, '0');
     }
 
     .pager-link--next {
+      grid-column: auto;
       text-align: left;
       align-items: flex-start;
     }
-  }
-</style>
 
-<style is:global>
-  .vim-main .prose {
-    max-width: var(--max-prose);
-    line-height: 1.8;
-    color: var(--color-text);
-    font-size: var(--text-base);
-  }
-
-  .vim-main .prose h2,
-  .vim-main .prose h3 {
-    color: var(--color-text);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin-top: var(--space-10);
-    margin-bottom: var(--space-4);
-    line-height: 1.25;
-  }
-
-  .vim-main .prose h2 {
-    font-size: var(--text-2xl);
-    padding-bottom: var(--space-3);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .vim-main .prose h3 {
-    font-size: var(--text-xl);
-  }
-
-  .vim-main .prose p {
-    margin-bottom: var(--space-5);
-  }
-
-  .vim-main .prose strong {
-    color: var(--color-text);
-    font-weight: 600;
-  }
-
-  .vim-main .prose a {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-decoration-color: var(--color-accent-dim);
-    text-underline-offset: 3px;
-  }
-
-  .vim-main .prose code {
-    font-family: var(--font-mono);
-    font-size: 0.875em;
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    color: var(--color-accent);
-    padding: 0.15em 0.45em;
-    border-radius: var(--radius-sm);
-  }
-
-  .vim-main .prose pre {
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-5);
-    overflow-x: auto;
-    margin-bottom: var(--space-6);
-  }
-
-  .vim-main .prose pre code {
-    background: none;
-    border: none;
-    padding: 0;
-    color: var(--color-text);
-    font-size: var(--text-sm);
-  }
-
-  .vim-main .prose ul,
-  .vim-main .prose ol {
-    padding-left: var(--space-6);
-    margin-bottom: var(--space-5);
-  }
-
-  .vim-main .prose ul {
-    list-style: disc;
-  }
-
-  .vim-main .prose ol {
-    list-style: decimal;
-  }
-
-  .vim-main .prose li {
-    margin-bottom: var(--space-2);
-  }
-
-  .vim-main .prose table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: var(--space-6);
-    font-size: var(--text-sm);
-  }
-
-  .vim-main .prose th,
-  .vim-main .prose td {
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--color-border);
-    text-align: left;
-  }
-
-  .vim-main .prose th {
-    background: var(--color-surface);
-    color: var(--color-text);
-    font-weight: 600;
-  }
-
-  .vim-main .prose hr {
-    border: none;
-    border-top: 1px solid var(--color-border);
-    margin-block: var(--space-8);
+    .pager-keys {
+      display: none;
+    }
   }
 </style>

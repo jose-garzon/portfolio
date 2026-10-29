@@ -5,160 +5,45 @@ interface Props {
 
 const { size = 'clamp(220px, 32vw, 360px)' } = Astro.props;
 
-// Custom angular JG monogram.
-// viewBox 0 0 220 240.
-//
-// J letterform (x ~30-100):
-//   top cap:  M50,30 L100,30
-//   descender + hook: M80,30 L80,195 L35,195 L35,160
-//
-// G letterform (x ~115-200):
-//   path: M195,90 L195,30 L120,30 L120,200 L195,200 L195,135 L155,135
-//   (outer shape + tongue + opening between y=90 and y=135 on right side)
-const jCap = 'M50 30 L100 30';
-const jStem = 'M80 30 L80 195 L35 195 L35 160';
-const gPath = 'M195 90 L195 30 L120 30 L120 200 L195 200 L195 135 L155 135';
-const ticks = ['M40 218 L60 218', 'M155 218 L195 218'];
+// Stencil JG on a 220x240 grid: thick butt-capped strokes with bridge gaps,
+// echoing the Saira Stencil display name.
+const strokes = [
+  'M36 42 H98',
+  'M90 42 V112',
+  'M90 128 V198 H28 V158',
+  'M200 92 V42 H130 V112',
+  'M130 128 V198 H200 V132 H164',
+];
 ---
 
-<div class="monogram" style={`--mono-size: ${size};`}>
-  <svg
-    class="mono-svg mono-svg--cyan"
-    viewBox="0 0 220 240"
-    fill="none"
-    aria-hidden="true"
-    preserveAspectRatio="xMidYMid meet"
-  >
-    <path
-      d={jCap}
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
-    />
-    <path
-      d={jStem}
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
-    />
-    <path
-      d={gPath}
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
-    />
-    {ticks.map((d) => (
-      <path
-        d={d}
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="square"
-      />
-    ))}
-  </svg>
+<div class="monogram">
+  {['echo', 'main'].map((layer) => (
+    <svg
+      class={`mono-svg mono-svg--${layer}`}
+      viewBox="0 0 220 240"
+      fill="none"
+      aria-hidden="true"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      {strokes.map((d) => (
+        <path d={d} stroke="currentColor" stroke-width="16" stroke-linecap="butt" stroke-linejoin="miter" />
+      ))}
+      <path d="M30 222 H70 M150 222 H198" stroke="currentColor" stroke-width="3" />
+    </svg>
+  ))}
 
-  <svg
-    class="mono-svg mono-svg--magenta"
-    viewBox="0 0 220 240"
-    fill="none"
-    aria-hidden="true"
-    preserveAspectRatio="xMidYMid meet"
-  >
-    <path
-      d={jCap}
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
-    />
-    <path
-      d={jStem}
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
-    />
-    <path
-      d={gPath}
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
-    />
-    {ticks.map((d) => (
-      <path
-        d={d}
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="square"
-      />
-    ))}
-  </svg>
-
-  <svg
-    class="mono-svg mono-svg--main"
-    viewBox="0 0 220 240"
-    fill="none"
-    role="img"
-    aria-label="Jose Garzón monogram, J G"
-    preserveAspectRatio="xMidYMid meet"
-  >
-    <path
-      d={jCap}
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
-    />
-    <path
-      d={jStem}
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
-    />
-    <path
-      d={gPath}
-      stroke="currentColor"
-      stroke-width="5"
-      stroke-linecap="square"
-      stroke-linejoin="miter"
-    />
-    {ticks.map((d) => (
-      <path
-        d={d}
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="square"
-      />
-    ))}
-  </svg>
-
-  <span class="mono-corner mono-corner--tl" aria-hidden="true">
-    <span class="mono-corner-h"></span>
-    <span class="mono-corner-v"></span>
-  </span>
-  <span class="mono-corner mono-corner--tr" aria-hidden="true">
-    <span class="mono-corner-h"></span>
-    <span class="mono-corner-v"></span>
-  </span>
-  <span class="mono-corner mono-corner--bl" aria-hidden="true">
-    <span class="mono-corner-h"></span>
-    <span class="mono-corner-v"></span>
-  </span>
-  <span class="mono-corner mono-corner--br" aria-hidden="true">
-    <span class="mono-corner-h"></span>
-    <span class="mono-corner-v"></span>
-  </span>
+  {['tl', 'tr', 'bl', 'br'].map((corner) => (
+    <span class={`mono-corner mono-corner--${corner}`} aria-hidden="true">
+      <span class="mono-corner-h"></span>
+      <span class="mono-corner-v"></span>
+    </span>
+  ))}
 </div>
 
-<style>
+<style define:vars={{ monoSize: size }}>
   .monogram {
     position: relative;
-    width: var(--mono-size);
+    width: var(--monoSize);
     aspect-ratio: 220 / 240;
     margin-inline: auto;
   }
@@ -172,68 +57,35 @@ const ticks = ['M40 218 L60 218', 'M155 218 L195 218'];
 
   .mono-svg--main {
     color: var(--color-accent);
-    z-index: 3;
   }
 
-  .mono-svg--cyan {
-    color: var(--color-blue-bright);
-    mix-blend-mode: screen;
-    z-index: 2;
-    transform: translate(-3px, 0);
-    opacity: 0.55;
-    animation: mono-glitch-cyan 6s steps(1) infinite;
+  .mono-svg--echo {
+    color: var(--color-cyan);
+    transform: translateX(-4px);
+    animation: mono-glitch-echo 3s steps(1) infinite;
   }
 
-  .mono-svg--magenta {
-    color: var(--color-accent-warm);
-    mix-blend-mode: screen;
-    z-index: 1;
-    transform: translate(3px, 0);
-    opacity: 0.4;
-    animation: mono-glitch-magenta 6s steps(1) infinite;
+  .mono-svg--main {
+    animation: mono-glitch-main 3s steps(1) infinite;
   }
 
-  @keyframes mono-glitch-cyan {
-    0%,
-    92%,
-    96%,
-    100% {
-      transform: translate(-3px, 0);
-      opacity: 0.55;
-    }
-    93% {
-      transform: translate(-7px, -1px);
-      opacity: 0.85;
-    }
-    94% {
-      transform: translate(-2px, 1px);
-      opacity: 0.4;
-    }
-    95% {
-      transform: translate(-5px, 0);
-      opacity: 0.7;
-    }
+  @keyframes mono-glitch-echo {
+    0%, 88%, 100% { transform: translateX(-4px); clip-path: inset(0); }
+    90% { transform: translateX(-12px); clip-path: inset(22% 0 52% 0); }
+    93% { transform: translateX(6px); clip-path: inset(60% 0 18% 0); }
+    96% { transform: translateX(-8px); clip-path: inset(8% 0 74% 0); }
   }
 
-  @keyframes mono-glitch-magenta {
-    0%,
-    88%,
-    92%,
-    100% {
-      transform: translate(3px, 0);
-      opacity: 0.4;
-    }
-    89% {
-      transform: translate(6px, 1px);
-      opacity: 0.75;
-    }
-    90% {
-      transform: translate(2px, -1px);
-      opacity: 0.3;
-    }
-    91% {
-      transform: translate(5px, 0);
-      opacity: 0.6;
+  @keyframes mono-glitch-main {
+    0%, 88%, 100% { transform: none; }
+    91% { transform: translateX(3px); }
+    94% { transform: translateX(-2px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mono-svg--echo,
+    .mono-svg--main {
+      animation: none;
     }
   }
 
@@ -309,12 +161,5 @@ const ticks = ['M40 218 L60 218', 'M155 218 L195 218'];
   .mono-corner--br .mono-corner-v {
     bottom: 0;
     right: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .mono-svg--cyan,
-    .mono-svg--magenta {
-      animation: none;
-    }
   }
 </style>

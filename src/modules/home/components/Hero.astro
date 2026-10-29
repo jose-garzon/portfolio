@@ -9,60 +9,41 @@ const latestPost = allPosts
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())[0];
 
-const latestFormattedDate = latestPost
-  ? latestPost.data.pubDate.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      timeZone: 'UTC',
-    })
-  : null;
+const latestDate = latestPost ? latestPost.data.pubDate.toISOString().slice(0, 10) : null;
+const first = personal.name.first.toUpperCase();
+const last = personal.name.last.toUpperCase();
 ---
 
 <section class="hero" aria-labelledby="hero-name">
-  <div class="hero-ambient" aria-hidden="true"></div>
+  <div class="hero-readout" aria-label="Status">
+    {hero.stats.map((stat) => (
+      <span class="hero-readout-item">
+        <span class="hero-readout-key">{stat.label}</span>
+        <span class="hero-readout-value">{stat.value}</span>
+      </span>
+    ))}
+  </div>
 
-  <div class="hero-inner">
-    <div class="hero-monogram-wrap">
-      <Monogram size="clamp(140px, 20vw, 220px)" />
-    </div>
-
+  <div class="hero-stage">
     <h1 id="hero-name" class="hero-name">
-      <span class="hero-name-first">{personal.name.first.toLowerCase()}</span>
-      <span class="hero-name-sep" aria-hidden="true">/</span>
-      <span class="hero-name-last">{personal.name.last.toLowerCase()}</span>
+      <span class="hero-name-line" data-text={first}>{first}</span>
+      <span class="hero-name-line hero-name-line--last" data-text={last}>{last}</span>
     </h1>
-
+    <span class="hero-corrupt hero-corrupt--a" aria-hidden="true"></span>
+    <span class="hero-corrupt hero-corrupt--b" aria-hidden="true"></span>
     <p class="hero-role">{personal.title}</p>
+  </div>
 
-    <p class="hero-tagline">{hero.tagline}</p>
+  <div class="hero-console">
+    <div class="hero-panel hud">
+      <p class="hero-panel-tag data-tag">whoami</p>
+      <p class="hero-tagline">{hero.tagline}</p>
 
-    <div class="hero-actions">
-      <div class="hero-actions-group">
-        <a href={personal.links.email} class="hero-cta hero-cta--primary">
-          <span>Contact</span>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            aria-hidden="true"
-          >
-            <rect x="3" y="5" width="18" height="14" rx="2"></rect>
-            <path d="m3 7 9 6 9-6"></path>
-          </svg>
-        </a>
+      <div class="hero-actions">
+        <a href={personal.links.email} class="hero-cta hero-cta--primary cut">Contact</a>
         <a href="/experience" class="hero-cta hero-cta--secondary">
-          <span>Experience</span>
-          <span class="hero-cta-arrow" aria-hidden="true">→</span>
+          Experience <span aria-hidden="true">→</span>
         </a>
-      </div>
-
-      <span class="hero-actions-sep" aria-hidden="true"></span>
-
-      <div class="hero-actions-group">
         <a
           href={personal.links.github}
           class="hero-icon-link"
@@ -76,7 +57,6 @@ const latestFormattedDate = latestPost
             ></path>
           </svg>
         </a>
-
         <a
           href={personal.links.linkedin}
           class="hero-icon-link"
@@ -92,27 +72,20 @@ const latestFormattedDate = latestPost
         </a>
       </div>
     </div>
+
+    <div class="hero-sigil" aria-hidden="true">
+      <Monogram size="clamp(140px, 18vw, 240px)" />
+    </div>
   </div>
 
   {
     latestPost && (
-      <div class="hero-latest-wrap">
-        <a href={`/blog/${latestPost.id}`} class="hero-latest" aria-label={`Latest writing: ${latestPost.data.title}`}>
-          <span class="hero-latest-kicker">
-            <span class="hero-latest-prefix" aria-hidden="true">{`//`}</span>
-            latest writing
-          </span>
-          <span class="hero-latest-title">{latestPost.data.title}</span>
-          <span class="hero-latest-meta">
-            <span class="hero-latest-date">{latestFormattedDate}</span>
-          </span>
-          <span class="hero-latest-arrow" aria-hidden="true">→</span>
-        </a>
-        <a href="/blog" class="hero-latest-all">
-          view all writing
-          <span class="hero-latest-all-arrow" aria-hidden="true">↗</span>
-        </a>
-      </div>
+      <a href={`/blog/${latestPost.id}`} class="hero-latest">
+        <span class="hero-latest-key data-tag">last transmission</span>
+        <span class="hero-latest-date">{latestDate}</span>
+        <span class="hero-latest-title">{latestPost.data.title}</span>
+        <span class="hero-latest-arrow" aria-hidden="true">→</span>
+      </a>
     )
   }
 </section>
@@ -120,424 +93,336 @@ const latestFormattedDate = latestPost
 <style>
   .hero {
     position: relative;
-    min-height: 100svh;
+    max-width: var(--max-content);
+    margin-inline: auto;
+    padding: calc(var(--nav-height) + var(--space-8)) var(--space-6) var(--space-section);
+    overflow-x: clip;
+  }
+
+  .hero-readout {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: clamp(var(--space-12), 8vh, var(--space-16)) var(--space-6);
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-pixel);
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 
-  .hero-ambient {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background: radial-gradient(
-      ellipse 55% 45% at 50% 45%,
-      rgba(255, 45, 85, 0.07) 0%,
-      rgba(255, 45, 85, 0.02) 40%,
-      transparent 75%
-    );
+  .hero-readout-item {
+    display: inline-flex;
+    gap: var(--space-2);
+    color: var(--color-text-subtle);
   }
 
-  .hero-inner {
+  .hero-readout-value {
+    color: var(--color-text);
+  }
+
+  .hero-stage {
     position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: var(--space-4);
-    max-width: 680px;
-  }
-
-  .hero-monogram-wrap {
-    margin-bottom: var(--space-2);
-    animation: hero-in 0.9s var(--ease-out) 0.1s both;
+    margin-top: var(--space-6);
   }
 
   .hero-name {
-    display: inline-flex;
-    align-items: baseline;
-    gap: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 0 -0.05em;
     font-family: var(--font-display);
-    font-size: clamp(1.5rem, 2.6vw, 2.125rem);
-    font-weight: 700;
+    font-weight: 400;
+    font-size: clamp(4.25rem, 17vw, 11.5rem);
+    line-height: 0.82;
+    letter-spacing: -0.01em;
     color: var(--color-text);
-    letter-spacing: 0.04em;
-    text-transform: lowercase;
-    margin: var(--space-3) 0 0 0;
-    animation: hero-in 0.7s var(--ease-out) 0.3s both;
+    white-space: nowrap;
   }
 
-  .hero-name-sep {
+  .hero-name-line--last {
+    padding-left: 0.5em;
     color: var(--color-accent);
-    font-weight: 400;
-    font-family: var(--font-mono);
+  }
+
+  .hero-name-line::before,
+  .hero-name-line::after {
+    opacity: 1;
+  }
+
+  .hero-name-line::before {
+    color: var(--color-cyan);
+    -webkit-text-fill-color: var(--color-cyan);
+    animation: tear-a 560ms steps(1) 0.5s both;
+  }
+
+  .hero-name-line::after {
+    color: var(--color-text);
+    -webkit-text-fill-color: var(--color-text);
+    animation: tear-b 560ms steps(1) 0.55s both;
+  }
+
+  .hero-name-line--last::before,
+  .hero-name-line--last::after {
+    padding-left: inherit;
+  }
+
+  .hero-name-line--last::after {
+    color: var(--color-magenta);
+    -webkit-text-fill-color: var(--color-magenta);
+  }
+
+  @keyframes tear-a {
+    0% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+    20% { clip-path: inset(10% 0 70% 0); transform: translateX(-0.14em); }
+    45% { clip-path: inset(62% 0 18% 0); transform: translateX(0.08em); }
+    70% { clip-path: inset(30% 0 52% 0); transform: translateX(-0.1em); }
+    90% { clip-path: inset(38% 0 52% 0); transform: translateX(-0.07em); }
+    100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  }
+
+  @keyframes tear-b {
+    0% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+    25% { clip-path: inset(55% 0 25% 0); transform: translateX(0.12em); }
+    50% { clip-path: inset(5% 0 82% 0); transform: translateX(0.06em); }
+    75% { clip-path: inset(72% 0 10% 0); transform: translateX(0.14em); }
+    90% { clip-path: inset(66% 0 27% 0); transform: translateX(0.05em); }
+    100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  }
+
+  .hero-name:hover .hero-name-line::before {
+    animation: tear-hover-a 560ms steps(1) both;
+  }
+
+  .hero-name:hover .hero-name-line::after {
+    animation: tear-hover-b 560ms steps(1) 50ms both;
+  }
+
+  @keyframes tear-hover-a {
+    0% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+    20% { clip-path: inset(10% 0 70% 0); transform: translateX(-0.14em); }
+    45% { clip-path: inset(62% 0 18% 0); transform: translateX(0.08em); }
+    70% { clip-path: inset(30% 0 52% 0); transform: translateX(-0.1em); }
+    90% { clip-path: inset(38% 0 52% 0); transform: translateX(-0.07em); }
+    100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  }
+
+  @keyframes tear-hover-b {
+    0% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+    25% { clip-path: inset(55% 0 25% 0); transform: translateX(0.12em); }
+    50% { clip-path: inset(5% 0 82% 0); transform: translateX(0.06em); }
+    75% { clip-path: inset(72% 0 10% 0); transform: translateX(0.14em); }
+    90% { clip-path: inset(66% 0 27% 0); transform: translateX(0.05em); }
+    100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  }
+
+  .hero-corrupt {
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .hero-corrupt--a {
+    top: clamp(3rem, 8vw, 7.8rem);
+    right: 4%;
+    width: clamp(3rem, 10vw, 8rem);
+    height: 10px;
+    background: var(--color-accent);
+  }
+
+  .hero-corrupt--b {
+    top: calc(clamp(3rem, 8vw, 7.8rem) + 16px);
+    right: calc(4% + 2.5rem);
+    width: clamp(2rem, 6vw, 5rem);
+    height: 3px;
+    background: var(--color-cyan);
+  }
+
+  .hero-console {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: var(--space-8);
+    align-items: end;
+    margin-top: var(--space-10);
+  }
+
+  .hero-panel {
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .hero-panel-tag {
+    color: var(--color-cyan);
+    margin-bottom: var(--space-3);
+  }
+
+  .hero-panel-tag::before {
+    content: "$ ";
+    color: var(--color-accent);
   }
 
   .hero-role {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin: 0;
-    animation: hero-in 0.7s var(--ease-out) 0.4s both;
+    margin-top: var(--space-6);
+    max-width: 22ch;
+    font-family: var(--font-condensed);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--color-text);
   }
 
   .hero-tagline {
     font-size: var(--text-base);
+    line-height: 1.6;
     color: var(--color-text-muted);
-    line-height: 1.65;
-    max-width: 52ch;
-    margin: var(--space-2) 0 0 0;
-    animation: hero-in 0.7s var(--ease-out) 0.5s both;
+    max-width: var(--max-measure);
   }
 
   .hero-actions {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-3);
-    margin-top: var(--space-4);
+    display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    animation: hero-in 0.7s var(--ease-out) 0.6s both;
-  }
-
-  .hero-actions-group {
-    display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: var(--space-3);
+    margin-top: var(--space-6);
   }
 
   .hero-cta {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    padding: 0.75rem 1.25rem;
-    font-family: var(--font-sans);
+    min-height: 44px;
+    padding: var(--space-3) var(--space-5);
+    font-family: var(--font-pixel);
     font-size: var(--text-sm);
-    font-weight: 600;
-    border-radius: var(--radius-full);
-    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
     transition:
-      background var(--duration-normal) var(--ease-out),
-      border-color var(--duration-normal) var(--ease-out),
-      color var(--duration-normal) var(--ease-out),
-      transform var(--duration-normal) var(--ease-spring),
-      box-shadow var(--duration-normal) var(--ease-out);
+      background var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
   }
 
   .hero-cta--primary {
+    --cut: 10px;
     background: var(--color-accent);
-    color: #ffffff;
-    border: 1px solid var(--color-accent);
+    color: var(--color-bg);
   }
 
   .hero-cta--primary:hover {
-    background: var(--color-accent-warm);
-    border-color: var(--color-accent-warm);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(255, 45, 85, 0.28);
-  }
-
-  .hero-cta--primary svg {
-    transition: transform var(--duration-normal) var(--ease-spring);
-  }
-
-  .hero-cta--primary:hover svg {
-    transform: translateX(2px);
+    background: var(--color-cyan);
   }
 
   .hero-cta--secondary {
-    background: transparent;
-    color: var(--color-text);
     border: 1px solid var(--color-border);
+    color: var(--color-text);
   }
 
   .hero-cta--secondary:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent-dim);
-    background: var(--color-accent-glow);
-    transform: translateY(-2px);
-  }
-
-  .hero-cta-arrow {
-    font-family: var(--font-mono);
-    transition: transform var(--duration-normal) var(--ease-spring);
-  }
-
-  .hero-cta--secondary:hover .hero-cta-arrow {
-    transform: translateX(3px);
-    color: var(--color-accent);
-  }
-
-  .hero-actions-sep {
-    width: 1px;
-    height: 1.5rem;
-    background: var(--color-border);
-    margin: 0 var(--space-1);
+    border-color: var(--color-cyan);
+    color: var(--color-cyan);
   }
 
   .hero-icon-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
+    width: 44px;
+    height: 44px;
     color: var(--color-text-subtle);
-    background: transparent;
-    transition:
-      color var(--duration-normal) var(--ease-out),
-      border-color var(--duration-normal) var(--ease-out),
-      background var(--duration-normal) var(--ease-out),
-      transform var(--duration-normal) var(--ease-spring);
+    transition: color var(--duration-fast) var(--ease-out);
   }
 
   .hero-icon-link:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent-dim);
-    background: var(--color-accent-glow);
-    transform: translateY(-2px);
+    color: var(--color-cyan);
   }
 
-  .hero-icon-link:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 3px;
-  }
-
-  .hero-latest-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-3);
-    width: min(560px, 100%);
-    margin-top: clamp(var(--space-8), 6vh, var(--space-12));
-    padding: 0 var(--space-4);
-    z-index: 1;
-    animation: hero-in 0.7s var(--ease-out) 0.8s both;
+  .hero-sigil {
+    justify-self: end;
   }
 
   .hero-latest {
     display: grid;
-    grid-template-columns: auto 1fr auto;
-    grid-template-rows: auto auto;
-    grid-template-areas:
-      'kicker meta arrow'
-      'title title arrow';
-    column-gap: var(--space-4);
-    row-gap: var(--space-2);
-    width: 100%;
-    padding: var(--space-4) var(--space-5);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: rgba(10, 0, 5, 0.65);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--space-4);
+    margin-top: var(--space-10);
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
     color: inherit;
-    text-decoration: none;
-    box-shadow:
-      -10px 0 32px rgba(255, 45, 85, 0.1),
-      10px 0 32px rgba(45, 127, 255, 0.08);
-    transition:
-      border-color var(--duration-normal) var(--ease-out),
-      background var(--duration-normal) var(--ease-out),
-      transform var(--duration-normal) var(--ease-spring),
-      box-shadow var(--duration-normal) var(--ease-out);
   }
 
-  .hero-latest::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 12%;
-    right: 12%;
-    height: 1px;
-    background: linear-gradient(
-      to right,
-      transparent,
-      var(--color-accent),
-      transparent
-    );
-    opacity: 0.6;
-  }
-
-  .hero-latest:hover {
-    border-color: var(--color-accent-dim);
-    background: rgba(20, 5, 10, 0.8);
-    transform: translateY(-2px);
-    box-shadow:
-      -14px 0 40px rgba(255, 45, 85, 0.18),
-      14px 0 40px rgba(45, 127, 255, 0.12);
-  }
-
-  .hero-latest:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 3px;
-  }
-
-  .hero-latest-kicker {
-    grid-area: kicker;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
+  .hero-latest-key {
     color: var(--color-accent);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    white-space: nowrap;
   }
 
-  .hero-latest-prefix {
-    color: var(--color-accent);
-    opacity: 0.7;
-  }
-
-  .hero-latest-meta {
-    grid-area: meta;
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--space-2);
+  .hero-latest-date {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--text-sm);
     color: var(--color-text-subtle);
-    letter-spacing: 0.04em;
-    flex-wrap: wrap;
   }
 
   .hero-latest-title {
-    grid-area: title;
-    font-family: var(--font-sans);
-    font-size: var(--text-base);
+    font-family: var(--font-condensed);
     font-weight: 600;
+    font-size: var(--text-lg);
     color: var(--color-text);
-    line-height: 1.35;
-    text-align: left;
     transition: color var(--duration-fast) ease;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    overflow: hidden;
-  }
-
-  .hero-latest:hover .hero-latest-title {
-    color: var(--color-accent);
   }
 
   .hero-latest-arrow {
-    grid-area: arrow;
-    align-self: center;
     font-family: var(--font-mono);
-    font-size: var(--text-xl);
     color: var(--color-text-subtle);
-    transition:
-      transform var(--duration-normal) var(--ease-spring),
-      color var(--duration-fast) ease;
+    transition: transform var(--duration-normal) var(--ease-out), color var(--duration-fast) ease;
+  }
+
+  .hero-latest:hover .hero-latest-title,
+  .hero-latest:hover .hero-latest-arrow {
+    color: var(--color-cyan);
   }
 
   .hero-latest:hover .hero-latest-arrow {
     transform: translateX(4px);
-    color: var(--color-accent);
   }
 
-  .hero-latest-all {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    color: var(--color-text-subtle);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .hero-latest-all:hover {
-    color: var(--color-accent);
-  }
-
-  .hero-latest-all-arrow {
-    transition: transform var(--duration-normal) var(--ease-spring);
-  }
-
-  .hero-latest-all:hover .hero-latest-all-arrow {
-    transform: translate(2px, -2px);
-  }
-
-  @keyframes hero-in {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
+  @media (max-width: 860px) {
+    .hero-console {
+      grid-template-columns: minmax(0, 1fr);
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+
+    .hero-sigil {
+      display: none;
     }
   }
 
   @media (max-width: 640px) {
-    .hero-tagline {
-      font-size: var(--text-sm);
+    .hero-corrupt {
+      display: none;
     }
 
-    .hero-cta {
-      padding: 0.625rem 1rem;
+    .hero-name {
+      white-space: normal;
     }
 
-    .hero-icon-link {
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-
-    .hero-actions {
-      flex-direction: column;
-      gap: var(--space-4);
-      width: 100%;
-    }
-
-    .hero-actions-group {
-      width: 100%;
-    }
-
-    .hero-actions-sep {
-      width: 3rem;
-      height: 1px;
-      margin: 0;
+    .hero-name-line--last {
+      padding-left: 0;
     }
 
     .hero-latest {
-      grid-template-columns: 1fr auto;
-      grid-template-areas:
-        'kicker arrow'
-        'title arrow'
-        'meta arrow';
-      column-gap: var(--space-3);
-      padding: var(--space-3) var(--space-4);
+      grid-template-columns: minmax(0, 1fr) auto;
     }
 
-    .hero-latest-meta {
-      justify-content: flex-start;
+    .hero-latest-title {
+      grid-column: 1 / -1;
+      grid-row: 2;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-monogram-wrap,
-    .hero-name,
-    .hero-role,
-    .hero-tagline,
-    .hero-actions,
-    .hero-latest-wrap {
+    .hero-name-line::before,
+    .hero-name-line::after {
       animation: none;
+      clip-path: inset(0 0 100% 0);
     }
   }
 </style>

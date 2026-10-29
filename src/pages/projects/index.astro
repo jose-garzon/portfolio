@@ -1,40 +1,34 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Badge from '../../shared/components/Badge.astro';
 import { fullName } from '../../shared/data/personal';
 import { projects } from '../../shared/data/projects';
 
-const featured = projects.filter((p) => p.featured);
-const rest = projects.filter((p) => !p.featured);
-const ordered = [...featured, ...rest];
+const shots = import.meta.glob<{ default: ImageMetadata }>('../../assets/projects/*.png', { eager: true });
+const shotOf = (file?: string) => (file ? shots[`../../assets/projects/${file}`]?.default : undefined);
+const isRepo = (url?: string) => !!url && new URL(url).pathname.split('/').filter(Boolean).length > 1;
 ---
 
 <Layout
   title={`Projects · ${fullName}`}
-  description="Things I've built. Each one with a case study: problem, approach, what broke, what I'd do differently."
+  description="Agent backends, offline desktop tools and local-first apps by Jose Garzón, with write-ups on the problem, the approach, and what broke."
 >
-  <main class="projects-main">
+  <main id="main" class="projects-main">
     <div class="container">
       <header class="projects-header">
-        <p class="kicker">
-          <span class="kicker-prefix" aria-hidden="true">//</span>
-          02 projects
-        </p>
-        <h1 class="projects-title scanlines">
-          <span data-text="Things I've built">Things I've built</span>
+        <h1 class="projects-title">
+          <span data-text="Built, broken, rebuilt">Built, broken, rebuilt</span>
         </h1>
         <p class="projects-subtext">
-          Each project is a case study: the problem, the approach, what broke, what I'd
-          do differently. Not screenshots and stack lists, the actual work.
-        </p>
-        <p class="projects-count">
-          <span class="count-value">{projects.length}</span>
-          <span class="count-label">total · {featured.length} featured</span>
+          Agent backends, offline desktop tools, local-first apps. Four of these have a
+          full write-up: the problem, the approach, what broke, what I'd change.
         </p>
       </header>
 
       <ol class="project-feed">
-        {ordered.map((project, i) => {
+        {projects.map((project) => {
           const href = project.slug
             ? `/projects/${project.slug}`
             : (project.href ?? project.github);
@@ -44,33 +38,60 @@ const ordered = [...featured, ...rest];
             : project.href
               ? `${project.cta ?? 'open'} →`
               : 'github ↗';
+          const shot = shotOf(project.image);
+          const titleId = `project-${project.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
           return (
-            <li class="project-row" data-featured={project.featured}>
-              <a
-                href={href}
-                target={external ? '_blank' : undefined}
-                rel={external ? 'noopener' : undefined}
-                class="project-link"
-              >
-                <span class="project-index" aria-hidden="true">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <div class="project-meta">
-                  {project.featured && (
-                    <span class="project-flag">featured</span>
+            <li class:list={['project-row', { 'project-row--shot': shot }]}>
+              <div class="project-body">
+              <p class="project-meta">
+                <span class="project-kind">{project.kind}</span>
+                <span class="project-route" aria-hidden="true">{route}</span>
+              </p>
+              <h2 class="project-row-title" id={titleId}>
+                <a
+                  href={href}
+                  target={external ? '_blank' : undefined}
+                  rel={external ? 'noopener' : undefined}
+                  class="project-link"
+                >
+                  {project.name}
+                  {external && <span class="sr-only"> (opens in new tab)</span>}
+                </a>
+              </h2>
+              <p class="project-row-desc">{project.description}</p>
+              {project.signal && <p class="project-signal">{project.signal}</p>}
+              <ul class="project-row-stack" aria-label="Stack">
+                {project.stack.map((tech) => (
+                  <li><Badge>{tech}</Badge></li>
+                ))}
+              </ul>
+              {(project.live || (project.slug && isRepo(project.github))) && (
+                <p class="project-extras">
+                  {project.live && (
+                    <a href={project.live} target="_blank" rel="noopener" aria-describedby={titleId}>
+                      live ↗<span class="sr-only"> (opens in new tab)</span>
+                    </a>
                   )}
-                  <span class="project-route">
-                    {route}
-                  </span>
+                  {project.slug && isRepo(project.github) && (
+                    <a href={project.github} target="_blank" rel="noopener" aria-describedby={titleId}>
+                      github ↗<span class="sr-only"> (opens in new tab)</span>
+                    </a>
+                  )}
+                </p>
+              )}
+              </div>
+              {shot && (
+                <div class="project-shot-frame">
+                <Image
+                  src={shot}
+                  alt=""
+                  widths={[360, 720]}
+                  sizes="(max-width: 860px) 100vw, 360px"
+                  class="project-shot"
+                  loading="lazy"
+                />
                 </div>
-                <h2 class="project-row-title">{project.name}</h2>
-                <p class="project-row-desc">{project.description}</p>
-                <ul class="project-row-stack">
-                  {project.stack.map((tech) => (
-                    <li><Badge variant="accent">{tech}</Badge></li>
-                  ))}
-                </ul>
-              </a>
+              )}
             </li>
           );
         })}
@@ -90,29 +111,14 @@ const ordered = [...featured, ...rest];
     margin-bottom: var(--space-12);
   }
 
-  .kicker {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    margin-bottom: var(--space-4);
-  }
-
-  .kicker-prefix {
-    color: var(--color-accent);
-  }
-
   .projects-title {
     font-family: var(--font-display);
-    font-size: var(--text-4xl);
-    font-weight: 700;
+    text-transform: uppercase;
+    font-size: var(--text-5xl);
+    font-weight: 400;
     color: var(--color-text);
-    letter-spacing: -0.03em;
-    line-height: 1.1;
+    letter-spacing: 0.01em;
+    line-height: 0.92;
     margin-bottom: var(--space-4);
   }
 
@@ -123,128 +129,187 @@ const ordered = [...featured, ...rest];
     margin-bottom: var(--space-6);
   }
 
-  .projects-count {
-    display: inline-flex;
-    align-items: baseline;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-  }
-
-  .count-value {
-    color: var(--color-accent);
-    font-size: var(--text-sm);
-  }
-
   .project-feed {
     list-style: none;
+    margin-inline: calc(-1 * var(--space-4));
     border-top: 1px solid var(--color-border);
   }
 
   .project-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: stretch;
+    padding: var(--space-8) var(--space-4);
     border-bottom: 1px solid var(--color-border);
     transition: background var(--duration-normal) var(--ease-out);
   }
 
-  .project-row:hover {
-    background: var(--color-surface);
+  .project-row--shot {
+    grid-template-columns: minmax(0, 1fr) 360px;
   }
 
-  .project-link {
+  .project-body {
     display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      'idx meta'
-      'idx title'
-      'idx desc'
-      'idx stack';
-    column-gap: var(--space-8);
-    row-gap: var(--space-3);
-    padding: var(--space-8) 0;
-    color: inherit;
-    align-items: baseline;
+    gap: var(--space-3);
   }
 
-  .project-index {
-    grid-area: idx;
-    align-self: start;
+  .project-shot-frame {
+    position: relative;
+    min-height: 220px;
+    margin-block: calc(-1 * var(--space-8));
+    margin-right: calc(-1 * var(--space-4));
+    overflow: hidden;
+    border-left: 1px solid var(--color-border);
+    transition: border-color var(--duration-normal) var(--ease-out);
+  }
+
+  .project-shot {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    filter: grayscale(0.6) brightness(0.85);
+    transition: filter var(--duration-normal) var(--ease-out);
+  }
+
+  .project-row:hover .project-shot-frame {
+    border-color: var(--color-cyan);
+  }
+
+  .project-row:hover .project-shot {
+    filter: none;
+  }
+
+  .project-signal {
     font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    letter-spacing: 0.06em;
-    min-width: 2.5ch;
-    padding-top: 0.4em;
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+
+  .project-signal::before {
+    content: "> ";
+    color: var(--color-accent);
+  }
+
+  .project-row:hover {
+    background: var(--color-surface-raised);
   }
 
   .project-meta {
-    grid-area: meta;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-3);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    color: var(--color-text-subtle);
   }
 
-  .project-flag {
+  .project-kind {
     color: var(--color-accent);
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
 
   .project-route {
-    color: var(--color-text-subtle);
-  }
-
-  .project-row-title {
-    grid-area: title;
-    font-family: var(--font-display);
-    font-size: var(--text-2xl);
-    font-weight: 700;
-    color: var(--color-text);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    margin: 0;
+    color: var(--color-text-muted);
     transition: color var(--duration-fast) ease;
   }
 
-  .project-link:hover .project-row-title {
-    color: var(--color-accent);
+  .project-row-title {
+    font-family: var(--font-condensed);
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .project-link {
+    color: var(--color-text);
+    transition: color var(--duration-fast) ease;
+  }
+
+  .project-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .project-link:focus-visible {
+    outline: none;
+  }
+
+  .project-row:has(.project-link:focus-visible) {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: -2px;
+  }
+
+  .project-row:hover .project-link,
+  .project-row:hover .project-route {
+    color: var(--color-cyan);
   }
 
   .project-row-desc {
-    grid-area: desc;
     font-size: var(--text-base);
     color: var(--color-text-muted);
     line-height: 1.7;
-    max-width: 70ch;
+    max-width: 62ch;
   }
 
   .project-row-stack {
-    grid-area: stack;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
     list-style: none;
-    margin-top: var(--space-2);
+    margin-top: var(--space-1);
+  }
+
+  .project-row-stack :global(.badge:hover) {
+    transform: none;
+  }
+
+  .project-extras {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: var(--space-5);
+    width: fit-content;
+  }
+
+  .project-extras a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-cyan);
+  }
+
+  .project-extras a:hover {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 860px) {
+    .project-row--shot {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .project-shot-frame {
+      order: -1;
+      min-height: 0;
+      margin: 0;
+      border: 1px solid var(--color-border);
+      aspect-ratio: 16 / 10;
+    }
   }
 
   @media (max-width: 640px) {
-    .project-link {
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        'meta'
-        'title'
-        'desc'
-        'stack';
-      column-gap: 0;
-      row-gap: var(--space-3);
-      padding: var(--space-6) 0;
-    }
-
-    .project-index {
-      display: none;
+    .project-row {
+      padding-block: var(--space-6);
     }
   }
 </style>

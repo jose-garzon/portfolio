@@ -1,0 +1,68 @@
+---
+interface Props {
+  sections: { slug: string; text: string }[];
+}
+
+const { sections } = Astro.props;
+---
+
+{sections.length > 1 && (
+  <aside class="toc" aria-label="On this page">
+    <nav class="toc-panel hud">
+      <span class="data-tag toc-label">// sections</span>
+      <ol class="toc-list">
+        {sections.map((s) => (
+          <li><a href={`#${s.slug}`} class="toc-link" data-toc-link={s.slug}>{s.text}</a></li>
+        ))}
+      </ol>
+    </nav>
+  </aside>
+)}
+
+<style>
+  .toc {
+    display: none;
+  }
+
+  @media (min-width: 1200px) {
+    .toc {
+      display: block;
+    }
+  }
+
+  .toc-panel {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-8));
+    padding: var(--space-5);
+  }
+
+  .toc-label {
+    display: block;
+    color: var(--color-cyan);
+    margin-bottom: var(--space-4);
+  }
+
+  .toc-list {
+    list-style: none;
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .toc-link {
+    display: block;
+    padding: var(--space-2) 0 var(--space-2) var(--space-3);
+    border-left: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    color: var(--color-text-subtle);
+    transition:
+      color var(--duration-fast) ease,
+      border-color var(--duration-fast) ease;
+  }
+
+  .toc-link:hover,
+  .toc-link[aria-current] {
+    color: var(--color-text);
+    border-left-color: var(--color-cyan);
+  }
+</style>

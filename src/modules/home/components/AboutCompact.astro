@@ -5,11 +5,10 @@ import { personal } from '../../../shared/data/personal';
 
 <section id="about" class="section about-compact-section">
   <div class="container">
-    <p class="section-label scanlines reveal">about</p>
 
     <div class="about-compact-grid">
       <div class="about-compact-text">
-        <h2 class="about-compact-heading scanlines reveal">
+        <h2 class="about-compact-heading reveal">
           <span data-text={about.heading}>{about.heading}</span>
         </h2>
         {about.paragraphs.map((paragraph) => (
@@ -27,10 +26,6 @@ import { personal } from '../../../shared/data/personal';
 
       <aside class="about-compact-side reveal">
         <dl class="about-compact-facts">
-          <div class="fact">
-            <dt>Role</dt>
-            <dd>{personal.title}</dd>
-          </div>
           <div class="fact">
             <dt>Currently</dt>
             <dd>
@@ -65,32 +60,29 @@ import { personal } from '../../../shared/data/personal';
 </section>
 
 <style>
-  .about-compact-section {
-    padding-block: clamp(var(--space-16), 10vw, var(--space-section));
-  }
-
   .about-compact-grid {
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: minmax(0, 1fr) 300px;
     gap: var(--space-12);
     align-items: start;
   }
 
   .about-compact-heading {
     font-family: var(--font-display);
-    font-size: var(--text-3xl);
-    font-weight: 700;
+    font-size: var(--text-4xl);
+    font-weight: 400;
+    text-transform: uppercase;
     color: var(--color-text);
-    line-height: 1.2;
-    letter-spacing: -0.03em;
+    line-height: 0.95;
+    letter-spacing: 0.01em;
     margin-bottom: var(--space-6);
   }
 
   .about-compact-paragraph {
     font-size: var(--text-lg);
     color: var(--color-text-muted);
-    line-height: 1.8;
-    max-width: 62ch;
+    line-height: 1.6;
+    max-width: var(--max-measure);
     margin: 0 0 var(--space-5) 0;
   }
 
@@ -111,9 +103,8 @@ import { personal } from '../../../shared/data/personal';
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--color-text-muted);
-    padding: 0.3rem 0.7rem;
+    padding: var(--space-1) var(--space-2);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
     letter-spacing: 0.02em;
     transition:
       color var(--duration-fast) ease,
@@ -122,9 +113,8 @@ import { personal } from '../../../shared/data/personal';
   }
 
   .about-compact-skill:hover {
-    color: var(--color-accent);
-    border-color: var(--color-accent-dim);
-    background: var(--color-accent-glow);
+    color: var(--color-cyan);
+    border-color: var(--color-cyan);
   }
 
   .fact-list {
@@ -137,7 +127,7 @@ import { personal } from '../../../shared/data/personal';
   }
 
   .about-compact-side {
-    border-left: 1px solid var(--color-border);
+    border-left: 1px solid var(--color-cyan);
     padding-left: var(--space-8);
   }
 
@@ -170,15 +160,19 @@ import { personal } from '../../../shared/data/personal';
   }
 
   .fact-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--color-text);
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 1px;
-    transition: color var(--duration-fast) ease, border-color var(--duration-fast) ease;
+    text-decoration: underline;
+    text-decoration-color: var(--color-border);
+    text-underline-offset: 4px;
+    transition: color var(--duration-fast) ease, text-decoration-color var(--duration-fast) ease;
   }
 
   .fact-link:hover {
     color: var(--color-accent);
-    border-bottom-color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
   }
 
   .fact-sep {

@@ -25,17 +25,16 @@ const formatDate = (d: Date) =>
 
 <Layout
   title={`Writing · ${fullName}`}
-  description="Engineering notes on LLMs, TypeScript, Python, backend, systems. Learning in public."
+  description="Engineering notes on backend, Python, and systems design. Learning in public."
 >
-  <main class="blog-main">
+  <main id="main" class="blog-main">
     <div class="container">
       <header class="blog-header">
-        <p class="section-label scanlines">writing</p>
-        <h1 class="blog-title scanlines">
+        <h1 class="blog-title">
           <span data-text="Notes on the work">Notes on the work</span>
         </h1>
         <p class="blog-subtext">
-          Engineering notes on LLMs, backend, systems, and what I'm figuring out. Honest
+          Engineering notes on backend, Python, systems, and what I'm figuring out. Honest
           records, not polished tutorials.
         </p>
         <div class="blog-meta-row">
@@ -55,23 +54,36 @@ const formatDate = (d: Date) =>
               <span class="tag-bar-label">filter</span>
               <ul class="tag-chips">
                 <li>
-                  <button type="button" class="tag-chip is-active" data-tag-filter="all">
+                  <button
+                    type="button"
+                    class="tag-chip is-active"
+                    data-tag-filter="all"
+                    aria-pressed="true"
+                  >
                     all
                   </button>
                 </li>
                 {allTags.map((tag) => (
                   <li>
-                    <button type="button" class="tag-chip" data-tag-filter={tag}>
+                    <button
+                      type="button"
+                      class="tag-chip"
+                      data-tag-filter={tag}
+                      aria-pressed="false"
+                    >
                       #{tag}
                     </button>
                   </li>
                 ))}
               </ul>
+              <p class="filter-status" aria-live="polite" data-filter-status>
+                showing {posts.length} of {posts.length}
+              </p>
             </div>
           )}
 
           {posts.length === 0 ? (
-            <p class="empty">No posts yet. Check back soon.</p>
+            <p class="empty">Nothing logged yet. First entry is in progress.</p>
           ) : (
             <ol class="feed">
               {posts.map((post, i) => (
@@ -79,28 +91,35 @@ const formatDate = (d: Date) =>
                   class="feed-row"
                   data-tags={post.data.tags.join(',')}
                 >
-                  <a href={`/blog/${post.id}`} class="feed-link">
-                    <span class="feed-index" aria-hidden="true">
-                      {String(posts.length - i).padStart(2, '0')}
-                    </span>
-                    <div class="feed-meta">
-                      <time
-                        class="feed-date"
-                        datetime={post.data.pubDate.toISOString()}
-                      >
-                        {formatDate(post.data.pubDate)}
-                      </time>
-                    </div>
-                    <h2 class="feed-title">{post.data.title}</h2>
-                    <p class="feed-excerpt">{post.data.description}</p>
-                    {post.data.tags.length > 0 && (
-                      <ul class="feed-tags">
-                        {post.data.tags.map((tag) => (
-                          <li>#{tag}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </a>
+                  <span class="feed-frame hud" aria-hidden="true"></span>
+                  <span class="feed-index" aria-hidden="true">
+                    {String(posts.length - i).padStart(2, '0')}
+                  </span>
+                  <div class="feed-meta">
+                    <time
+                      class="feed-date"
+                      datetime={post.data.pubDate.toISOString()}
+                    >
+                      {formatDate(post.data.pubDate)}
+                    </time>
+                  </div>
+                  <h2 class="feed-title">
+                    <a href={`/blog/${post.id}`} class="feed-link">
+                      {post.data.title}
+                    </a>
+                  </h2>
+                  <p class="feed-excerpt">{post.data.description}</p>
+                  {post.data.tags.length > 0 && (
+                    <ul class="feed-tags" aria-label="Filter by this post's tags">
+                      {post.data.tags.map((tag) => (
+                        <li>
+                          <button type="button" class="feed-tag" data-row-tag={tag}>
+                            #{tag}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ol>
@@ -131,7 +150,6 @@ const formatDate = (d: Date) =>
 
   .blog-title {
     font-size: var(--text-4xl);
-    font-weight: 700;
     color: var(--color-text);
     letter-spacing: -0.03em;
     line-height: 1.1;
@@ -142,6 +160,7 @@ const formatDate = (d: Date) =>
     font-size: var(--text-lg);
     color: var(--color-text-muted);
     line-height: 1.7;
+    max-width: 65ch;
     margin-bottom: var(--space-6);
   }
 
@@ -156,9 +175,11 @@ const formatDate = (d: Date) =>
     display: inline-flex;
     align-items: baseline;
     gap: var(--space-2);
-    font-family: var(--font-mono);
+    font-family: var(--font-pixel);
     font-size: var(--text-xs);
     color: var(--color-text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 
   .blog-count-value {
@@ -181,11 +202,11 @@ const formatDate = (d: Date) =>
   }
 
   .tag-bar-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-pixel);
     font-size: var(--text-xs);
     color: var(--color-text-subtle);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
   }
 
   .tag-chips {
@@ -196,6 +217,7 @@ const formatDate = (d: Date) =>
   }
 
   .tag-chip {
+    min-height: 44px;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     padding: var(--space-1) var(--space-3);
@@ -211,40 +233,34 @@ const formatDate = (d: Date) =>
   }
 
   .tag-chip:hover {
-    color: var(--color-text);
-    border-color: var(--color-text-subtle);
+    color: var(--color-cyan);
+    border-color: var(--color-cyan-deep);
   }
 
-  .tag-chip:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
+  .filter-status {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    margin-left: auto;
   }
 
   .tag-chip.is-active {
-    color: var(--color-accent);
-    border-color: var(--color-accent-dim);
-    background: var(--color-accent-glow);
+    color: var(--color-bg);
+    border-color: var(--color-cyan);
+    background: var(--color-cyan);
   }
 
   .feed {
+    margin-inline: calc(-1 * var(--space-4));
     list-style: none;
     border-top: 1px solid var(--color-border);
   }
 
   .feed-row {
+    position: relative;
+    padding-inline: var(--space-4);
     border-bottom: 1px solid var(--color-border);
     transition: background var(--duration-normal) var(--ease-out);
-  }
-
-  .feed-row:hover {
-    background: var(--color-surface);
-  }
-
-  .feed-row[hidden] {
-    display: none;
-  }
-
-  .feed-link {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-areas:
@@ -254,20 +270,61 @@ const formatDate = (d: Date) =>
       'idx tags';
     column-gap: var(--space-8);
     row-gap: var(--space-3);
-    padding: var(--space-8) 0;
-    color: inherit;
+    padding-block: var(--space-8);
     align-items: baseline;
+  }
+
+  .feed-frame {
+    --hud-len: 12px;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .feed-row:hover,
+  .feed-row:focus-within {
+    background: var(--color-surface);
+  }
+
+  .feed-row:hover .feed-frame,
+  .feed-row:focus-within .feed-frame {
+    opacity: 1;
+  }
+
+  .feed-row[hidden] {
+    display: none;
+  }
+
+  .feed-link {
+    color: inherit;
+  }
+
+  .feed-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .feed-link:focus-visible {
+    outline: none;
+  }
+
+  .feed-link:focus-visible::after {
+    outline: 2px solid var(--color-cyan);
+    outline-offset: -2px;
   }
 
   .feed-index {
     grid-area: idx;
     align-self: start;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    letter-spacing: 0.06em;
-    min-width: 2.5ch;
-    padding-top: 0.4em;
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--color-accent);
+    min-width: 2ch;
   }
 
   .feed-meta {
@@ -285,9 +342,9 @@ const formatDate = (d: Date) =>
 
   .feed-title {
     grid-area: title;
-    font-family: var(--font-display);
+    font-family: var(--font-condensed);
     font-size: var(--text-2xl);
-    font-weight: 700;
+    font-weight: 600;
     color: var(--color-text);
     line-height: 1.2;
     letter-spacing: -0.02em;
@@ -295,8 +352,8 @@ const formatDate = (d: Date) =>
     transition: color var(--duration-fast) ease;
   }
 
-  .feed-link:hover .feed-title {
-    color: var(--color-accent);
+  .feed-row:hover .feed-title {
+    color: var(--color-cyan);
   }
 
   .feed-excerpt {
@@ -311,16 +368,28 @@ const formatDate = (d: Date) =>
     grid-area: tags;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-4);
+    gap: 0 var(--space-2);
     list-style: none;
-    margin-top: var(--space-1);
   }
 
-  .feed-tags li {
+  .feed-tag {
+    position: relative;
+    z-index: 1;
+    min-height: 44px;
+    padding-inline: var(--space-1);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    color: var(--color-accent);
+    color: var(--color-text-subtle);
     letter-spacing: 0.04em;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .feed-tag:hover {
+    color: var(--color-cyan);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .empty {
@@ -333,9 +402,10 @@ const formatDate = (d: Date) =>
   .clear-filter {
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    color: var(--color-accent);
+    color: var(--color-cyan);
     background: transparent;
-    border: 1px solid var(--color-accent-dim);
+    border: 1px solid var(--color-cyan-deep);
+    min-height: 44px;
     padding: var(--space-1) var(--space-3);
     margin-left: var(--space-3);
     border-radius: var(--radius-full);
@@ -344,24 +414,25 @@ const formatDate = (d: Date) =>
   }
 
   .clear-filter:hover {
-    background: var(--color-accent-dim);
+    background: var(--color-cyan-dim);
   }
 
   @media (max-width: 640px) {
-    .feed-link {
-      grid-template-columns: 1fr;
+    .feed-row {
       grid-template-areas:
-        'meta'
-        'title'
-        'excerpt'
-        'tags';
-      column-gap: 0;
+        'idx meta'
+        'title title'
+        'excerpt excerpt'
+        'tags tags';
+      column-gap: var(--space-3);
       row-gap: var(--space-3);
-      padding: var(--space-6) 0;
+      padding-block: var(--space-6);
     }
 
     .feed-index {
-      display: none;
+      align-self: center;
+      font-size: var(--text-2xl);
+      min-width: 0;
     }
   }
 </style>
@@ -371,6 +442,17 @@ const formatDate = (d: Date) =>
   const rows = document.querySelectorAll<HTMLLIElement>('.feed-row');
   const noMatches = document.querySelector<HTMLParagraphElement>('.no-matches');
   const clearBtn = document.querySelector<HTMLButtonElement>('[data-clear-filter]');
+  const rowTags = document.querySelectorAll<HTMLButtonElement>('[data-row-tag]');
+  const status = document.querySelector<HTMLParagraphElement>('[data-filter-status]');
+
+  const tagParam = 'tag';
+
+  const syncUrl = (filter: string) => {
+    const url = new URL(window.location.href);
+    if (filter === 'all') url.searchParams.delete(tagParam);
+    else url.searchParams.set(tagParam, filter);
+    history.replaceState(null, '', url);
+  };
 
   const applyFilter = (filter: string) => {
     let visibleCount = 0;
@@ -381,10 +463,19 @@ const formatDate = (d: Date) =>
       if (match) visibleCount += 1;
     });
     if (noMatches) noMatches.hidden = visibleCount > 0;
+    if (status) status.textContent = `showing ${visibleCount} of ${rows.length}`;
     chips.forEach((chip) => {
-      chip.classList.toggle('is-active', chip.dataset.tagFilter === filter);
+      const active = chip.dataset.tagFilter === filter;
+      chip.classList.toggle('is-active', active);
+      chip.setAttribute('aria-pressed', String(active));
     });
+    syncUrl(filter);
   };
+
+  const initial = new URLSearchParams(window.location.search).get(tagParam);
+  if (initial && Array.from(chips).some((chip) => chip.dataset.tagFilter === initial)) {
+    applyFilter(initial);
+  }
 
   chips.forEach((chip) => {
     chip.addEventListener('click', () => {
@@ -393,5 +484,17 @@ const formatDate = (d: Date) =>
     });
   });
 
-  clearBtn?.addEventListener('click', () => applyFilter('all'));
+  rowTags.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tag = btn.dataset.rowTag;
+      if (!tag) return;
+      applyFilter(tag);
+      document.querySelector<HTMLButtonElement>(`[data-tag-filter="${CSS.escape(tag)}"]`)?.focus();
+    });
+  });
+
+  clearBtn?.addEventListener('click', () => {
+    applyFilter('all');
+    document.querySelector<HTMLButtonElement>('[data-tag-filter="all"]')?.focus();
+  });
 </script>

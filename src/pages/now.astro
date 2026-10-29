@@ -10,31 +10,21 @@ if (!entry) {
 }
 
 const { Content } = await render(entry);
+const updatedIso = entry.data.updated.toISOString().slice(0, 10);
 ---
 
 <Layout
   title={`Now · ${fullName}`}
-  description="What I'm shipping, reading, learning. Current state."
+  description={`What ${fullName} is building, learning and reading right now.`}
 >
-  <main class="now-main">
+  <main id="main" class="now-main">
     <div class="container">
-      <nav class="now-nav">
-        <a href="/" class="back-link">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-            <path
-              d="M12 7H2M6 2L1 7l5 5"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-          </svg>
-          Home
-        </a>
-      </nav>
-
       <header class="now-header">
-        <p class="section-label scanlines">// now</p>
-        <h1 class="now-title scanlines"><span data-text="What I'm doing now">What I'm doing now</span></h1>
+        <p class="section-label">now</p>
+        <h1 class="now-title"><span data-text="What I'm doing now">What I'm doing now</span></h1>
+        <p class="now-sync data-tag">
+          Last sync <time datetime={updatedIso}>{updatedIso}</time>
+        </p>
       </header>
 
       <article class="prose">
@@ -50,32 +40,6 @@ const { Content } = await render(entry);
     padding-bottom: var(--space-section);
   }
 
-  .now-nav {
-    margin-bottom: var(--space-10);
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
-    transition:
-      color var(--duration-fast) ease,
-      border-color var(--duration-fast) ease,
-      background var(--duration-fast) ease;
-  }
-
-  .back-link:hover {
-    color: var(--color-text-muted);
-    border-color: var(--color-text-subtle);
-    background: var(--color-surface);
-  }
-
   .now-header {
     max-width: var(--max-prose);
     margin-bottom: var(--space-12);
@@ -84,47 +48,59 @@ const { Content } = await render(entry);
   }
 
   .now-title {
-    font-size: var(--text-4xl);
-    font-weight: 700;
+    font-size: var(--text-5xl);
+    font-weight: 400;
+    text-transform: uppercase;
     color: var(--color-text);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    line-height: 0.92;
+    letter-spacing: 0.01em;
     margin-bottom: var(--space-5);
   }
 
+  .now-title::after {
+    content: "";
+    display: block;
+    width: 3.5rem;
+    height: 6px;
+    margin-top: var(--space-5);
+    background: var(--color-accent);
+    box-shadow: 1.25rem 6px 0 var(--color-cyan);
+  }
+
+  .now-sync {
+    margin-top: var(--space-8);
+  }
+
+  .now-sync time {
+    font-family: var(--font-mono);
+    color: var(--color-text);
+    margin-left: var(--space-2);
+  }
 </style>
 
 <style is:global>
   .now-main .prose {
     max-width: var(--max-prose);
-    line-height: 1.9;
-    color: var(--color-text-muted);
+    line-height: 1.65;
+    color: var(--color-text);
     font-size: var(--text-lg);
   }
 
   .now-main .prose h2 {
-    font-family: var(--font-display);
+    font-family: var(--font-condensed);
     color: var(--color-text);
     font-size: var(--text-2xl);
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -0.02em;
     margin-top: var(--space-12);
     margin-bottom: var(--space-5);
   }
 
-  .now-main .prose h2::before {
-    content: '// ';
-    color: var(--color-accent);
-    font-family: var(--font-mono);
-    font-size: 0.75em;
-    letter-spacing: 0.04em;
-  }
-
   .now-main .prose h3 {
-    font-family: var(--font-display);
+    font-family: var(--font-condensed);
     color: var(--color-text);
     font-size: var(--text-xl);
-    font-weight: 700;
+    font-weight: 600;
     margin-top: var(--space-8);
     margin-bottom: var(--space-3);
   }
@@ -143,31 +119,25 @@ const { Content } = await render(entry);
   .now-main .prose ol { list-style: decimal; }
 
   .now-main .prose li {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-3);
   }
 
   .now-main .prose li::marker {
-    color: var(--color-accent);
+    color: var(--color-text-subtle);
   }
 
   .now-main .prose strong {
-    color: var(--color-text);
     font-weight: 600;
   }
 
-  .now-main .prose em {
-    font-style: italic;
-    color: var(--color-text);
-  }
-
   .now-main .prose a {
-    color: var(--color-accent);
+    color: var(--color-cyan);
     text-decoration: underline;
-    text-decoration-color: var(--color-accent-dim);
+    text-decoration-color: color-mix(in srgb, var(--color-cyan) 45%, transparent);
     text-underline-offset: 3px;
   }
 
   .now-main .prose a:hover {
-    text-decoration-color: var(--color-accent);
+    text-decoration-color: var(--color-cyan);
   }
 </style>

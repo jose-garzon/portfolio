@@ -12,7 +12,7 @@ const caseHref = project.slug ? `/projects/${project.slug}` : project.href;
 const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
 ---
 
-<article class="card" data-featured={project.featured}>
+<article class="card cut" data-featured={project.featured}>
   <div class="card-inner">
     <div class="card-top">
       <div class="card-icon" aria-hidden="true">
@@ -80,7 +80,6 @@ const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
     )}
   </div>
 
-  <div class="card-glow" aria-hidden="true"></div>
 </article>
 
 <style>
@@ -97,12 +96,7 @@ const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
   }
 
   .card:hover {
-    border-color: var(--color-accent-dim);
-    transform: translateY(-5px);
-    box-shadow:
-      0 20px 60px rgba(0, 0, 0, 0.55),
-      0 0 0 1px var(--color-accent-glow),
-      0 0 24px rgba(255, 45, 85, 0.12);
+    border-color: var(--color-cyan);
   }
 
   .card[data-featured="true"] {
@@ -259,23 +253,6 @@ const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
     transform: translateX(3px);
   }
 
-  .card-glow {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    background: radial-gradient(
-      circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      var(--color-accent-glow),
-      transparent 60%
-    );
-    transition: opacity var(--duration-normal) var(--ease-out);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .card:hover .card-glow {
-    opacity: 1;
-  }
 </style>
 
 <script>

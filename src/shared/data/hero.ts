@@ -6,7 +6,6 @@ export interface Stat {
 }
 
 export interface Hero {
-  eyebrow: string;
   tagline: string;
   cta: { label: string; href: string };
   stats: Stat[];

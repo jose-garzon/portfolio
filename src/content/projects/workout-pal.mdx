@@ -13,6 +13,11 @@ stack:
   - Tailwind
 github: https://github.com/jose-garzon/workout
 live: https://workout-beta-nine.vercel.app
+highlights:
+  - "The LLM generates structure only. Deterministic app code owns execution, with Zod validating every routine at the boundary."
+  - "One clock: every timer second is derived from a persisted Date.now() anchor, so a backgrounded tab never drifts and a closed browser resumes mid-set."
+  - "Local-first: all data lives in IndexedDB. The only server code is a stateless, rate-limited LLM proxy that stores nothing."
+  - "Architecture boundaries fail CI, including a security rule that keeps the proxy route away from browser-only storage."
 featured: true
 order: 3
 ---
@@ -31,10 +36,9 @@ Local-first, taken literally. Profile, routines, sessions, and set logs all live
 
 Onboarding is four short steps, each one a single decision: who you are, your basics, your body, your training goal and weekly days. It exists to give the routine generator enough to work with, and to give the calendar a weekly target to measure against.
 
-![Onboarding, step one of four](../../assets/projects/workout-onboarding.png)
-
 The division of labor with the LLM is deliberate: **the AI generates structure only, the app owns execution.** It returns exercises, sets, reps, and rest, validated with Zod on the way in. Everything after that (the stopwatch cycling `ready → work → rest → overtime`, per-set weight and reps, volume, session resume after an interruption) is deterministic app code. One active routine at a time, so there is never a question about what today's session is.
 
+![Onboarding, step one of four](../../assets/projects/workout-onboarding.png)
 ![Home screen: greeting, weekly strip, and the routine prompt](../../assets/projects/workout-home.png)
 
 ## Workout mode
@@ -42,10 +46,9 @@ The division of labor with the LLM is deliberate: **the AI generates structure o
 This is the screen that has to work with chalk on your hands, so it is one control: a circle you tap.
 
 ![Workout mode mid-set: the stopwatch filled solid while the clock runs](../../assets/projects/workout-session-work.png)
+![The same control in rest: a draining ring, with the finished set logged as 8 x 72.5kg, 580kg of volume](../../assets/projects/workout-session-rest.png)
 
 A set is armed but still, not running, until reps and weight are in. That is the `ready` phase, and the clock reads 0:00 on purpose: you rack your hands, then tap once and the circle goes solid accent for `work`. Tap again to close the set, and the same circle cools to a draining ring counting your rest down.
-
-![The same control in rest: a draining ring, with the finished set logged as 8 x 72.5kg, 580kg of volume](../../assets/projects/workout-session-rest.png)
 
 The phases are `ready → work → rest → exercise-complete`, with `overtime` derived rather than stored: once the rest countdown passes zero, the same elapsed math goes negative and the circle escalates to the warning color with a text label next to it, since color alone should never carry state.
 

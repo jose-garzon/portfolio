@@ -34,15 +34,15 @@ Active refusal list. If a design choice could fit any of these, rework it.
 - **Generic SaaS portfolio template.** Hero gradient, three-card "about / work / contact" grid, soft pastel-on-white, Inter everywhere. Default reflex of the category.
 - **Awwwards maximalist motion reel.** Cursor trails, scroll-jacking, full-page transitions, draggable everything. Show-off energy that signals designer-trying-hard, not engineer.
 - **Designer-portfolio editorial.** Serif display, cream paper, oversized photography. Wrong register; signals designer, not engineer.
-- **Crypto / neon-on-black hacker cliché.** Matrix rain, neon green terminal, skull motifs. Adjacent to the current direction and easy to fall into. Stay one level upstream of the cliché: hacker-coded, not hacker-cosplay.
+- **Crypto / neon-on-black hacker cliché.** Matrix rain, neon green terminal, skull motifs, masks, game logos. The site borrows Watch Dogs 2's DedSec *grammar* (angled cuts, HUD framing, stencil and pixel type, data labels, static corruption), never its iconography.
 
 ## Design Principles
 
 1. **Hiring conversion over taste display.** The site exists to land a backend role. Craft proves itself through restraint and clarity; it does not perform. If a visual choice doesn't help conversion or credibility, cut it.
 2. **Engineer signal, not designer signal.** Every flourish should read as "this person has taste applied to a system," not "this person is a visual designer." Code-craft visible; visual-designer flourish absent.
-3. **Sharp without cliché.** Underground / hacker aesthetic is the register, but the second-order trap (neon green, matrix rain, skulls) is banned. Stay upstream: scanlines, mono type, restrained crimson, terminal verbs in copy, not theatre.
+3. **Built by DedSec, worn by nobody.** Chrome (nav, hero, section heads, cards) speaks DedSec grammar: chamfered panels, HUD corner brackets, stencil display type, pixel labels, crimson + cyan corruption at rest. Reading surfaces (post and case-study bodies) stay calm and highly legible. Crimson is the brand; cyan owns links, focus, and interaction; magenta is a rare accent.
 4. **Blog as proof of work.** Writing is not decoration. The blog earns equal weight to the portfolio because honest learning-in-public is the most efficient trust signal for a transition candidate. Reading experience matters; treat blog post pages as a primary surface.
-5. **Every effect earns its place.** Glitch, scanlines, CRT noise, accent color: each must have a reason. Default = no effect. The rare effect that survives this filter is more memorable than ten that don't.
+5. **Corruption is composition, not hover.** Glitch lives in static structure (a torn name, displaced color blocks, outlined numerals) plus one boot tear and one page-in slice. No hover glitches on every heading, no infinite flicker, nothing over prose. Every motion has a reduced-motion off-switch.
 
 ## Accessibility & Inclusion
 

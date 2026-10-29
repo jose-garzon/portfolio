@@ -13,13 +13,57 @@ const stripCodeBackground = {
         .replace(/^;+/, '');
     }
   },
+  // github-dark comments (#6A737D) sit at 4.0:1 on the surface; lift them past 4.5:1.
+  span(node) {
+    if (typeof node.properties.style === 'string') {
+      node.properties.style = node.properties.style.replace(/#6A737D/gi, '#8B949E');
+    }
+  },
 };
+
+const isWhitespace = (n) => n.type === 'text' && !n.value.trim();
+const isImage = (n) => n.type === 'element' && n.tagName === 'img';
+
+// Image-only paragraphs become captioned figures; consecutive ones share a strip.
+function rehypeShots() {
+  return (tree) => {
+    const visit = (parent) => {
+      if (!parent.children) return;
+      const out = [];
+      for (const node of parent.children) {
+        const imgs = node.type === 'element' && node.tagName === 'p' && node.children.filter((c) => !isWhitespace(c));
+        if (imgs && imgs.length > 0 && imgs.every(isImage)) {
+          const figures = imgs.map((img) => ({
+            type: 'element',
+            tagName: 'figure',
+            properties: { className: ['shot'] },
+            children: [
+              img,
+              ...(img.properties.alt
+                ? [{ type: 'element', tagName: 'figcaption', properties: {}, children: [{ type: 'text', value: String(img.properties.alt) }] }]
+                : []),
+            ],
+          }));
+          const prev = out.filter((n) => !isWhitespace(n)).at(-1);
+          if (prev?.properties?.className?.includes('shots')) prev.children.push(...figures);
+          else out.push({ type: 'element', tagName: 'div', properties: { className: ['shots'] }, children: figures });
+          continue;
+        }
+        visit(node);
+        out.push(node);
+      }
+      parent.children = out;
+    };
+    visit(tree);
+  };
+}
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://jose-garzon.dev',
   integrations: [react(), mdx()],
   markdown: {
+    rehypePlugins: [rehypeShots],
     shikiConfig: {
       transformers: [stripCodeBackground],
     },

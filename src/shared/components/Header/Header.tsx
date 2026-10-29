@@ -24,7 +24,10 @@ function useUIFlags() {
   return { has, set };
 }
 
-export default function Header() {
+export default function Header({ pathname = '/' }: { pathname?: string }) {
+  const isCurrent = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href);
+
   const { has, set } = useUIFlags();
   const [progress, setProgress] = useState(0);
 
@@ -63,21 +66,19 @@ export default function Header() {
           aria-hidden="true"
         />
         <div className={`container ${styles.inner}`}>
-          <div className={styles.identity}>
-            <a href="/" className={styles.logo}>
-              <span className={styles.logoName}>jose-garzon</span>
-              <span className={styles.logoSlash}>{'//'}</span>
-            </a>
-            <span className={styles.status}>
-              <span className={styles.statusDot} aria-hidden="true" />
-              <span className={styles.statusLabel}>open to new opportunities</span>
-            </span>
-          </div>
+          <a href="/" className={styles.logo}>
+            <span className={styles.logoName}>jose-garzon</span>
+            <span className={styles.logoSlash}>{'//'}</span>
+          </a>
 
           <ul className={styles.desktopLinks}>
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a href={link.href} className={styles.desktopLink}>
+                <a
+                  href={link.href}
+                  className={styles.desktopLink}
+                  aria-current={isCurrent(link.href) ? 'page' : undefined}
+                >
                   {link.label}
                 </a>
               </li>

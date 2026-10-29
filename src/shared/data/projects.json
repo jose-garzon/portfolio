@@ -1,15 +1,20 @@
 [
   {
     "name": "Medixio",
-    "description": "AI agent that helps patients with chronic conditions track medical appointments, follow-ups, and medication schedules. Agent orchestration and LLM tooling built as a deployed product, not a notebook demo.",
+    "kind": "backend · AI agents",
+    "description": "An AI agent that holds the care timeline for someone living with a chronic illness: appointments, medications, follow-ups. The LLM reads; typed, deterministic tools write. It never gives medical advice, and nothing consequential happens without a human confirming it.",
+    "signal": "In progress: rebuilding from scratch after outgrowing v1",
     "stack": ["Python", "LLM Agents", "FastAPI", "PostgreSQL"],
-    "github": "https://github.com/jose-garzon",
+    "github": "https://github.com/jose-garzon/medixio",
     "featured": true,
     "slug": "medixio"
   },
   {
     "name": "Perfect Binding",
-    "description": "Desktop app that turns a PDF into a print-ready booklet. Saddle stitch, folded and glued, or perfect binding, with margin trimming and a sheet-by-sheet proof. Runs offline, the PDF never leaves the machine.",
+    "kind": "desktop app",
+    "description": "Turns a PDF into a print-ready booklet. Page imposition for saddle stitch, folded-and-glued, and perfect binding; pixel-level margin detection so the text prints larger; a sheet-by-sheet proof before you spend paper.",
+    "signal": "Shipping: offline by construction, unit-tested pure-logic core",
+    "image": "perfect-binding-editing.png",
     "stack": ["TypeScript", "Electron", "React", "pdf.js"],
     "github": "https://github.com/jose-garzon/perfect-binding",
     "featured": true,
@@ -17,7 +22,10 @@
   },
   {
     "name": "workout-pal",
-    "description": "Local-first training PWA. An LLM drafts the split, the app runs it: guided workout mode, rest timers, per-set logging. No account, no backend, everything stays in the browser.",
+    "kind": "local-first PWA",
+    "description": "Describe how you train and an LLM returns a structured split. Then the app runs it one-handed, mid-set: a single-tap timer cycling ready → work → rest → overtime, per-set logging, session resume. The AI generates structure; deterministic code owns execution.",
+    "signal": "Shipping: zero server-side persistence, Zod-validated LLM output",
+    "image": "workout-session-work.png",
     "stack": ["Next.js", "TypeScript", "Dexie", "Zustand"],
     "github": "https://github.com/jose-garzon/workout",
     "live": "https://workout-beta-nine.vercel.app",
@@ -26,7 +34,9 @@
   },
   {
     "name": "Learn Vim btw",
-    "description": "An interactive, level-by-level Vim tutorial. Each lesson pairs a concept with a real in-browser Vim editor, so you practice motions, operators, and macros as you read.",
+    "kind": "interactive tutorial",
+    "description": "Thirteen levels, from modes to marks. Each pairs one concept with a real in-browser Vim editor, so you practice motions, operators, and macros instead of reading about them.",
+    "signal": "Live on this site",
     "stack": ["Astro", "CodeMirror", "Vim", "MDX"],
     "href": "/vim",
     "cta": "launch tutorial",
@@ -34,7 +44,9 @@
   },
   {
     "name": "Portfolio Site",
-    "description": "This site. Astro 6, React islands, zero-JS static sections. Hacker-coded design system, written in the open.",
+    "kind": "frontend · design system",
+    "description": "This site. Static by default: one hydrated island for the mobile nav, everything else ships as HTML. Typed content collections, scoped styles over a token layer, lint gates on every commit.",
+    "signal": "Shipping: source is public",
     "stack": ["Astro", "React", "TypeScript", "MDX"],
     "github": "https://github.com/jose-garzon/portfolio",
     "featured": false,

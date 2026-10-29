@@ -1,0 +1,114 @@
+---
+import { fullName, personal } from '../data/personal';
+
+interface Props {
+  label?: string;
+}
+
+const { label = 'written by' } = Astro.props;
+---
+
+<section class="author cut" aria-labelledby="author-heading">
+  <span class="data-tag">// {label}</span>
+  <h2 id="author-heading" class="author-name">{fullName}</h2>
+  <p class="author-role">{personal.title}</p>
+  <p class="author-copy">
+    Five years of frontend at Disney and Aeroméxico, now building backend systems in public.
+    Open to backend and systems-design roles.
+  </p>
+  <ul class="author-actions">
+    <li><a href={personal.links.email} class="author-cta cut">Get in touch</a></li>
+    <li><a href={personal.links.linkedin} class="author-link" rel="noopener" target="_blank">LinkedIn</a></li>
+    <li><a href={personal.links.github} class="author-link" rel="noopener" target="_blank">GitHub</a></li>
+    <li><a href="/rss.xml" class="author-link">RSS</a></li>
+  </ul>
+</section>
+
+<style>
+  .author {
+    position: relative;
+    padding: var(--space-8);
+    padding-left: calc(var(--space-8) + 6px);
+    margin-bottom: var(--space-12);
+    background: var(--color-surface);
+  }
+
+  .author::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    background: var(--color-accent);
+  }
+
+  .author-name {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 1;
+    margin-block: var(--space-3) var(--space-2);
+  }
+
+  .author-role {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+    margin-bottom: var(--space-5);
+  }
+
+  .author-copy {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    text-wrap: pretty;
+    margin-bottom: var(--space-6);
+  }
+
+  .author-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-6);
+    list-style: none;
+  }
+
+  .author-cta {
+    --cut: 10px;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: var(--space-3) var(--space-5);
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-family: var(--font-pixel);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background var(--duration-fast) ease;
+  }
+
+  .author-cta:hover {
+    background: var(--color-cyan);
+  }
+
+  .author-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border);
+    text-underline-offset: 3px;
+    transition:
+      color var(--duration-fast) ease,
+      text-decoration-color var(--duration-fast) ease;
+  }
+
+  .author-link:hover {
+    color: var(--color-cyan);
+    text-decoration-color: var(--color-cyan);
+  }
+
+</style>
