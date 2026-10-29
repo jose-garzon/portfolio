@@ -27,12 +27,11 @@ const Tag = href ? 'a' : 'button';
     font-weight: 600;
     border: none;
     cursor: pointer;
-    border-radius: var(--radius-full);
     text-decoration: none;
     transition:
-      transform var(--duration-normal) var(--ease-spring),
-      box-shadow var(--duration-normal) var(--ease-out),
-      background var(--duration-normal) var(--ease-out);
+      background var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
   }
 
   .btn--primary {
@@ -41,13 +40,11 @@ const Tag = href ? 'a' : 'button';
   }
 
   .btn--primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-accent-lg), 0 0 40px rgba(255, 45, 85, 0.2);
-    background: var(--color-accent-warm);
+    background: var(--color-cyan);
   }
 
   .btn--primary:active {
-    transform: translateY(0) scale(0.98);
+    transform: scale(0.98);
   }
 
   .btn--primary :global(svg) {
@@ -65,13 +62,12 @@ const Tag = href ? 'a' : 'button';
   }
 
   .btn--secondary:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-text-muted);
-    background: var(--color-surface);
+    border-color: var(--color-cyan);
+    color: var(--color-cyan);
   }
 
   .btn--secondary:active {
-    transform: translateY(0) scale(0.98);
+    transform: scale(0.98);
   }
 
   .btn--ghost {
@@ -83,10 +79,9 @@ const Tag = href ? 'a' : 'button';
   .btn--ghost:hover {
     color: var(--color-text);
     background: var(--color-surface);
-    transform: translateY(-1px);
   }
 
   .btn--ghost:active {
-    transform: translateY(0) scale(0.98);
+    transform: scale(0.98);
   }
 </style>

@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import PageHead from '../../shared/components/PageHead.astro';
 import { fullName } from '../../shared/data/personal';
+import '../../shared/styles/ledger.css';
 
 const allPosts = await getCollection('blog');
 const posts = allPosts
@@ -21,174 +23,102 @@ const formatDate = (d: Date) =>
     day: 'numeric',
     timeZone: 'UTC',
   });
+
+const readMinutes = (body = '') =>
+  Math.max(1, Math.round(body.split(/\s+/).filter(Boolean).length / 230));
 ---
 
 <Layout
   title={`Writing · ${fullName}`}
-  description="Engineering notes on backend, Python, and systems design. Learning in public."
+  description="Engineering notes on Python, systems, and how computers work underneath. Learning in public."
 >
-  <main id="main" class="blog-main">
+  <main id="main" class="ledger-main">
     <div class="container">
-      <header class="blog-header">
-        <h1 class="blog-title">
-          <span data-text="Notes on the work">Notes on the work</span>
-        </h1>
-        <p class="blog-subtext">
-          Engineering notes on backend, Python, systems, and what I'm figuring out. Honest
-          records, not polished tutorials.
-        </p>
-        <div class="blog-meta-row">
-          <span class="blog-count">
-            <span class="blog-count-value">{posts.length}</span>
-            <span class="blog-count-label">
-              post{posts.length === 1 ? '' : 's'} so far
-            </span>
-          </span>
-        </div>
-      </header>
+      <PageHead
+        title="Notes on the work"
+        lede="Field notes from down the stack: Python, systems, memory, the places where things break. Honest records, not polished tutorials."
+        readouts={[
+          { label: 'posts', value: posts.length },
+          { label: 'topics', value: allTags.length },
+          ...(posts[0] ? [{ label: 'latest', value: formatDate(posts[0].data.pubDate) }] : []),
+        ]}
+      />
 
-      <div class="blog-body">
-        <div class="blog-feed-col">
-          {allTags.length > 0 && (
-            <div class="tag-bar" role="group" aria-label="Filter by tag">
-              <span class="tag-bar-label">filter</span>
-              <ul class="tag-chips">
-                <li>
-                  <button
-                    type="button"
-                    class="tag-chip is-active"
-                    data-tag-filter="all"
-                    aria-pressed="true"
-                  >
-                    all
-                  </button>
-                </li>
-                {allTags.map((tag) => (
-                  <li>
-                    <button
-                      type="button"
-                      class="tag-chip"
-                      data-tag-filter={tag}
-                      aria-pressed="false"
-                    >
-                      #{tag}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <p class="filter-status" aria-live="polite" data-filter-status>
-                showing {posts.length} of {posts.length}
-              </p>
-            </div>
-          )}
-
-          {posts.length === 0 ? (
-            <p class="empty">Nothing logged yet. First entry is in progress.</p>
-          ) : (
-            <ol class="feed">
-              {posts.map((post, i) => (
-                <li
-                  class="feed-row"
-                  data-tags={post.data.tags.join(',')}
-                >
-                  <span class="feed-frame hud" aria-hidden="true"></span>
-                  <span class="feed-index" aria-hidden="true">
-                    {String(posts.length - i).padStart(2, '0')}
-                  </span>
-                  <div class="feed-meta">
-                    <time
-                      class="feed-date"
-                      datetime={post.data.pubDate.toISOString()}
-                    >
-                      {formatDate(post.data.pubDate)}
-                    </time>
-                  </div>
-                  <h2 class="feed-title">
-                    <a href={`/blog/${post.id}`} class="feed-link">
-                      {post.data.title}
-                    </a>
-                  </h2>
-                  <p class="feed-excerpt">{post.data.description}</p>
-                  {post.data.tags.length > 0 && (
-                    <ul class="feed-tags" aria-label="Filter by this post's tags">
-                      {post.data.tags.map((tag) => (
-                        <li>
-                          <button type="button" class="feed-tag" data-row-tag={tag}>
-                            #{tag}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              ))}
-            </ol>
-          )}
-          <p class="empty no-matches" hidden>
-            No posts match this filter.
-            <button type="button" class="clear-filter" data-clear-filter>
-              clear filter
-            </button>
+      {allTags.length > 0 && (
+        <div class="tag-bar" role="group" aria-label="Filter by tag">
+          <ul class="tag-chips">
+            <li>
+              <button type="button" class="tag-chip is-active" data-tag-filter="all" aria-pressed="true">
+                all
+              </button>
+            </li>
+            {allTags.map((tag) => (
+              <li>
+                <button type="button" class="tag-chip" data-tag-filter={tag} aria-pressed="false">
+                  #{tag}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <p class="filter-status" aria-live="polite" data-filter-status>
+            showing {posts.length} of {posts.length}
           </p>
         </div>
+      )}
 
-      </div>
+      {posts.length === 0 ? (
+        <p class="empty">Nothing logged yet. First entry is in progress.</p>
+      ) : (
+        <ol class="ledger">
+          {posts.map((post) => (
+            <li class="entry" data-tags={post.data.tags.join(',')}>
+              <div class="entry-rail">
+                <time class="entry-rail-key" datetime={post.data.pubDate.toISOString()}>
+                  {formatDate(post.data.pubDate)}
+                </time>
+                <span>{readMinutes(post.body)} min read</span>
+              </div>
+              <div class="entry-body">
+                <h2 class="entry-title post-title">
+                  <a href={`/blog/${post.id}`} class="entry-link">{post.data.title}</a>
+                </h2>
+                <p class="entry-text">{post.data.description}</p>
+                {post.data.tags.length > 0 && (
+                  <ul class="entry-foot" aria-label="Filter by this post's tags">
+                    {post.data.tags.map((tag) => (
+                      <li>
+                        <button type="button" class="feed-tag entry-raise" data-row-tag={tag}>
+                          #{tag}
+                        </button>
+                      </li>
+                    ))}
+                    <li class="entry-go" aria-hidden="true">read →</li>
+                  </ul>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      )}
+      <p class="empty no-matches" hidden>
+        No posts match this filter.
+        <button type="button" class="clear-filter" data-clear-filter>clear filter</button>
+      </p>
     </div>
   </main>
 </Layout>
 
 <style>
-  .blog-main {
-    padding-top: calc(var(--nav-height) + var(--space-12));
-    padding-bottom: var(--space-section);
-  }
-
-  .blog-header {
-    max-width: 720px;
-    margin-bottom: var(--space-12);
-  }
-
-  .blog-title {
+  .post-title {
     font-size: var(--text-4xl);
-    color: var(--color-text);
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: var(--space-4);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
   }
 
-  .blog-subtext {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    max-width: 65ch;
-    margin-bottom: var(--space-6);
-  }
-
-  .blog-meta-row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-5);
-    flex-wrap: wrap;
-  }
-
-  .blog-count {
-    display: inline-flex;
-    align-items: baseline;
-    gap: var(--space-2);
-    font-family: var(--font-pixel);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .blog-count-value {
-    color: var(--color-accent);
-    font-size: var(--text-sm);
-  }
-
-  .blog-body {
-    display: block;
+  @media (max-width: 640px) {
+    .post-title {
+      font-size: var(--text-3xl);
+    }
   }
 
   .tag-bar {
@@ -196,17 +126,7 @@ const formatDate = (d: Date) =>
     align-items: center;
     gap: var(--space-4);
     flex-wrap: wrap;
-    margin-bottom: var(--space-8);
-    padding-bottom: var(--space-5);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .tag-bar-label {
-    font-family: var(--font-pixel);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    margin-bottom: var(--space-6);
   }
 
   .tag-chips {
@@ -218,14 +138,11 @@ const formatDate = (d: Date) =>
 
   .tag-chip {
     min-height: 44px;
+    padding: var(--space-1) var(--space-4);
     font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-sm);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
-    background: var(--color-surface);
     color: var(--color-text-muted);
-    cursor: pointer;
     transition:
       color var(--duration-fast) ease,
       border-color var(--duration-fast) ease,
@@ -237,153 +154,26 @@ const formatDate = (d: Date) =>
     border-color: var(--color-cyan-deep);
   }
 
-  .filter-status {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-text-subtle);
-    margin-left: auto;
-  }
-
   .tag-chip.is-active {
     color: var(--color-bg);
     border-color: var(--color-cyan);
     background: var(--color-cyan);
   }
 
-  .feed {
-    margin-inline: calc(-1 * var(--space-4));
-    list-style: none;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .feed-row {
-    position: relative;
-    padding-inline: var(--space-4);
-    border-bottom: 1px solid var(--color-border);
-    transition: background var(--duration-normal) var(--ease-out);
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      'idx meta'
-      'idx title'
-      'idx excerpt'
-      'idx tags';
-    column-gap: var(--space-8);
-    row-gap: var(--space-3);
-    padding-block: var(--space-8);
-    align-items: baseline;
-  }
-
-  .feed-frame {
-    --hud-len: 12px;
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity var(--duration-fast) var(--ease-out);
-  }
-
-  .feed-row:hover,
-  .feed-row:focus-within {
-    background: var(--color-surface);
-  }
-
-  .feed-row:hover .feed-frame,
-  .feed-row:focus-within .feed-frame {
-    opacity: 1;
-  }
-
-  .feed-row[hidden] {
-    display: none;
-  }
-
-  .feed-link {
-    color: inherit;
-  }
-
-  .feed-link::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
-
-  .feed-link:focus-visible {
-    outline: none;
-  }
-
-  .feed-link:focus-visible::after {
-    outline: 2px solid var(--color-cyan);
-    outline-offset: -2px;
-  }
-
-  .feed-index {
-    grid-area: idx;
-    align-self: start;
-    font-family: var(--font-display);
-    font-size: var(--text-4xl);
-    line-height: 0.85;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--color-accent);
-    min-width: 2ch;
-  }
-
-  .feed-meta {
-    grid-area: meta;
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .feed-date {
+  .filter-status {
+    margin-left: auto;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--color-text-subtle);
-  }
-
-  .feed-title {
-    grid-area: title;
-    font-family: var(--font-condensed);
-    font-size: var(--text-2xl);
-    font-weight: 600;
-    color: var(--color-text);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    margin: 0;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .feed-row:hover .feed-title {
-    color: var(--color-cyan);
-  }
-
-  .feed-excerpt {
-    grid-area: excerpt;
-    font-size: var(--text-base);
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    max-width: 70ch;
-  }
-
-  .feed-tags {
-    grid-area: tags;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 var(--space-2);
-    list-style: none;
   }
 
   .feed-tag {
-    position: relative;
-    z-index: 1;
     min-height: 44px;
-    padding-inline: var(--space-1);
+    padding-inline: var(--space-2);
+    margin-left: calc(-1 * var(--space-2));
     font-family: var(--font-mono);
-    font-size: var(--text-xs);
+    font-size: var(--text-sm);
     color: var(--color-text-subtle);
-    letter-spacing: 0.04em;
-    background: transparent;
-    border: 0;
-    cursor: pointer;
   }
 
   .feed-tag:hover {
@@ -392,54 +182,38 @@ const formatDate = (d: Date) =>
     text-underline-offset: 3px;
   }
 
-  .empty {
-    color: var(--color-text-muted);
+  .entry-go {
+    margin-left: auto;
     font-family: var(--font-mono);
     font-size: var(--text-sm);
+  }
+
+  .empty {
     padding-block: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 
   .clear-filter {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-cyan);
-    background: transparent;
-    border: 1px solid var(--color-cyan-deep);
     min-height: 44px;
     padding: var(--space-1) var(--space-3);
     margin-left: var(--space-3);
-    border-radius: var(--radius-full);
-    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-cyan);
+    border: 1px solid var(--color-cyan-deep);
     transition: background var(--duration-fast) ease;
   }
 
   .clear-filter:hover {
     background: var(--color-cyan-dim);
   }
-
-  @media (max-width: 640px) {
-    .feed-row {
-      grid-template-areas:
-        'idx meta'
-        'title title'
-        'excerpt excerpt'
-        'tags tags';
-      column-gap: var(--space-3);
-      row-gap: var(--space-3);
-      padding-block: var(--space-6);
-    }
-
-    .feed-index {
-      align-self: center;
-      font-size: var(--text-2xl);
-      min-width: 0;
-    }
-  }
 </style>
 
 <script>
   const chips = document.querySelectorAll<HTMLButtonElement>('[data-tag-filter]');
-  const rows = document.querySelectorAll<HTMLLIElement>('.feed-row');
+  const rows = document.querySelectorAll<HTMLLIElement>('.entry');
   const noMatches = document.querySelector<HTMLParagraphElement>('.no-matches');
   const clearBtn = document.querySelector<HTMLButtonElement>('[data-clear-filter]');
   const rowTags = document.querySelectorAll<HTMLButtonElement>('[data-row-tag]');

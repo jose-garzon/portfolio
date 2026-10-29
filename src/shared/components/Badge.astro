@@ -15,7 +15,6 @@ const { variant = 'muted', pill = false } = Astro.props;
   .badge {
     display: inline-block;
     padding: 0.2em var(--space-3);
-    border-radius: var(--radius-sm);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     font-weight: 400;
@@ -23,7 +22,6 @@ const { variant = 'muted', pill = false } = Astro.props;
   }
 
   .badge--pill {
-    border-radius: var(--radius-full);
   }
 
   .badge--muted {
@@ -34,7 +32,7 @@ const { variant = 'muted', pill = false } = Astro.props;
 
   .badge--accent {
     border: 1px solid var(--color-accent-dim);
-    background: var(--color-accent-glow);
+    background: transparent;
     color: var(--color-accent);
   }
 </style>

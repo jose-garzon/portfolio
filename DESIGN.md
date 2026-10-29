@@ -1,6 +1,6 @@
 ---
 name: jose-garzon.dev
-description: Backend-leaning engineer's portfolio and learning journal. Built by DedSec, worn by nobody.
+description: Down-the-stack software engineer's portfolio and learning journal. Built by DedSec, worn by nobody.
 colors:
   void-black: "#000000"
   bg-alt: "#070707"
@@ -105,7 +105,7 @@ components:
 
 **Creative North Star: "Built by DedSec"**
 
-The site should feel like DedSec built it for a backend engineer. It borrows Watch Dogs 2's *grammar*, not its costume:
+The site should feel like DedSec built it for an engineer who takes machines apart. It borrows Watch Dogs 2's *grammar*, not its costume:
 - chamfered panels
 - HUD corner brackets
 - stencil display type

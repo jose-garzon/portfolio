@@ -4,12 +4,7 @@
     "role": "Software Engineer",
     "period": "May 2025 – Present",
     "description": "Rebuilding the Aeroméxico web platform flow by flow, replacing a legacy monolith with a microfrontend architecture built to let multiple teams ship independently.",
-    "stack": [
-      "TypeScript",
-      "Node",
-      "Express",
-      "Module Federation"
-    ],
+    "stack": ["TypeScript", "Node", "Express", "Module Federation"],
     "bullets": [
       "Designed the microfrontend architecture, Module Federation + single page applications, so teams could deploy their slice without waiting on a central release.",
       "Built a Backend for Frontend to give the frontend a clean entry point into Aeroméxico's scattered internal microservices.",
@@ -22,12 +17,7 @@
     "role": "Senior Frontend Developer",
     "period": "Dec 2022 – May 2025",
     "description": "Built an internal tool used by Disney financial planners to schedule releases across FX, Nat Geo, and other Disney-owned networks from an economic perspective.",
-    "stack": [
-      "TypeScript",
-      "React",
-      "GraphQL",
-      "Microfrontends"
-    ],
+    "stack": ["TypeScript", "React", "GraphQL", "Microfrontends"],
     "bullets": [
       "Drove architecture decisions, negotiated API contracts with backend, and owned workload distribution.",
       "Cut planner research and coordination time in half by consolidating data across Disney companies.",
@@ -39,12 +29,7 @@
     "role": "Frontend Developer",
     "period": "Jul 2021 – Dec 2022",
     "description": "Built the admin platform for Growie, a blockchain-based real estate investment product, and set up the CMS powering its marketing content.",
-    "stack": [
-      "TypeScript",
-      "React",
-      "Strapi",
-      "Cypress"
-    ],
+    "stack": ["TypeScript", "React", "Strapi", "Cypress"],
     "bullets": [
       "Shipped the admin site that powered Growie's real estate investment operations.",
       "Set up a Strapi CMS so the marketing team could update content without opening a ticket."
@@ -55,12 +40,7 @@
     "role": "Frontend Developer",
     "period": "Feb 2021 – Jul 2021",
     "description": "Built the frontend for Menu Digital, a QR-code digital menu and online ordering platform for restaurants.",
-    "stack": [
-      "JavaScript",
-      "React",
-      "Redux",
-      "Webpack"
-    ],
+    "stack": ["JavaScript", "React", "Redux", "Webpack"],
     "bullets": [
       "Delivered a 70% frontend performance improvement measured in Lighthouse (FCP, LCP, TBT).",
       "Implemented the promotions and ordering flows end-to-end in React.",

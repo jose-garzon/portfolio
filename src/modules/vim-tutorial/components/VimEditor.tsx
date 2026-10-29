@@ -36,7 +36,10 @@ const theme = EditorView.theme(
       caretColor: 'var(--color-accent)',
       padding: 'var(--space-3) 0',
     },
-    '&.cm-focused': { outline: '2px solid var(--color-cyan)', outlineOffset: '1px' },
+    '&.cm-focused': {
+      outline: '2px solid var(--mode-color, var(--color-cyan))',
+      outlineOffset: '1px',
+    },
     '.cm-content:focus-visible': { outline: 'none' },
     '.cm-scroller': { fontFamily: 'var(--font-mono)', lineHeight: '1.7' },
     '.cm-cursor, .cm-dropCursor': { borderLeftColor: 'var(--color-accent)' },
@@ -60,12 +63,17 @@ const theme = EditorView.theme(
       backgroundColor: 'var(--color-surface-raised)',
       color: 'var(--color-text-muted)',
     },
-    '.cm-activeLine': { backgroundColor: 'var(--color-surface)' },
+    '.cm-activeLine': { backgroundColor: 'rgba(255, 255, 255, 0.04)' },
     '.cm-selectionBackground': {
-      backgroundColor: 'var(--color-cyan-dim)',
+      backgroundColor: 'rgba(255, 43, 214, 0.22)',
     },
     '&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground': {
-      backgroundColor: 'rgba(0, 229, 255, 0.24)',
+      backgroundColor: 'rgba(255, 43, 214, 0.42)',
+      boxShadow: 'inset 0 -2px 0 var(--color-magenta)',
+    },
+    '.cm-content ::selection, .cm-line::selection, .cm-line ::selection': {
+      backgroundColor: 'transparent',
+      color: 'var(--color-text)',
     },
   },
   { dark: true },
@@ -77,18 +85,27 @@ export default function VimEditor({ doc, label, level, exercise, goalId, target 
   const [mode, setMode] = useState<VimMode>('normal');
   const [cleared, setClearedState] = useState(false);
   const [announcement, setAnnouncement] = useState('');
+  const [breached, setBreached] = useState(false);
   const helpId = useId();
 
   const markCleared = (value: boolean) => {
     setClearedState(value);
     setCleared(level, exercise, value);
     setAnnouncement(value ? `${label}: cleared.` : `${label}: marked not done.`);
+    setBreached(value);
   };
+
+  useEffect(() => {
+    if (!breached) return;
+    const timer = window.setTimeout(() => setBreached(false), 1200);
+    return () => window.clearTimeout(timer);
+  }, [breached]);
 
   useEffect(() => {
     setClearedState(isCleared(level, exercise));
   }, [level, exercise]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the editor mounts once per doc; other props are static per exercise
   useEffect(() => {
     if (!hostRef.current) return;
 
@@ -113,7 +130,10 @@ export default function VimEditor({ doc, label, level, exercise, goalId, target 
           }),
           EditorView.updateListener.of((update) => {
             if (!target || !update.docChanged) return;
-            if (update.state.doc.toString().trim() === target.trim() && !isCleared(level, exercise)) {
+            if (
+              update.state.doc.toString().trim() === target.trim() &&
+              !isCleared(level, exercise)
+            ) {
               markCleared(true);
             }
           }),
@@ -144,7 +164,7 @@ export default function VimEditor({ doc, label, level, exercise, goalId, target 
   };
 
   return (
-    <div className={`${styles.editor} hud`} data-cleared={cleared}>
+    <div className={`${styles.editor} hud`} data-cleared={cleared} data-mode={mode}>
       <div className={`${styles.bar} cut`}>
         <span className={styles.mode} data-mode={mode} aria-hidden="true">
           {mode}
@@ -168,6 +188,13 @@ export default function VimEditor({ doc, label, level, exercise, goalId, target 
         </button>
       </div>
       <div className={styles.host} ref={hostRef} />
+      {breached && (
+        <span className={styles.breach} aria-hidden="true">
+          <span className={styles.breachText} data-text="access granted">
+            access granted
+          </span>
+        </span>
+      )}
       <p className="sr-only" role="status" aria-live="polite">
         {announcement}
       </p>

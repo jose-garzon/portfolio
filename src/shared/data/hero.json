@@ -1,9 +1,9 @@
 {
-  "tagline": "Five years of production systems at Disney and Aeroméxico. Now going deeper: backend, systems design, the layer where the hard problems actually live.",
+  "tagline": "Five years shipping production software at Disney and Aeroméxico. Now digging down the stack: memory, processes, the machine under the abstraction, and the point where it stops cooperating.",
   "cta": { "label": "View my work", "href": "#projects" },
   "stats": [
     { "value": "5+", "label": "Years experience" },
     { "value": "6+", "label": "Projects shipped" },
-    { "value": "Systems design", "label": "Next focus" }
+    { "value": "Down the stack", "label": "Heading" }
   ]
 }

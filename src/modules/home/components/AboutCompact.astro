@@ -17,7 +17,7 @@ import { personal } from '../../../shared/data/personal';
           </p>
         ))}
 
-        <ul class="about-compact-skills reveal" aria-label="Tech stack">
+        <ul class="about-compact-skills reveal-stagger" aria-label="Tech stack">
           {about.skills.map((skill) => (
             <li class="about-compact-skill">{skill}</li>
           ))}
@@ -127,7 +127,7 @@ import { personal } from '../../../shared/data/personal';
   }
 
   .about-compact-side {
-    border-left: 1px solid var(--color-cyan);
+    border-left: 1px solid var(--color-border);
     padding-left: var(--space-8);
   }
 
@@ -205,7 +205,91 @@ import { personal } from '../../../shared/data/personal';
     transform: translateX(3px);
   }
 
+
+  .about-compact-paragraph:nth-of-type(1) { --about-d: 120ms; }
+  .about-compact-paragraph:nth-of-type(2) { --about-d: 220ms; }
+  .about-compact-paragraph:nth-of-type(3) { --about-d: 320ms; }
+  .about-compact-side { --about-d: 260ms; }
+
+  .about-compact-section {
+    --about-d: 0ms;
+  }
+
+  .about-compact-skills > li:nth-child(1) { --about-d: 380ms; }
+  .about-compact-skills > li:nth-child(2) { --about-d: 415ms; }
+  .about-compact-skills > li:nth-child(3) { --about-d: 450ms; }
+  .about-compact-skills > li:nth-child(4) { --about-d: 485ms; }
+  .about-compact-skills > li:nth-child(5) { --about-d: 520ms; }
+  .about-compact-skills > li:nth-child(6) { --about-d: 555ms; }
+  .about-compact-skills > li:nth-child(7) { --about-d: 590ms; }
+  .about-compact-skills > li:nth-child(8) { --about-d: 625ms; }
+  .about-compact-skills > li:nth-child(9) { --about-d: 660ms; }
+  .about-compact-skills > li:nth-child(10) { --about-d: 695ms; }
+  .about-compact-skills > li:nth-child(11) { --about-d: 730ms; }
+  .about-compact-skills > li:nth-child(12) { --about-d: 765ms; }
+  .about-compact-skills > li:nth-child(n + 13) { --about-d: 800ms; }
+
+  :global(.js) .about-compact-section .reveal.is-visible,
+  :global(.js) .about-compact-skills > li.is-visible {
+    animation: about-lock 900ms var(--ease-out) var(--about-d) both;
+  }
+
+  :global(.js) .about-compact-side.is-visible {
+    animation: about-lock 900ms var(--ease-out) var(--about-d) both;
+  }
+
+  :global(.js) .about-compact-side.is-visible::before {
+    animation: about-draw 1100ms var(--ease-out) var(--about-d) both;
+  }
+
+  .about-compact-side {
+    position: relative;
+  }
+
+  .about-compact-side::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background: var(--color-cyan);
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+    transform-origin: top;
+  }
+
+  @keyframes about-lock {
+    from {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: none;
+    }
+  }
+
+  @keyframes about-draw {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .about-compact-section .reveal.is-visible,
+    :global(.js) .about-compact-skills > li.is-visible,
+    :global(.js) .about-compact-side.is-visible,
+    :global(.js) .about-compact-side.is-visible::before {
+      animation: none;
+    }
+  }
+
   @media (max-width: 900px) {
+    .about-compact-side::before {
+      display: none;
+    }
+
     .about-compact-grid {
       grid-template-columns: 1fr;
       gap: var(--space-8);

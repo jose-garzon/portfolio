@@ -6,9 +6,7 @@
       {
         "rule": "side-tab",
         "value": "*",
-        "files": [
-          "src/modules/blog/components/BlogPostLayout.astro"
-        ],
+        "files": ["src/modules/blog/components/BlogPostLayout.astro"],
         "createdAt": "2026-10-29T01:46:30.949Z",
         "reason": "DESIGN.md: lead panel = .cut surface panel with 6px crimson spine (author panel reuses it)"
       }

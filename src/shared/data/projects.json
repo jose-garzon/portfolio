@@ -1,7 +1,7 @@
 [
   {
     "name": "Medixio",
-    "kind": "backend · AI agents",
+    "kind": "AI agents · Python",
     "description": "An AI agent that holds the care timeline for someone living with a chronic illness: appointments, medications, follow-ups. The LLM reads; typed, deterministic tools write. It never gives medical advice, and nothing consequential happens without a human confirming it.",
     "signal": "In progress: rebuilding from scratch after outgrowing v1",
     "stack": ["Python", "LLM Agents", "FastAPI", "PostgreSQL"],

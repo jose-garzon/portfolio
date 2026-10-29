@@ -129,11 +129,11 @@
   white-space: nowrap;
 }
 
-.vim-progress[data-state='partial'] {
+.vim-progress[data-state="partial"] {
   color: var(--color-cyan);
 }
 
-.vim-progress[data-state='done'] {
+.vim-progress[data-state="done"] {
   color: var(--color-accent-green);
 }
 

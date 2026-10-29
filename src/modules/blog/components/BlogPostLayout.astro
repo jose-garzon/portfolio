@@ -1,7 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import Badge from '../../../shared/components/Badge.astro';
 import AuthorPanel from '../../../shared/components/AuthorPanel.astro';
+import Badge from '../../../shared/components/Badge.astro';
 import TocRail from '../../../shared/components/TocRail.astro';
 import { fullName } from '../../../shared/data/personal';
 import '../../../shared/styles/prose.css';
@@ -175,7 +175,6 @@ const formatShortDate = (d: Date) =>
     color: var(--color-text-subtle);
     padding: var(--space-2) var(--space-4);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-full);
     transition:
       color var(--duration-fast) ease,
       border-color var(--duration-fast) ease,
@@ -277,7 +276,6 @@ const formatShortDate = (d: Date) =>
     gap: var(--space-2);
     padding: var(--space-5);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
     background: var(--color-surface);
     transition:
       border-color var(--duration-normal) var(--ease-out),

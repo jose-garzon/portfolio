@@ -1,0 +1,115 @@
+---
+interface Readout {
+  value: string | number;
+  label: string;
+}
+
+interface Props {
+  title: string;
+  lede: string;
+  readouts: Readout[];
+}
+
+const { title, lede, readouts } = Astro.props;
+---
+
+<header class="page-head">
+  <h1 class="page-title">
+    <span data-text={title}>{title}</span>
+  </h1>
+  <p class="page-lede">{lede}</p>
+  <dl class="page-readout">
+    {readouts.map((r) => (
+      <div class="page-readout-cell">
+        <dt>{r.label}</dt>
+        <dd>{r.value}</dd>
+      </div>
+    ))}
+  </dl>
+  <slot />
+</header>
+
+<style>
+  .page-head {
+    max-width: 46rem;
+    margin-bottom: var(--space-12);
+  }
+
+  .page-title {
+    font-size: var(--text-5xl);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.92;
+    color: var(--color-text);
+    text-wrap: balance;
+  }
+
+  .page-title::after {
+    content: "";
+    display: block;
+    width: 3.5rem;
+    height: 6px;
+    margin-top: var(--space-5);
+    background: var(--color-accent);
+    box-shadow: 1.25rem 6px 0 var(--color-cyan);
+  }
+
+  .page-lede {
+    margin-top: var(--space-8);
+    font-size: var(--text-xl);
+    line-height: 1.6;
+    color: var(--color-text);
+    max-width: 58ch;
+    text-wrap: pretty;
+  }
+
+  .page-readout {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: var(--space-8);
+    border: 1px solid var(--color-border);
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .page-readout-cell {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-5);
+  }
+
+  .page-readout-cell + .page-readout-cell {
+    border-left: 1px solid var(--color-border);
+  }
+
+  .page-readout dt {
+    font-family: var(--font-pixel);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+
+  .page-readout dd {
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--color-text);
+  }
+
+  .page-readout-cell:first-child dd {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .page-readout {
+      width: 100%;
+    }
+
+    .page-readout-cell {
+      flex: 1 1 0;
+      padding-inline: var(--space-3);
+    }
+  }
+</style>

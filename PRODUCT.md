@@ -14,8 +14,8 @@ Secondary: peer engineers landing on the blog from a link, judging taste and dep
 
 This is Jose Garzón's portfolio and learning journal. Two jobs:
 
-1. **Convert hiring leads.** Establish credibility for a backend / systems-design role transition (from five years of frontend work at Disney and Aeroméxico). Success = recruiter screens and interview requests for backend-leaning positions.
-2. **Document the learning publicly.** The blog is a record of the transition itself: backend concepts, systems design, math, what's been gotten wrong and then fixed. Honest, not polished tutorials.
+1. **Convert hiring leads.** Establish credibility as a software engineer who goes down the stack: how computers work inside and where they hit their limits (after five years of production work at Disney and Aeroméxico). Never position as "backend engineer". Success = recruiter screens and interview requests for software engineering roles.
+2. **Document the learning publicly.** The blog is a record of the transition itself: the inside of the machine, systems, math, what's been gotten wrong and then fixed. Honest, not polished tutorials.
 
 The portfolio carries the conversion. The blog carries the trust signal that backs the conversion.
 
@@ -38,7 +38,7 @@ Active refusal list. If a design choice could fit any of these, rework it.
 
 ## Design Principles
 
-1. **Hiring conversion over taste display.** The site exists to land a backend role. Craft proves itself through restraint and clarity; it does not perform. If a visual choice doesn't help conversion or credibility, cut it.
+1. **Hiring conversion over taste display.** The site exists to land a software engineering role. Craft proves itself through restraint and clarity; it does not perform. If a visual choice doesn't help conversion or credibility, cut it.
 2. **Engineer signal, not designer signal.** Every flourish should read as "this person has taste applied to a system," not "this person is a visual designer." Code-craft visible; visual-designer flourish absent.
 3. **Built by DedSec, worn by nobody.** Chrome (nav, hero, section heads, cards) speaks DedSec grammar: chamfered panels, HUD corner brackets, stencil display type, pixel labels, crimson + cyan corruption at rest. Reading surfaces (post and case-study bodies) stay calm and highly legible. Crimson is the brand; cyan owns links, focus, and interaction; magenta is a rare accent.
 4. **Blog as proof of work.** Writing is not decoration. The blog earns equal weight to the portfolio because honest learning-in-public is the most efficient trust signal for a transition candidate. Reading experience matters; treat blog post pages as a primary surface.

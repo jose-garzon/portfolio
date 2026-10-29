@@ -8,7 +8,23 @@ function render() {
     el.dataset.state = done === 0 ? 'none' : done >= total ? 'done' : 'partial';
     el.textContent = done >= total && total > 0 ? 'clear' : `${done}/${total}`;
     el.setAttribute('aria-label', `${done} of ${total} exercises cleared`);
+    document
+      .querySelectorAll<HTMLElement>(
+        `[data-node="${el.dataset.progressFor}"], [data-segment-for="${el.dataset.progressFor}"]`,
+      )
+      .forEach((node) => {
+        node.dataset.state = el.dataset.state;
+      });
   });
+
+  const nodes = [...document.querySelectorAll<HTMLElement>('[data-node]')];
+  for (const node of nodes) delete node.dataset.next;
+  const next = nodes.find((node) => node.dataset.state !== 'done');
+  if (next) next.dataset.next = '';
+
+  const count = document.querySelector<HTMLElement>('[data-breach-count]');
+  if (count)
+    count.textContent = String(nodes.filter((node) => node.dataset.state === 'done').length);
 }
 
 render();

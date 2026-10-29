@@ -7,8 +7,9 @@ import '../../modules/vim-tutorial/vim.css';
 import { fullName } from '../../shared/data/personal';
 
 const intro = await getEntry('vim', 'vim-intro');
-const { Content } = await render(intro!);
-const { title, summary } = intro!.data;
+if (!intro) throw new Error('Missing vim-intro entry in the vim collection');
+const { Content } = await render(intro);
+const { title, summary } = intro.data;
 
 const entries = await getCollection('vim');
 const byId = new Map(entries.map((e) => [e.id, e]));
@@ -33,6 +34,14 @@ const totalExercises = Object.values(counts).reduce((a, b) => a + b, 0);
         <p class="vim-index-meta data-tag">
           {levels.length} levels · {totalExercises} exercises · real vim keymap in the browser
         </p>
+        <div class="breach-readout">
+          <p class="breach-count data-tag">
+            <span data-breach-count>0</span>/{levels.length} nodes breached
+          </p>
+          <ol class="breach-bar" aria-hidden="true">
+            {levels.map((lvl) => <li data-segment-for={lvl.slug}></li>)}
+          </ol>
+        </div>
       </header>
 
       <div class="vim-prose">
@@ -41,12 +50,13 @@ const totalExercises = Object.values(counts).reduce((a, b) => a + b, 0);
 
       <section class="levels" aria-labelledby="levels-heading">
         <h2 id="levels-heading" class="section-label">levels</h2>
-        <ol class="level-feed">
+        <ol class="breach-map">
           {levels.map((lvl) => (
-            <li class="level-row">
-              <a href={`/vim/${lvl.slug}`} class="level-link">
-                <span class="level-index">{String(lvl.level).padStart(2, '0')}</span>
+            <li class="node" data-node={lvl.slug}>
+              <a href={`/vim/${lvl.slug}`} class="node-link">
+                <span class="node-chip cut">{String(lvl.level).padStart(2, '0')}</span>
                 <span class="level-body">
+                  <span class="node-flag data-tag">next target</span>
                   <span class="level-title">{lvl.title}</span>
                   <span class="level-summary">{lvl.summary}</span>
                 </span>
@@ -100,40 +110,159 @@ const totalExercises = Object.values(counts).reduce((a, b) => a + b, 0);
     margin-top: var(--space-section);
   }
 
-  .level-feed {
+  .breach-readout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+    margin-top: var(--space-5);
+  }
+
+  .breach-count {
+    color: var(--color-text-subtle);
+  }
+
+  .breach-count [data-breach-count] {
+    color: var(--color-text);
+  }
+
+  .breach-bar {
+    display: flex;
+    gap: 3px;
     list-style: none;
-    border-top: 1px solid var(--color-border);
   }
 
-  .level-row {
-    border-bottom: 1px solid var(--color-border);
-    transition: background var(--duration-normal) var(--ease-out);
+  .breach-bar li {
+    width: 18px;
+    height: 8px;
+    border: 1px solid var(--color-border);
+    transform: skewX(-20deg);
   }
 
-  .level-row:hover {
-    background: var(--color-surface);
+  .breach-bar li[data-state='partial'] {
+    border-color: var(--color-cyan-deep);
+    background: var(--color-cyan-dim);
   }
 
-  .level-link {
+  .breach-bar li[data-state='done'] {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+  }
+
+  .breach-map {
+    --chip: 3.5rem;
+    --rail-x: calc(var(--space-2) + var(--chip) / 2);
+    list-style: none;
+  }
+
+  .node {
+    position: relative;
+  }
+
+  .node::before {
+    content: "";
+    position: absolute;
+    left: var(--rail-x);
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--color-border);
+  }
+
+  .node:first-child::before {
+    top: 50%;
+  }
+
+  .node:last-child::before {
+    bottom: 50%;
+  }
+
+  .node[data-state='done']:not(:last-child)::before {
+    background: var(--color-accent);
+  }
+
+  .node-link {
+    position: relative;
     display: grid;
-    grid-template-columns: 3.5rem 1fr auto;
+    grid-template-columns: var(--chip) 1fr auto;
     align-items: center;
     column-gap: var(--space-5);
     padding: var(--space-5) var(--space-2);
     color: inherit;
+    transition: background var(--duration-fast) var(--ease-out);
   }
 
-  .level-index {
+  .node-link:hover {
+    background: var(--color-surface);
+  }
+
+  .node-chip {
+    --cut: 10px;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: var(--chip);
+    aspect-ratio: 1;
     font-family: var(--font-display);
-    font-size: var(--text-4xl);
+    font-size: var(--text-2xl);
     line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--color-text-subtle);
-    transition: -webkit-text-stroke-color var(--duration-fast) ease;
+    color: var(--color-text-subtle);
+    background:
+      linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+      var(--color-border);
+    border: 1px solid transparent;
+    transition:
+      color var(--duration-fast) ease,
+      background var(--duration-fast) ease;
   }
 
-  .level-link:hover .level-index {
-    -webkit-text-stroke-color: var(--color-cyan);
+  .node[data-state='partial'] .node-chip {
+    color: var(--color-cyan);
+    background:
+      linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+      var(--color-cyan-deep);
+  }
+
+  .node[data-state='done'] .node-chip {
+    color: var(--color-bg);
+    background: var(--color-accent);
+  }
+
+  .node[data-next] .node-chip {
+    color: var(--color-cyan);
+    background:
+      linear-gradient(var(--color-bg), var(--color-bg)) padding-box,
+      var(--color-cyan);
+    animation: target-lock 520ms steps(4, end) 400ms both;
+  }
+
+  .node-link:hover .node-chip {
+    color: var(--color-cyan);
+  }
+
+  .node[data-state='done'] .node-link:hover .node-chip {
+    color: var(--color-bg);
+    background: var(--color-cyan);
+  }
+
+  @keyframes target-lock {
+    0% { transform: scale(1.6); opacity: 0; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .node-flag {
+    display: none;
+    color: var(--color-cyan);
+  }
+
+  .node-flag::before {
+    content: "> " / "";
+  }
+
+  .node[data-next] .node-flag {
+    display: block;
   }
 
   .level-body {
@@ -151,7 +280,7 @@ const totalExercises = Object.values(counts).reduce((a, b) => a + b, 0);
     transition: color var(--duration-fast) ease;
   }
 
-  .level-link:hover .level-title {
+  .node-link:hover .level-title {
     color: var(--color-cyan);
   }
 
@@ -162,16 +291,22 @@ const totalExercises = Object.values(counts).reduce((a, b) => a + b, 0);
   }
 
   @media (max-width: 480px) {
-    .level-link {
-      grid-template-columns: 2.5rem 1fr;
+    .breach-map {
+      --chip: 2.75rem;
     }
 
-    .level-index {
-      font-size: var(--text-3xl);
+    .node-link {
+      grid-template-columns: var(--chip) 1fr;
     }
 
-    .level-link .vim-progress {
+    .node-link .vim-progress {
       grid-column: 2;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .node[data-next] .node-chip {
+      animation: none;
     }
   }
 </style>

@@ -13,6 +13,7 @@ const pad = (n: number) => n.toString().padStart(2, '0');
 
     {
       lead && (
+        <div class="lead-frame">
         <article class="lead cut">
           <div class="lead-index" aria-hidden="true">01</div>
           <div class="lead-body">
@@ -43,6 +44,7 @@ const pad = (n: number) => n.toString().padStart(2, '0');
             </div>
           </div>
         </article>
+        </div>
       )
     }
 
@@ -65,14 +67,48 @@ const pad = (n: number) => n.toString().padStart(2, '0');
 </section>
 
 <style>
+  .lead-frame {
+    filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 28px rgba(255, 45, 85, 0.22));
+    transition: filter var(--duration-slow) var(--ease-out);
+  }
+
+  .lead-frame:has(.lead:hover) {
+    filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 36px rgba(0, 229, 255, 0.11));
+  }
+
   .lead {
+    --cut: 22px;
     position: relative;
+    isolation: isolate;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: var(--space-8);
-    padding: var(--space-8);
-    background: var(--color-surface);
-    border-left: 6px solid var(--color-accent);
+    padding: var(--space-10) var(--space-8);
+    background:
+      radial-gradient(70% 120% at 0% 0%, rgba(255, 45, 85, 0.22), transparent 60%),
+      radial-gradient(50% 90% at 100% 100%, rgba(0, 229, 255, 0.12), transparent 65%),
+      linear-gradient(160deg, rgba(28, 28, 34, 0.7), rgba(8, 8, 10, 0.55));
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+  }
+
+  .lead::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255, 45, 85, 0.9), rgba(238, 242, 247, 0.08) 35%, rgba(238, 242, 247, 0.05) 65%, rgba(0, 229, 255, 0.8));
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+
+  .lead::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0, 0, 0, 0.25) 2px 3px);
+    pointer-events: none;
   }
 
   .lead-index {
@@ -81,14 +117,16 @@ const pad = (n: number) => n.toString().padStart(2, '0');
     line-height: 0.8;
     color: transparent;
     -webkit-text-stroke: 1px var(--color-cyan);
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.7)) drop-shadow(0 0 28px rgba(0, 229, 255, 0.35));
   }
 
   .lead-tag {
-    color: var(--color-accent);
+    color: var(--color-text-subtle);
     margin-bottom: var(--space-2);
   }
 
   .lead-title {
+    text-shadow: 0 0 0.5em rgba(238, 242, 247, 0.25);
     font-size: var(--text-4xl);
     line-height: 0.95;
     text-transform: uppercase;
@@ -114,7 +152,8 @@ const pad = (n: number) => n.toString().padStart(2, '0');
 
   .lead-stack li {
     padding: var(--space-1) var(--space-2);
-    border: 1px solid var(--color-border);
+    background: rgba(238, 242, 247, 0.04);
+    border: 1px solid rgba(238, 242, 247, 0.12);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--color-text-muted);
@@ -184,7 +223,7 @@ const pad = (n: number) => n.toString().padStart(2, '0');
   .ledger-index {
     font-family: var(--font-pixel);
     font-size: var(--text-xs);
-    color: var(--color-accent);
+    color: var(--color-text-subtle);
   }
 
   .ledger-name {

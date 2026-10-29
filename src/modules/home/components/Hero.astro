@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { hero } from '../../../shared/data/hero';
 import { personal } from '../../../shared/data/personal';
+import CorruptionField from './CorruptionField.astro';
 import Monogram from './Monogram.astro';
 
 const allPosts = await getCollection('blog');
@@ -15,6 +16,7 @@ const last = personal.name.last.toUpperCase();
 ---
 
 <section class="hero" aria-labelledby="hero-name">
+  <CorruptionField />
   <div class="hero-readout" aria-label="Status">
     {hero.stats.map((stat) => (
       <span class="hero-readout-item">
@@ -93,9 +95,9 @@ const last = personal.name.last.toUpperCase();
 <style>
   .hero {
     position: relative;
-    max-width: var(--max-content);
-    margin-inline: auto;
-    padding: calc(var(--nav-height) + var(--space-8)) var(--space-6) var(--space-section);
+    isolation: isolate;
+    padding-block: calc(var(--nav-height) + var(--space-8)) var(--space-section);
+    padding-inline: max(var(--space-6), calc((100% - var(--max-content)) / 2 + var(--space-6)));
     overflow-x: clip;
   }
 
@@ -139,14 +141,25 @@ const last = personal.name.last.toUpperCase();
     white-space: nowrap;
   }
 
+  .hero-name-line {
+    text-shadow:
+      0 0 0.04em rgba(238, 242, 247, 0.35),
+      0 0 0.35em rgba(0, 229, 255, 0.13);
+  }
+
   .hero-name-line--last {
     padding-left: 0.5em;
     color: var(--color-accent);
+    text-shadow:
+      0 0 0.03em rgba(255, 77, 109, 0.63),
+      0 0 0.25em rgba(255, 45, 85, 0.39),
+      0 0 0.8em rgba(255, 45, 85, 0.21);
   }
 
   .hero-name-line::before,
   .hero-name-line::after {
     opacity: 1;
+    text-shadow: none;
   }
 
   .hero-name-line::before {
@@ -189,32 +202,6 @@ const last = personal.name.last.toUpperCase();
     100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
   }
 
-  .hero-name:hover .hero-name-line::before {
-    animation: tear-hover-a 560ms steps(1) both;
-  }
-
-  .hero-name:hover .hero-name-line::after {
-    animation: tear-hover-b 560ms steps(1) 50ms both;
-  }
-
-  @keyframes tear-hover-a {
-    0% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
-    20% { clip-path: inset(10% 0 70% 0); transform: translateX(-0.14em); }
-    45% { clip-path: inset(62% 0 18% 0); transform: translateX(0.08em); }
-    70% { clip-path: inset(30% 0 52% 0); transform: translateX(-0.1em); }
-    90% { clip-path: inset(38% 0 52% 0); transform: translateX(-0.07em); }
-    100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
-  }
-
-  @keyframes tear-hover-b {
-    0% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
-    25% { clip-path: inset(55% 0 25% 0); transform: translateX(0.12em); }
-    50% { clip-path: inset(5% 0 82% 0); transform: translateX(0.06em); }
-    75% { clip-path: inset(72% 0 10% 0); transform: translateX(0.14em); }
-    90% { clip-path: inset(66% 0 27% 0); transform: translateX(0.05em); }
-    100% { clip-path: inset(0 0 100% 0); transform: translateX(0); }
-  }
-
   .hero-corrupt {
     position: absolute;
     pointer-events: none;
@@ -226,6 +213,7 @@ const last = personal.name.last.toUpperCase();
     width: clamp(3rem, 10vw, 8rem);
     height: 10px;
     background: var(--color-accent);
+    box-shadow: 0 0 24px rgba(255, 45, 85, 0.7);
   }
 
   .hero-corrupt--b {
@@ -245,27 +233,45 @@ const last = personal.name.last.toUpperCase();
   }
 
   .hero-panel {
+    --hud-color: rgba(0, 229, 255, 0.85);
+    position: relative;
     padding: var(--space-6);
-    border: 1px solid var(--color-border-subtle);
+    background-color: rgba(10, 10, 12, 0.42);
+    border: 1px solid rgba(238, 242, 247, 0.08);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    box-shadow:
+      inset 0 1px 0 rgba(238, 242, 247, 0.1),
+      0 24px 60px -20px rgba(0, 0, 0, 0.9),
+      0 0 50px -10px rgba(255, 45, 85, 0.18);
+  }
+
+  .hero-panel::before {
+    content: "";
+    position: absolute;
+    inset: -1px -1px auto -1px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--color-cyan) 30%, transparent 75%);
+    opacity: 0.7;
   }
 
   .hero-panel-tag {
-    color: var(--color-cyan);
+    color: var(--color-text-subtle);
     margin-bottom: var(--space-3);
   }
 
   .hero-panel-tag::before {
     content: "$ ";
-    color: var(--color-accent);
+    color: var(--color-text-subtle);
   }
 
   .hero-role {
     margin-top: var(--space-6);
-    max-width: 22ch;
+    max-width: 30ch;
     font-family: var(--font-condensed);
     font-weight: 600;
-    font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3rem);
-    line-height: 1.05;
+    font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+    line-height: 1.15;
     letter-spacing: -0.01em;
     text-wrap: balance;
     color: var(--color-text);
@@ -317,9 +323,20 @@ const last = personal.name.last.toUpperCase();
     color: var(--color-text);
   }
 
+  .hero-cta--secondary {
+    background: rgba(238, 242, 247, 0.04);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-normal) var(--ease-out);
+  }
+
   .hero-cta--secondary:hover {
     border-color: var(--color-cyan);
     color: var(--color-cyan);
+    box-shadow: 0 0 22px -4px rgba(0, 229, 255, 0.5), inset 0 0 12px rgba(0, 229, 255, 0.12);
   }
 
   .hero-icon-link {
@@ -338,6 +355,7 @@ const last = personal.name.last.toUpperCase();
 
   .hero-sigil {
     justify-self: end;
+    filter: drop-shadow(0 0 18px rgba(255, 45, 85, 0.35)) drop-shadow(0 0 40px rgba(0, 229, 255, 0.12));
   }
 
   .hero-latest {
@@ -350,10 +368,15 @@ const last = personal.name.last.toUpperCase();
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
     color: inherit;
+    transition: background var(--duration-normal) var(--ease-out);
+  }
+
+  .hero-latest:hover {
+    background: linear-gradient(to right, rgba(0, 229, 255, 0.07), transparent 70%);
   }
 
   .hero-latest-key {
-    color: var(--color-accent);
+    color: var(--color-text-subtle);
   }
 
   .hero-latest-date {

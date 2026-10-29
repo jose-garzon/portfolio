@@ -25,8 +25,7 @@ function useUIFlags() {
 }
 
 export default function Header({ pathname = '/' }: { pathname?: string }) {
-  const isCurrent = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+  const isCurrent = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
   const { has, set } = useUIFlags();
   const [progress, setProgress] = useState(0);

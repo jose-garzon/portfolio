@@ -1,31 +1,38 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import Layout from '../../layouts/Layout.astro';
 import Badge from '../../shared/components/Badge.astro';
+import PageHead from '../../shared/components/PageHead.astro';
 import { fullName } from '../../shared/data/personal';
 import { projects } from '../../shared/data/projects';
 
-const shots = import.meta.glob<{ default: ImageMetadata }>('../../assets/projects/*.png', { eager: true });
-const shotOf = (file?: string) => (file ? shots[`../../assets/projects/${file}`]?.default : undefined);
-const isRepo = (url?: string) => !!url && new URL(url).pathname.split('/').filter(Boolean).length > 1;
+const shots = import.meta.glob<{ default: ImageMetadata }>('../../assets/projects/*.png', {
+  eager: true,
+});
+const shotOf = (file?: string) =>
+  file ? shots[`../../assets/projects/${file}`]?.default : undefined;
+const writeups = projects.filter((p) => p.slug).length;
+const stackSize = new Set(projects.flatMap((p) => p.stack)).size;
+const isRepo = (url?: string) =>
+  !!url && new URL(url).pathname.split('/').filter(Boolean).length > 1;
 ---
 
 <Layout
   title={`Projects · ${fullName}`}
-  description="Agent backends, offline desktop tools and local-first apps by Jose Garzón, with write-ups on the problem, the approach, and what broke."
+  description="AI agents, offline desktop tools and local-first apps by Jose Garzón, with write-ups on the problem, the approach, and what broke."
 >
   <main id="main" class="projects-main">
     <div class="container">
-      <header class="projects-header">
-        <h1 class="projects-title">
-          <span data-text="Built, broken, rebuilt">Built, broken, rebuilt</span>
-        </h1>
-        <p class="projects-subtext">
-          Agent backends, offline desktop tools, local-first apps. Four of these have a
-          full write-up: the problem, the approach, what broke, what I'd change.
-        </p>
-      </header>
+      <PageHead
+        title="Built, broken, rebuilt"
+        lede="AI agents, offline desktop tools, local-first apps. Four of these have a full write-up: the problem, the approach, what broke, what I'd change."
+        readouts={[
+          { label: 'projects', value: projects.length },
+          { label: 'write-ups', value: writeups },
+          { label: 'tools used', value: stackSize },
+        ]}
+      />
 
       <ol class="project-feed">
         {projects.map((project) => {
@@ -104,29 +111,6 @@ const isRepo = (url?: string) => !!url && new URL(url).pathname.split('/').filte
   .projects-main {
     padding-top: calc(var(--nav-height) + var(--space-12));
     padding-bottom: var(--space-section);
-  }
-
-  .projects-header {
-    max-width: 720px;
-    margin-bottom: var(--space-12);
-  }
-
-  .projects-title {
-    font-family: var(--font-display);
-    text-transform: uppercase;
-    font-size: var(--text-5xl);
-    font-weight: 400;
-    color: var(--color-text);
-    letter-spacing: 0.01em;
-    line-height: 0.92;
-    margin-bottom: var(--space-4);
-  }
-
-  .projects-subtext {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    margin-bottom: var(--space-6);
   }
 
   .project-feed {

@@ -87,20 +87,19 @@ const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
     position: relative;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
     overflow: hidden;
     transition:
-      border-color var(--duration-normal) var(--ease-out),
-      transform var(--duration-normal) var(--ease-spring),
-      box-shadow var(--duration-normal) var(--ease-out);
+      border-color var(--duration-fast) var(--ease-out),
+      background var(--duration-fast) var(--ease-out);
   }
 
   .card:hover {
     border-color: var(--color-cyan);
+    background: var(--color-surface-raised);
   }
 
   .card[data-featured="true"] {
-    background: linear-gradient(135deg, var(--color-surface) 0%, #1a0a0e 100%);
+    border-top: 2px solid var(--color-accent);
   }
 
   .card-inner {
@@ -121,7 +120,6 @@ const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
   .card-icon {
     width: 40px;
     height: 40px;
-    border-radius: var(--radius-md);
     border: 1px solid var(--color-border);
     background: var(--color-bg);
     display: flex;
@@ -134,8 +132,7 @@ const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
   }
 
   .card:hover .card-icon {
-    background: var(--color-accent-dim);
-    border-color: var(--color-accent-dim);
+    border-color: var(--color-text-subtle);
   }
 
   .card-links {
@@ -151,33 +148,29 @@ const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
     font-size: var(--text-xs);
     min-height: 36px;
     padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-full);
     border: 1px solid var(--color-border);
     color: var(--color-text-muted);
     background: var(--color-bg);
     transition:
       color var(--duration-fast) var(--ease-out),
       border-color var(--duration-fast) var(--ease-out),
-      background var(--duration-fast) var(--ease-out),
-      transform var(--duration-fast) var(--ease-spring);
+      background var(--duration-fast) var(--ease-out);
   }
 
   .card-link:hover {
-    color: var(--color-text);
-    border-color: var(--color-text-muted);
-    transform: translateY(-1px);
+    color: var(--color-cyan);
+    border-color: var(--color-cyan);
   }
 
   .card-link--live {
-    color: var(--color-accent);
-    border-color: var(--color-accent-dim);
-    background: var(--color-accent-glow);
+    color: var(--color-cyan);
+    border-color: var(--color-cyan-deep);
   }
 
   .card-link--live:hover {
-    background: var(--color-accent-dim);
-    border-color: var(--color-accent);
-    color: var(--color-accent);
+    background: var(--color-cyan);
+    border-color: var(--color-cyan);
+    color: var(--color-bg);
   }
 
   .card-title {
@@ -211,7 +204,6 @@ const caseLabel = project.slug ? 'read case study' : (project.cta ?? 'open');
     content: "";
     position: absolute;
     inset: 0;
-    border-radius: var(--radius-lg);
     z-index: 1;
   }
 

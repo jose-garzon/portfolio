@@ -1,14 +1,16 @@
 ---
 import { personal } from '../../../shared/data/personal';
+import CorruptionField from './CorruptionField.astro';
 
 const address = personal.links.email.replace('mailto:', '');
 ---
 
 <section class="section contact-close" aria-labelledby="contact-heading">
+  <CorruptionField />
   <div class="container contact-inner hud">
-    <h2 id="contact-heading" class="contact-heading">Hiring for backend? Let's talk.</h2>
+    <h2 id="contact-heading" class="contact-heading">Got a system worth opening up? Let's talk.</h2>
     <p class="contact-copy">
-      Looking for backend and systems roles. Email is the fastest way to reach me.
+      Open to software engineering roles close to the metal: systems, performance, the layers most people never open. Email is the fastest way to reach me.
     </p>
     <a href={personal.links.email} class="contact-email">{address}</a>
     <ul class="contact-links">
@@ -24,12 +26,21 @@ const address = personal.links.email.replace('mailto:', '');
 
 <style>
   .contact-close {
-    padding-top: 0;
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
   }
 
   .contact-inner {
+    --hud-color: rgba(0, 229, 255, 0.85);
     padding-block: var(--space-12);
-    border-top: 1px solid var(--color-border);
+    background-color: rgba(10, 10, 12, 0.45);
+    border: 1px solid rgba(238, 242, 247, 0.08);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    box-shadow:
+      inset 0 1px 0 rgba(238, 242, 247, 0.1),
+      0 30px 80px -30px rgba(0, 0, 0, 0.95);
   }
 
   .contact-heading {
@@ -59,11 +70,13 @@ const address = personal.links.email.replace('mailto:', '');
     text-decoration-thickness: 2px;
     text-underline-offset: 6px;
     overflow-wrap: anywhere;
-    transition: color var(--duration-fast) var(--ease-out);
+    text-shadow: 0 0 18px rgba(255, 45, 85, 0.45);
+    transition: color var(--duration-fast) var(--ease-out), text-shadow var(--duration-normal) var(--ease-out);
   }
 
   .contact-email:hover {
     color: var(--color-cyan);
+    text-shadow: 0 0 18px rgba(0, 229, 255, 0.5);
   }
 
   .contact-links {

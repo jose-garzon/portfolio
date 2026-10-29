@@ -43,7 +43,9 @@ if (tocLinks.size > 0) {
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        tocLinks.forEach((link) => link.removeAttribute('aria-current'));
+        tocLinks.forEach((link) => {
+          link.removeAttribute('aria-current');
+        });
         tocLinks.get(entry.target.id)?.setAttribute('aria-current', 'location');
       });
     },

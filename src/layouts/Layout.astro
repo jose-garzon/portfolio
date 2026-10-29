@@ -14,7 +14,7 @@ interface Props {
 
 const {
   title,
-  description = 'Backend-leaning software engineer. Systems, databases, and writing in public.',
+  description = 'Software engineer exploring the inside of the machine and its limits. Writing in public.',
   type = 'website',
   publishedTime,
 } = Astro.props;
@@ -71,25 +71,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       document
         .querySelectorAll('.reveal, .reveal-stagger > *')
         .forEach((el) => observer.observe(el));
-
-      const glitchObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            const el = entry.target;
-            el.classList.add('is-glitching');
-            el.addEventListener('animationend', () => el.classList.remove('is-glitching'), { once: true });
-            glitchObserver.unobserve(el);
-          });
-        },
-        { threshold: 0.6 }
-      );
-
-      document
-        .querySelectorAll('main h2, main h3')
-        .forEach((el) => {
-          if (!el.closest('article, li, aside, .prose')) glitchObserver.observe(el);
-        });
     </script>
   </body>
 </html>

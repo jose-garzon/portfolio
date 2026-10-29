@@ -12,7 +12,7 @@ export async function GET(context: APIContext) {
   return rss({
     title: `${fullName} · Writing`,
     description:
-      'Engineering notes on LLMs, backend, systems, and what I am figuring out. Learning in public.',
+      'Engineering notes on LLMs, systems, the inside of the machine, and what I am figuring out. Learning in public.',
     site: context.site ?? 'https://jose-garzon.dev',
     items: posts.map((post) => ({
       title: post.data.title,

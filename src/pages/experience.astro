@@ -1,64 +1,68 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Badge from '../shared/components/Badge.astro';
 import ContactClose from '../modules/home/components/ContactClose.astro';
+import Badge from '../shared/components/Badge.astro';
+import PageHead from '../shared/components/PageHead.astro';
 import { experience } from '../shared/data/experience';
 import { fullName } from '../shared/data/personal';
+import '../shared/styles/ledger.css';
 
-const pad = (n: number) => String(n).padStart(2, '0');
 const metricPattern = /(\d+%|in half)/;
 const splitMetrics = (text: string) => text.split(metricPattern);
 
 const seen = new Set<string>();
 const stacks = experience.map((job) =>
-  job.stack.filter((tech) => !seen.has(tech) && seen.add(tech))
+  job.stack.filter((tech) => !seen.has(tech) && seen.add(tech)),
 );
+
+const splitPeriod = (period: string) => period.split(/\s*–\s*/);
+const firstYear = Math.min(
+  ...experience.map((job) => Number(job.period.match(/\d{4}/)?.[0] ?? Infinity)),
+);
+const years = new Date().getFullYear() - firstYear;
+const companies = new Set(experience.map((job) => job.company.split('·').pop()?.trim())).size;
 ---
 
 <Layout
   title={`Experience · ${fullName}`}
   description="Where I've shipped. Five years of production work at Aeroméxico, Disney, Growie, and Serempre."
 >
-  <main id="main" class="experience-main">
+  <main id="main" class="ledger-main experience-main">
     <div class="container">
-      <header class="experience-header">
-        <p class="section-label">experience</p>
-        <h1 class="experience-title">
-          <span data-text="Work history">Work history</span>
-        </h1>
-        <p class="experience-subtext">
-          Software engineer with five years of production work: multi-team platform
-          architecture, Backends for Frontends, and API contracts negotiated across teams.
-        </p>
-      </header>
+      <PageHead
+        title="Work history"
+        lede="Software engineer with five years of production work: multi-team platform architecture, Backends for Frontends, and API contracts negotiated across teams."
+        readouts={[
+          { label: 'years', value: `${years}+` },
+          { label: 'roles', value: experience.length },
+          { label: 'clients', value: companies },
+        ]}
+      />
 
-      <ol class="timeline" reversed>
+      <ol class="ledger timeline" reversed>
         {experience.map((job, i) => {
+          const [from, to] = splitPeriod(job.period);
+          const current = i === 0;
           return (
-            <li class:list={['job', { 'job--current cut': i === 0 }]}>
-              <span class="job-index" aria-hidden="true">{pad(experience.length - i)}</span>
-              <article class="job-body">
-                <header class="job-header">
-                  <div>
-                    <h2 class="job-role">{job.role}</h2>
-                    <p class="job-company">{job.company}</p>
-                  </div>
-                  <p class="job-period data-tag">{job.period}</p>
-                </header>
-
-                <p class="job-description">{job.description}</p>
-
+            <li class:list={['entry', 'job', { 'job--current': current }]}>
+              <div class="entry-rail job-rail">
+                <span class="entry-rail-key">{to}</span>
+                <span>since {from}</span>
+              </div>
+              <article class="entry-body">
+                <h2 class="entry-title">{job.role}</h2>
+                <p class="entry-sub">{job.company}</p>
+                <p class="entry-text">{job.description}</p>
                 <ul class="job-bullets">
-                  {job.bullets.map((bullet, b) => (
-                    <li class:list={{ 'job-bullet--lead': b === 0 }}>
+                  {job.bullets.map((bullet) => (
+                    <li>
                       {splitMetrics(bullet).map((part, k) =>
                         k % 2 ? <strong class="job-metric">{part}</strong> : part
                       )}
                     </li>
                   ))}
                 </ul>
-
-                <ul class="job-stack" aria-label="Stack">
+                <ul class="entry-foot" aria-label="Stack">
                   {stacks[i].map((tech) => (
                     <li><Badge>{tech}</Badge></li>
                   ))}
@@ -68,7 +72,6 @@ const stacks = experience.map((job) =>
           );
         })}
       </ol>
-
     </div>
 
     <ContactClose />
@@ -77,131 +80,76 @@ const stacks = experience.map((job) =>
 
 <style>
   .experience-main {
-    padding-top: calc(var(--nav-height) + var(--space-12));
-  }
-
-  .experience-header {
-    max-width: 720px;
-    margin-bottom: var(--space-12);
-  }
-
-  .experience-title {
-    text-transform: uppercase;
-    font-size: var(--text-5xl);
-    color: var(--color-text);
-    letter-spacing: 0.01em;
-    line-height: 0.92;
-    text-wrap: balance;
-    margin-bottom: var(--space-4);
-  }
-
-  .experience-subtext {
-    font-size: var(--text-lg);
-    color: var(--color-text-muted);
-    line-height: 1.7;
+    padding-bottom: 0;
   }
 
   .timeline {
-    list-style: none;
     margin-bottom: var(--space-section);
-    border-top: 1px solid var(--color-border);
   }
 
-  .job {
-    display: grid;
-    grid-template-columns: 6rem minmax(0, 1fr);
-    column-gap: var(--space-6);
-    padding-block: var(--space-10);
-    border-bottom: 1px solid var(--color-border);
+  .job-rail {
+    position: relative;
+    padding-left: var(--space-6);
   }
 
-  .job--current {
-    padding: var(--space-8);
-    margin-block: var(--space-8);
-    background: var(--color-surface);
-    border-bottom: none;
-    border-left: 6px solid var(--color-accent);
+  .job-rail::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--color-text-subtle);
+    background: var(--color-bg);
   }
 
-  .job-index {
-    font-family: var(--font-display);
-    font-size: var(--text-4xl);
-    line-height: 0.8;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--color-cyan);
+  .job::before {
+    content: "";
+    position: absolute;
+    left: calc(var(--space-4) + 4px);
+    top: 0;
+    bottom: -1px;
+    width: 1px;
+    background: var(--color-border);
   }
 
-  .job-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: var(--space-2) var(--space-4);
-    margin-bottom: var(--space-4);
-    flex-wrap: wrap;
+  .job:first-child::before {
+    top: calc(var(--space-10) + 0.8em);
   }
 
-  .job-role {
-    font-family: var(--font-display);
-    font-size: var(--text-3xl);
-    font-weight: 400;
-    text-transform: uppercase;
-    line-height: 0.95;
-    color: var(--color-text);
-    margin: 0 0 var(--space-2) 0;
-    letter-spacing: 0.01em;
-    text-wrap: balance;
+  .job:last-child::before {
+    bottom: auto;
+    height: calc(var(--space-10) + 0.8em);
   }
 
-  .job-company {
-    font-family: var(--font-pixel);
-    font-size: var(--text-xs);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-subtle);
-    margin: 0;
+  .job--current .job-rail::before {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
   }
 
-  .job-period {
-    white-space: nowrap;
-  }
-
-  .job-period::before {
-    content: "> " / "";
-    color: var(--color-text-subtle);
-  }
-
-  .job--current .job-period::before {
-    content: "> " / "";
-    color: var(--color-accent);
-  }
-
-  .job--current .job-period {
+  .job--current .entry-rail-key {
     color: var(--color-accent-green);
   }
 
-  .job-description {
-    color: var(--color-text-muted);
-    font-size: var(--text-base);
-    line-height: 1.7;
-    margin-bottom: var(--space-5);
-    max-width: 65ch;
+  .job--current .entry-title {
+    font-size: var(--text-4xl);
+    line-height: 1.05;
   }
 
   .job-bullets {
-    list-style: none;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-    margin-bottom: var(--space-5);
-    max-width: 65ch;
+    gap: var(--space-3);
+    max-width: 62ch;
+    list-style: none;
   }
 
   .job-bullets li {
     position: relative;
-    padding-left: var(--space-5);
+    padding-left: var(--space-6);
     font-size: var(--text-base);
+    line-height: 1.65;
     color: var(--color-text-muted);
-    line-height: 1.6;
   }
 
   .job-bullets li::before {
@@ -211,44 +159,45 @@ const stacks = experience.map((job) =>
     top: 0.8em;
     width: var(--space-3);
     height: 1px;
-    background: var(--color-border);
+    background: var(--color-text-subtle);
   }
 
   .job-metric {
     font-family: var(--font-mono);
     font-weight: 500;
     color: var(--color-text);
+    background: var(--color-accent-dim);
+    padding-inline: 0.25em;
     white-space: nowrap;
   }
 
-  .job-bullets .job-bullet--lead {
-    color: var(--color-text);
-  }
-
-  .job--current .job-bullet--lead::before {
-    background: var(--color-accent);
-  }
-
-  .job-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    list-style: none;
-  }
-
-
-  @media (max-width: 640px) {
-    .job {
-      grid-template-columns: 1fr;
-      row-gap: var(--space-3);
+  @media (max-width: 760px) {
+    .job,
+    .job:first-child,
+    .job:last-child {
+      padding-left: calc(var(--space-4) + var(--space-6));
     }
 
-    .job--current {
-      padding: var(--space-5);
+    .job::before,
+    .job:first-child::before,
+    .job:last-child::before {
+      top: 0;
+      bottom: -1px;
+      height: auto;
     }
 
-    .job-index {
-      font-size: var(--text-3xl);
+    .job:first-child::before {
+      top: calc(var(--space-8) + 0.6em);
+    }
+
+    .job-rail {
+      position: static;
+      padding-left: 0;
+    }
+
+    .job-rail::before {
+      left: var(--space-4);
+      top: calc(var(--space-8) + 0.35em);
     }
   }
 </style>
